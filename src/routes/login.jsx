@@ -7,7 +7,7 @@ export async function action({ request }) {
     const email = formData.get("email");
     const password = formData.get("password");
     await signInWithEmailAndPassword(auth, email, password);
-    return redirect("/chats");
+    return redirect("/menu");
 }
 
 export default function Login() {

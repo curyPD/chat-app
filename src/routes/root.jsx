@@ -10,7 +10,7 @@ export default function Root() {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             console.log(user);
             if (user === null) navigate("/login");
-            else if (user) navigate("/chats");
+            else if (user) navigate("/menu");
         });
         return () => unsubscribe();
     }, []);

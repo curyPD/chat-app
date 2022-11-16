@@ -4,7 +4,9 @@ import ReactDOM from "react-dom/client";
 import Root from "./routes/root";
 import Login, { action as loginAction } from "./routes/login";
 import Signup, { action as signupAction } from "./routes/signup";
-import Chats from "./routes/chats";
+import Profile from "./routes/profile";
+import EditProfile from "./routes/editProfile";
+import Menu from "./routes/menu";
 
 import "./index.css";
 
@@ -20,7 +22,10 @@ const router = createBrowserRouter(
         <Route path="/" element={<Root />} />,
         <Route path="login" element={<Login />} action={loginAction} />,
         <Route path="signup" element={<Signup />} action={signupAction} />,
-        <Route path="chats" element={<Chats />} />,
+        <Route path="menu" element={<Menu />}>
+            <Route path="users/:userId" element={<Profile />} />
+            <Route path="users/:userId/edit" element={<EditProfile />} />
+        </Route>,
     ])
 );
 
