@@ -1,3 +1,4 @@
+import { Link, useLoaderData } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { ref, get } from "firebase/database";
 
@@ -9,11 +10,23 @@ export async function loader({ params }) {
         get(ref(database, `data/chats/${uid}/${params.chatId}`)),
         get(ref(database, `data/messages/${params.chatId}`)),
     ]);
+    if (!chatShapshot.exists()) throw new Error("No chat found");
     const chatVal = chatShapshot.val();
     const messagesVal = messagesSnapshot.val();
     console.log(chatVal, messagesVal);
+    return {
+        chatData: chatVal,
+        messagesData: messagesVal,
+    };
 }
 
 export default function Chat() {
-    return <div>Chat</div>;
+    const { chatData, messagesData } = useLoaderData();
+    return (
+        <>
+            <Link to={`/users/${chatData.partner_uid}`}>
+                {chatData.partner_name}
+            </Link>
+        </>
+    );
 }

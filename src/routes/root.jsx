@@ -44,16 +44,16 @@ export default function Root() {
         />
     ));
 
-    return revalidator.state === "loading" ? (
+    return !auth.currentUser || revalidator.state === "loading" ? (
         <div className="h-screen flex justify-center items-center">
             <div className="w-9 rounded-full h-9 bg-sky-400 animate-pulse"></div>
         </div>
     ) : (
         <main className="h-screen grid grid-cols-[350px_1fr]">
-            <div className="bg-slate-100">{chatElements}</div>
-            <div className="bg-sky-100">
+            <section className="bg-slate-100">{chatElements}</section>
+            <section className="bg-sky-100">
                 <Outlet />
-            </div>
+            </section>
         </main>
     );
 }

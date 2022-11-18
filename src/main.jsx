@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import Login, { action as loginAction } from "./routes/login";
 import Signup, { action as signupAction } from "./routes/signup";
-import Profile from "./routes/profile";
+import Profile, { loader as profileLoader } from "./routes/profile";
 import EditProfile from "./routes/editProfile";
 import Root, { loader as rootLoader } from "./routes/root";
 import Chat, { loader as chatLoader } from "./routes/chat";
@@ -20,7 +20,11 @@ import {
 const router = createBrowserRouter(
     createRoutesFromElements([
         <Route path="/" element={<Root />} loader={rootLoader}>
-            <Route path="users/:userId" element={<Profile />} />
+            <Route
+                path="users/:userId"
+                element={<Profile />}
+                loader={profileLoader}
+            />
             <Route path="users/:userId/edit" element={<EditProfile />} />
             <Route
                 path="chats/:chatId"
