@@ -10,7 +10,8 @@ export async function loader({ params }) {
         get(ref(database, `data/chats/${uid}/${params.chatId}`)),
         get(ref(database, `data/messages/${params.chatId}`)),
     ]);
-    if (!chatShapshot.exists()) throw new Error("No chat found");
+    if (!chatShapshot.exists())
+        throw new Response("No chat found", { status: 404 });
     const chatVal = chatShapshot.val();
     const messagesVal = messagesSnapshot.val();
     console.log(chatVal, messagesVal);

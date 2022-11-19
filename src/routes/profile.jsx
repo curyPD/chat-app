@@ -1,11 +1,12 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { ref, get } from "firebase/database";
 import { HiOutlineUserCircle } from "react-icons/hi";
 
 export async function loader({ params }) {
     const snapshot = await get(ref(database, `data/users/${params.userId}`));
-    if (!snapshot.exists()) throw new Error("No user found");
+    if (!snapshot.exists())
+        throw new Response("No user found", { status: 404 });
     return { profileInfo: snapshot.val() };
 }
 
@@ -24,9 +25,7 @@ export default function Profile() {
                 )}
             </div>
             {profileInfo.uid === auth.currentUser.uid && (
-                <Form action="edit">
-                    <button>Edit profile</button>
-                </Form>
+                <Link to="/edit">Edit profile</Link>
             )}
         </>
     );

@@ -23,7 +23,6 @@ export async function loader() {
 
 export default function Root() {
     const { chats } = useLoaderData();
-    console.log(chats);
     const navigate = useNavigate();
     const revalidator = useRevalidator();
 

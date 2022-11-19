@@ -17,7 +17,7 @@ export async function action({ request }) {
     const { user } = userCredential;
     await updateProfile(user, { displayName: userName });
     await createNewUser(user.uid, user.displayName, user.email);
-    return redirect(`/users/${uid}/edit`);
+    return redirect(`/edit`);
 }
 
 function createNewUser(uid, name, email) {

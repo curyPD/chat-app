@@ -25,7 +25,7 @@ const router = createBrowserRouter(
                 element={<Profile />}
                 loader={profileLoader}
             />
-            <Route path="users/:userId/edit" element={<EditProfile />} />
+            <Route path="edit" element={<EditProfile />} />
             <Route
                 path="chats/:chatId"
                 element={<Chat />}
