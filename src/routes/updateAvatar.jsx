@@ -17,12 +17,12 @@ export async function action({ request }) {
     );
     const user = userSnapshot.val();
     const updates = {};
-    updates[`data/users/${auth.currentUser}/profile_picture`] = photoURL;
-    Object.keys(user.friends).forEach((uid) => {
-        updates[
-            `data/users/${uid}/friends/${auth.currentUser.uid}/friend_profile_picture`
-        ] = photoURL;
-    });
+    updates[`data/users/${auth.currentUser.uid}/profile_picture`] = photoURL;
+    // Object.keys(user.friends).forEach((uid) => {
+    //     updates[
+    //         `data/users/${uid}/friends/${auth.currentUser.uid}/friend_profile_picture`
+    //     ] = photoURL;
+    // });
     Object.values(user.chats).forEach((obj) => {
         updates[
             `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_profile_picture`
@@ -68,7 +68,7 @@ export default function UpdateAvatar() {
                 formData.append("avatarURL", downloadURL);
                 fetcher.submit(formData, {
                     method: "post",
-                    action: "/update",
+                    action: "/update-avatar",
                 });
             }
         );

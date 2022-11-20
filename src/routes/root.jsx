@@ -1,40 +1,55 @@
-import { useEffect } from "react";
-import {
-    Outlet,
-    useLoaderData,
-    useNavigate,
-    useRevalidator,
-} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet, useNavigate, useRevalidator } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { ref, get } from "firebase/database";
+import { ref, onChildAdded, onChildChanged } from "firebase/database";
 import ChatLink from "../components/ChatLink";
 
-export async function loader() {
-    const { currentUser } = auth;
-    if (!currentUser) return { chats: [] };
-    const { uid } = currentUser;
-    const snapshot = await get(ref(database, `data/chats/${uid}`));
-    const val = snapshot.val();
-    const valEntries = Object.entries(val);
-    const chats = valEntries.map((entry) => entry[1]);
-    return { chats };
-}
-
 export default function Root() {
-    const { chats } = useLoaderData();
+    const [curUser, setCurUser] = useState("");
+    const [chats, setChats] = useState([]);
+
     const navigate = useNavigate();
     const revalidator = useRevalidator();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user === null) navigate("/login");
-            else if (user) revalidator.revalidate();
+            else if (user) {
+                setCurUser(user);
+                revalidator.revalidate();
+            }
         });
         return () => unsubscribe();
     }, []);
 
-    const chatElements = chats?.map((chat, i) => (
+    useEffect(() => {
+        if (!curUser) return;
+        const childAddedUnsubscribe = onChildAdded(
+            ref(database, `data/chats/${curUser.uid}`),
+            (snapshot) => {
+                setChats((prevChats) => [...prevChats, snapshot.val()]);
+            }
+        );
+        const childChangedUnsubscribe = onChildChanged(
+            ref(database, `data/chats/${curUser.uid}`),
+            (snapshot) => {
+                setChats((prevChats) =>
+                    prevChats.map((chat) =>
+                        chat.chat_id === snapshot.chat_id
+                            ? snapshot.val()
+                            : chat
+                    )
+                );
+            }
+        );
+        return () => {
+            childAddedUnsubscribe();
+            childChangedUnsubscribe();
+        };
+    }, [curUser]);
+
+    const chatElements = chats.map((chat, i) => (
         <ChatLink
             key={i}
             id={chat.chat_id}

@@ -1,11 +1,34 @@
-import { Form, useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { auth, database } from "../firebase";
-import { ref, get } from "firebase/database";
+import { ref, get, update } from "firebase/database";
+import { updateProfile } from "firebase/auth";
 import UpdateAvatar from "./updateAvatar";
+import EditProfileForm from "../components/EditProfileForm";
+// import UpdateSignInData from "./updateSignInData";
 
 export async function action({ request }) {
     const formData = await request.formData();
-    console.log(Object.fromEntries(formData));
+    const profileInfo = Object.fromEntries(formData);
+    const userSnapshot = await get(
+        ref(database, `data/users/${auth.currentUser.uid}`)
+    );
+    const user = userSnapshot.val();
+    const updates = {};
+    updates[`data/users/${auth.currentUser.uid}/name`] = profileInfo.name;
+    updates[`data/users/${auth.currentUser.uid}/twitter`] = profileInfo.twitter;
+    updates[`data/users/${auth.currentUser.uid}/bio`] = profileInfo.bio;
+    Object.values(user.chats).forEach((obj) => {
+        updates[`data/chats/${obj.partner_uid}/${obj.chat_id}/partner_name`] =
+            profileInfo.name;
+    });
+    return auth.currentUser.displayName !== profileInfo.name
+        ? Promise.all(
+              update(database, updates),
+              updateProfile(auth.currentUser, {
+                  displayName: profileInfo.name,
+              })
+          )
+        : update(database, updates);
 }
 
 export async function loader() {
@@ -20,36 +43,13 @@ export async function loader() {
 
 export default function EditProfile() {
     const { profileInfo } = useLoaderData();
-    const navigate = useNavigate();
 
     return (
         <>
-            <h1>Edit profile</h1>
-            <Form method="post">
-                <label htmlFor="nameInput">Change name</label>
-                <input
-                    className="border border-slate-500 block"
-                    type="text"
-                    defaultValue={profileInfo.name}
-                    name="name"
-                    id="nameInput"
-                />
-                <label htmlFor="twitterInput">Twitter username</label>
-                <input
-                    className="border border-slate-500 block"
-                    type="text"
-                    defaultValue={profileInfo.twitter}
-                    name="twitter"
-                    id="twitterInput"
-                />
-                <button className="block border border-sky-500" type="submit">
-                    Submit
-                </button>
-                <button type="button" onClick={() => navigate(-1)}>
-                    Cancel
-                </button>
-            </Form>
+            <h1 className="text-2xl font-bold">Edit profile</h1>
             <UpdateAvatar />
+            <EditProfileForm profileInfo={profileInfo} />
+            {/* <UpdateSignInData profileInfo={profileInfo} /> */}
         </>
     );
 }

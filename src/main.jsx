@@ -8,9 +8,10 @@ import EditProfile, {
     loader as editProfileLoader,
     action as editProfileAction,
 } from "./routes/editProfile";
-import Root, { loader as rootLoader } from "./routes/root";
+import Root from "./routes/root";
 import Chat, { loader as chatLoader } from "./routes/chat";
 import { action as updateAvatarAction } from "./routes/updateAvatar";
+import { action as updateSignInDataAction } from "./routes/updateSignInData";
 
 import "./index.css";
 
@@ -23,7 +24,7 @@ import {
 
 const router = createBrowserRouter(
     createRoutesFromElements([
-        <Route path="/" element={<Root />} loader={rootLoader}>
+        <Route path="/" element={<Root />}>
             <Route
                 path="users/:userId"
                 element={<Profile />}
@@ -35,7 +36,8 @@ const router = createBrowserRouter(
                 loader={editProfileLoader}
                 action={editProfileAction}
             />
-            <Route path="update" action={updateAvatarAction} />
+            <Route path="update-avatar" action={updateAvatarAction} />
+            <Route path="update-signin-data" action={updateSignInDataAction} />
             <Route
                 path="chats/:chatId"
                 element={<Chat />}
