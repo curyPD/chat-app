@@ -29,7 +29,7 @@ export async function action({ request }) {
         ] = photoURL;
     });
     return Promise.all(
-        update(database, updates),
+        update(ref(database), updates),
         updateProfile(auth.currentUser, {
             photoURL,
         })

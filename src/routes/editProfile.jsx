@@ -23,12 +23,12 @@ export async function action({ request }) {
     });
     return auth.currentUser.displayName !== profileInfo.name
         ? Promise.all(
-              update(database, updates),
+              update(ref(database), updates),
               updateProfile(auth.currentUser, {
                   displayName: profileInfo.name,
               })
           )
-        : update(database, updates);
+        : update(ref(database), updates);
 }
 
 export async function loader() {
