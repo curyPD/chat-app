@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link, useLoaderData, useFetcher } from "react-router-dom";
+import {
+    Link,
+    useLoaderData,
+    useFetcher,
+    useFormAction,
+} from "react-router-dom";
 import { auth, database } from "../firebase";
 import {
     ref,
@@ -74,6 +79,7 @@ export default function Chat() {
 
     const { chatData } = useLoaderData();
     const fetcher = useFetcher();
+    const deleteMessagePath = useFormAction("delete-message");
 
     const isMessageSubmitting = fetcher.state === "submitting";
     const isMessageSent =
@@ -108,7 +114,7 @@ export default function Chat() {
             ref(database, `data/messages/${chatData?.chat_id}`),
             (snapshot) => {
                 setMessages((prevMessages) =>
-                    prevMessages.filter((m) => m.m_id !== snapshot.m_id)
+                    prevMessages.filter((m) => m.m_id !== snapshot.val().m_id)
                 );
             }
         );
@@ -127,6 +133,26 @@ export default function Chat() {
                 : ""
         );
     }, [editedMessageId]);
+
+    function handleDeleteMessage(messageId) {
+        console.log(messageId);
+        const formData = new FormData();
+        formData.append("messageId", messageId);
+        const isLastMessage = messages.at(-1)?.m_id === messageId;
+        formData.append("isLastMessage", `${isLastMessage}`);
+        if (isLastMessage) {
+            const penultimateMessage = messages.at(-2);
+            const { sender, text, timestamp } = penultimateMessage;
+            formData.append("newLastMessageText", text);
+            formData.append("newLastMessageSender", sender);
+            formData.append("timestamp", timestamp);
+            formData.append("partnerUid", chatData.partner_uid);
+        }
+        fetcher.submit(formData, {
+            method: "post",
+            action: deleteMessagePath,
+        });
+    }
 
     const messageElements = messages.map((message) => (
         <MessageBubble
@@ -147,6 +173,7 @@ export default function Chat() {
             handleEditMessage={() => {
                 setEditedMessageId(message.m_id);
             }}
+            handleDeleteMessage={() => handleDeleteMessage(message.m_id)}
         />
     ));
 

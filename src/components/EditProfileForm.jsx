@@ -1,7 +1,4 @@
-import { useFetcher } from "react-router-dom";
-
-export default function EditProfileForm({ profileInfo }) {
-    const fetcher = useFetcher();
+export default function EditProfileForm({ fetcher, profileInfo }) {
     return (
         <fetcher.Form method="post">
             <label htmlFor="nameInput">Change name</label>

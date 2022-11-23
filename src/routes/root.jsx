@@ -36,7 +36,7 @@ export default function Root() {
             (snapshot) => {
                 setChats((prevChats) =>
                     prevChats.map((chat) =>
-                        chat.chat_id === snapshot.chat_id
+                        chat.chat_id === snapshot.val().chat_id
                             ? snapshot.val()
                             : chat
                     )

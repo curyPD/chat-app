@@ -1,10 +1,10 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useFetcher } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { ref, get, update } from "firebase/database";
 import { updateProfile } from "firebase/auth";
-import UpdateAvatar from "./updateAvatar";
+import UpdateAvatar from "../components/UpdateAvatar";
+// import UpdateSignInData from "../components/UpdateSignInData";
 import EditProfileForm from "../components/EditProfileForm";
-// import UpdateSignInData from "./updateSignInData";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -43,13 +43,13 @@ export async function loader() {
 
 export default function EditProfile() {
     const { profileInfo } = useLoaderData();
+    const fetcher = useFetcher();
 
     return (
         <>
             <h1 className="text-2xl font-bold">Edit profile</h1>
-            <UpdateAvatar />
-            <EditProfileForm profileInfo={profileInfo} />
-            {/* <UpdateSignInData profileInfo={profileInfo} /> */}
+            <UpdateAvatar fetcher={fetcher} />
+            <EditProfileForm profileInfo={profileInfo} fetcher={fetcher} />
         </>
     );
 }
