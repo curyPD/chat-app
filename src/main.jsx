@@ -9,7 +9,10 @@ import EditProfile, {
     action as editProfileAction,
 } from "./routes/editProfile";
 import Root from "./routes/root";
-import Chat, { loader as chatLoader } from "./routes/chat";
+import Chat, {
+    loader as chatLoader,
+    action as chatAction,
+} from "./routes/chat";
 import { action as updateAvatarAction } from "./routes/updateAvatar";
 import { action as updateSignInDataAction } from "./routes/updateSignInData";
 
@@ -42,6 +45,7 @@ const router = createBrowserRouter(
                 path="chats/:chatId"
                 element={<Chat />}
                 loader={chatLoader}
+                action={chatAction}
             />
         </Route>,
         <Route path="login" element={<Login />} action={loginAction} />,

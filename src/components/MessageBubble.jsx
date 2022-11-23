@@ -6,7 +6,7 @@ export default function MessageBubble(props) {
             <Link to={`/users/${props.senderUid}`}>
                 <img src={props.senderAvatar} alt={props.senderName} />
             </Link>
-            <div>{props.text}</div>
+            <div onClick={props.handleEditMessage}>{props.text}</div>
             <div>{props.timestamp}</div>
         </div>
     );

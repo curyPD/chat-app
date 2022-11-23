@@ -13,7 +13,7 @@ import {
 import MessageBubble from "../components/MessageBubble";
 
 export async function action({ request, params }) {
-    const formData = request.formData();
+    const formData = await request.formData();
     const message = formData.get("message");
     const messageId = formData.get("messageId");
     const partnerUid = formData.get("partnerUid");
@@ -31,25 +31,24 @@ export async function action({ request, params }) {
             timestamp,
             sender: auth.currentUser.uid,
         };
-        [(auth.currentUser.uid, partnerUid)].forEach((uid) => {
+        [auth.currentUser.uid, partnerUid].forEach((uid) => {
             updates[`data/chats/${uid}/${params.chatId}/last_message_sender`] =
                 auth.currentUser.uid;
             updates[`data/chats/${uid}/${params.chatId}/last_message_text`] =
                 message;
             updates[`data/chats/${uid}/${params.chatId}/timestamp`] = timestamp;
         });
-        return update(ref(database), updates);
     } else {
         updates[`data/messages/${params.chatId}/${messageId}/text`] = message;
         if (isLastMessage === "true") {
-            [(auth.currentUser.uid, partnerUid)].forEach((uid) => {
+            [auth.currentUser.uid, partnerUid].forEach((uid) => {
                 updates[
                     `data/chats/${uid}/${params.chatId}/last_message_text`
                 ] = message;
             });
         }
-        return update(ref(database), updates);
     }
+    return update(ref(database), updates);
 }
 
 export async function loader({ params }) {
@@ -76,6 +75,15 @@ export default function Chat() {
     const { chatData } = useLoaderData();
     const fetcher = useFetcher();
 
+    const isMessageSubmitting = fetcher.state === "submitting";
+    const isMessageSent =
+        fetcher.state === "loading" && fetcher.formData !== null;
+
+    useEffect(() => {
+        if (isMessageSubmitting) setInput("");
+        if (isMessageSent) setEditedMessageId("");
+    }, [isMessageSubmitting, isMessageSent]);
+
     useEffect(() => {
         const childAddedUnsubscribe = onChildAdded(
             ref(database, `data/messages/${chatData?.chat_id}`),
@@ -91,7 +99,7 @@ export default function Chat() {
             (snapshot) => {
                 setMessages((prevMessages) =>
                     prevMessages.map((m) =>
-                        m.m_id === snapshot.m_id ? snapshot.val() : m
+                        m.m_id === snapshot.val().m_id ? snapshot.val() : m
                     )
                 );
             }
@@ -111,6 +119,15 @@ export default function Chat() {
         };
     }, [chatData?.chat_id]);
 
+    useEffect(() => {
+        setInput(
+            editedMessageId
+                ? messages.find((message) => message.m_id === editedMessageId)
+                      .text
+                : ""
+        );
+    }, [editedMessageId]);
+
     const messageElements = messages.map((message) => (
         <MessageBubble
             key={message.m_id}
@@ -127,6 +144,9 @@ export default function Chat() {
                     : chatData.partner_name
             }
             senderUid={message.sender}
+            handleEditMessage={() => {
+                setEditedMessageId(message.m_id);
+            }}
         />
     ));
 
@@ -164,7 +184,15 @@ export default function Chat() {
                             : "false"
                     }
                 />
-                <button>Send</button>
+                {editedMessageId && (
+                    <button
+                        type="button"
+                        onClick={() => setEditedMessageId("")}
+                    >
+                        Cancel
+                    </button>
+                )}
+                <button type="submit">Send</button>
             </fetcher.Form>
             <div>{messageElements}</div>
         </>
