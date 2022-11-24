@@ -16,16 +16,12 @@ export async function action({ request }) {
     );
     const { user } = userCredential;
     await updateProfile(user, { displayName: userName });
-    await createNewUser(user.uid, user.displayName, user.email);
-    return redirect(`/edit`);
-}
-
-function createNewUser(uid, name, email) {
-    return set(ref(database, `users/${uid}`), {
-        uid,
-        name,
-        email,
+    await set(ref(database, `users/${uid}`), {
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
     });
+    return redirect(`/edit`);
 }
 
 export default function Signup() {

@@ -16,9 +16,9 @@ export default function EditProfileForm({ fetcher, profileInfo }) {
                 cols="30"
                 rows="10"
                 className="border border-slate-500 block"
-            >
-                {profileInfo.bio}
-            </textarea>
+                defaultValue={profileInfo.bio}
+            />
+
             <label htmlFor="twitterInput">Twitter username</label>
             <input
                 className="border border-slate-500 block"
