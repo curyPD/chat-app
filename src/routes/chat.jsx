@@ -66,7 +66,6 @@ export async function loader({ params }) {
     if (!chatShapshot.exists())
         throw new Response("No chat found", { status: 404 });
     const chatVal = chatShapshot.val();
-    console.log(chatVal);
     return {
         chatData: chatVal,
     };
@@ -135,7 +134,6 @@ export default function Chat() {
     }, [editedMessageId]);
 
     function handleDeleteMessage(messageId) {
-        console.log(messageId);
         const formData = new FormData();
         formData.append("messageId", messageId);
         const isLastMessage = messages.at(-1)?.m_id === messageId;

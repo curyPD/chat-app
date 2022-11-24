@@ -17,17 +17,19 @@ export async function action({ request }) {
     updates[`data/users/${auth.currentUser.uid}/name`] = profileInfo.name;
     updates[`data/users/${auth.currentUser.uid}/twitter`] = profileInfo.twitter;
     updates[`data/users/${auth.currentUser.uid}/bio`] = profileInfo.bio;
-    Object.values(user.chats).forEach((obj) => {
-        updates[`data/chats/${obj.partner_uid}/${obj.chat_id}/partner_name`] =
-            profileInfo.name;
-    });
+    user.chats &&
+        Object.values(user.chats).forEach((obj) => {
+            updates[
+                `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_name`
+            ] = profileInfo.name;
+        });
     return auth.currentUser.displayName !== profileInfo.name
-        ? Promise.all(
+        ? Promise.all([
               update(ref(database), updates),
               updateProfile(auth.currentUser, {
                   displayName: profileInfo.name,
-              })
-          )
+              }),
+          ])
         : update(ref(database), updates);
 }
 
