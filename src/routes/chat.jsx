@@ -90,6 +90,9 @@ export default function Chat() {
     }, [isMessageSubmitting, isMessageSent]);
 
     useEffect(() => {
+        setMessages([]);
+        setInput("");
+        setEditedMessageId("");
         const childAddedUnsubscribe = onChildAdded(
             ref(database, `data/messages/${chatData?.chat_id}`),
             (snapshot) => {
