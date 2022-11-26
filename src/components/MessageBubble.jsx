@@ -15,7 +15,11 @@ export default function MessageBubble(props) {
             )}
             <div>
                 <Link to={`/users/${props.senderUid}`}>
-                    <img src={props.senderAvatar} alt={props.senderName} />
+                    <img
+                        src={props.senderAvatar}
+                        alt={props.senderName}
+                        className="w-12 h-12 rounded-full object-cover"
+                    />
                 </Link>
                 <div onClick={props.handleEditMessage}>{props.text}</div>
                 <div>{props.timestamp}</div>

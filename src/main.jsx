@@ -3,7 +3,10 @@ import ReactDOM from "react-dom/client";
 
 import Login, { action as loginAction } from "./routes/login";
 import Signup, { action as signupAction } from "./routes/signup";
-import Profile, { loader as profileLoader } from "./routes/profile";
+import Profile, {
+    loader as profileLoader,
+    action as profileAction,
+} from "./routes/profile";
 import EditProfile, {
     loader as editProfileLoader,
     action as editProfileAction,
@@ -33,6 +36,7 @@ const router = createBrowserRouter(
                 path="users/:userId"
                 element={<Profile />}
                 loader={profileLoader}
+                action={profileAction}
             />
             <Route
                 path="edit"

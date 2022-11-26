@@ -12,10 +12,10 @@ import {
     onChildAdded,
     onChildChanged,
     onChildRemoved,
-    push,
     update,
 } from "firebase/database";
 import MessageBubble from "../components/MessageBubble";
+import { addNewMessage, editMessage } from "../helpers";
 
 export async function action({ request, params }) {
     const formData = await request.formData();
@@ -24,35 +24,25 @@ export async function action({ request, params }) {
     const partnerUid = formData.get("partnerUid");
     const isLastMessage = formData.get("isLastMessage");
     const updates = {};
-    if (!messageId) {
-        const newMessageRef = push(
-            ref(database, `data/messages/${params.chatId}`)
+    if (!messageId)
+        addNewMessage(
+            params.chatId,
+            message,
+            auth.currentUser.uid,
+            partnerUid,
+            updates
         );
-        const date = new Date();
-        const timestamp = date.getTime();
-        updates[`data/messages/${params.chatId}/${newMessageRef.key}`] = {
-            m_id: newMessageRef.key,
-            text: message,
-            timestamp,
-            sender: auth.currentUser.uid,
-        };
-        [auth.currentUser.uid, partnerUid].forEach((uid) => {
-            updates[`data/chats/${uid}/${params.chatId}/last_message_sender`] =
-                auth.currentUser.uid;
-            updates[`data/chats/${uid}/${params.chatId}/last_message_text`] =
-                message;
-            updates[`data/chats/${uid}/${params.chatId}/timestamp`] = timestamp;
-        });
-    } else {
-        updates[`data/messages/${params.chatId}/${messageId}/text`] = message;
-        if (isLastMessage === "true") {
-            [auth.currentUser.uid, partnerUid].forEach((uid) => {
-                updates[
-                    `data/chats/${uid}/${params.chatId}/last_message_text`
-                ] = message;
-            });
-        }
-    }
+    else
+        editMessage(
+            params.chatId,
+            message,
+            messageId,
+            isLastMessage,
+            auth.currentUser.uid,
+            partnerUid,
+            updates
+        );
+
     return update(ref(database), updates);
 }
 
@@ -79,15 +69,6 @@ export default function Chat() {
     const { chatData } = useLoaderData();
     const fetcher = useFetcher();
     const deleteMessagePath = useFormAction("delete-message");
-
-    const isMessageSubmitting = fetcher.state === "submitting";
-    const isMessageSent =
-        fetcher.state === "loading" && fetcher.formData !== null;
-
-    useEffect(() => {
-        if (isMessageSubmitting) setInput("");
-        if (isMessageSent) setEditedMessageId("");
-    }, [isMessageSubmitting, isMessageSent]);
 
     useEffect(() => {
         setMessages([]);
@@ -187,6 +168,8 @@ export default function Chat() {
                 method="post"
                 onSubmit={(e) => {
                     if (!input) e.preventDefault();
+                    setInput("");
+                    setEditedMessageId("");
                 }}
             >
                 <input
