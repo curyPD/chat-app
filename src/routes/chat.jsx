@@ -24,6 +24,7 @@ export async function action({ request, params }) {
     const partnerUid = formData.get("partnerUid");
     const isLastMessage = formData.get("isLastMessage");
     const fileBaseURL = formData.get("fileBaseURL");
+    const prevAttachedFile = formData.get("prevAttachedFile");
     const updates = {};
     if (!messageId)
         await addNewMessage(
@@ -43,6 +44,7 @@ export async function action({ request, params }) {
             auth.currentUser.uid,
             partnerUid,
             fileBaseURL,
+            prevAttachedFile,
             updates
         );
 
@@ -250,6 +252,14 @@ export default function Chat() {
                     value={filePreviewURL}
                 />
                 <input type="hidden" name="messageId" value={editedMessageId} />
+                <input
+                    type="hidden"
+                    name="prevAttachedFile"
+                    value={
+                        messages.find((m) => m.m_id === editedMessageId)
+                            ?.file_url ?? ""
+                    }
+                />
                 <input
                     type="hidden"
                     name="partnerUid"

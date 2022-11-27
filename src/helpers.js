@@ -4,6 +4,7 @@ import {
     ref as storageRef,
     uploadString,
     getDownloadURL,
+    deleteObject,
 } from "firebase/storage";
 
 export const addNewChat = function (updates, curUser, otherUser) {
@@ -36,22 +37,21 @@ export const addNewMessage = async function (
     const newMessageRef = push(ref(database, `data/messages/${chatId}`));
     const date = new Date();
     const timestamp = date.getTime();
-    let fileURL = "";
+    let file_url = "";
     if (file) {
         const snapshot = await uploadString(
             storageRef(storage, `chats/${chatId}/${newMessageRef.key}`),
             file,
             "data_url"
         );
-        console.log(snapshot);
-        fileURL = await getDownloadURL(snapshot.ref);
+        file_url = await getDownloadURL(snapshot.ref);
     }
     updates[`data/messages/${chatId}/${newMessageRef.key}`] = {
         m_id: newMessageRef.key,
         text: message,
         timestamp,
         sender,
-        file_url: fileURL,
+        file_url,
     };
     [sender, recipient].forEach((uid) => {
         updates[`data/chats/${uid}/${chatId}/last_message_sender`] = sender;
@@ -67,7 +67,8 @@ export const editMessage = async function (
     isLastMessage,
     sender,
     recipient,
-    file,
+    fileURL,
+    prevAttachedFileURL,
     updates
 ) {
     updates[`data/messages/${chatId}/${messageId}/text`] = message;
@@ -75,5 +76,51 @@ export const editMessage = async function (
         [sender, recipient].forEach((uid) => {
             updates[`data/chats/${uid}/${chatId}/last_message_text`] = message;
         });
+    }
+
+    if (prevAttachedFileURL) {
+        if (prevAttachedFileURL === fileURL) {
+            // 3. Edit message with file and didn't change file
+            return;
+        } else if (!fileURL) {
+            // 4. Edit message with file and deleted file
+            await deleteObject(
+                storageRef(storage, `chats/${chatId}/${messageId}`)
+            );
+            updates[`data/messages/${chatId}/${messageId}/file_url`] = "";
+            return;
+        } else if (fileURL && prevAttachedFileURL !== fileURL) {
+            // 5. Edit message with file and changed file
+            const storageReference = storageRef(
+                storage,
+                `chats/${chatId}/${messageId}`
+            );
+            await deleteObject(storageReference);
+            const snapshot = await uploadString(
+                storageReference,
+                fileURL,
+                "data_url"
+            );
+            const file_url = await getDownloadURL(snapshot.ref);
+            updates[`data/messages/${chatId}/${messageId}/file_url`] = file_url;
+        }
+    } else {
+        if (!fileURL) {
+            // 1. Edit message with no file and didn't attach a file
+            return;
+        } else {
+            // 2. Edit message with no file and attached a new file
+            const storageReference = storageRef(
+                storage,
+                `chats/${chatId}/${messageId}`
+            );
+            const snapshot = await uploadString(
+                storageReference,
+                fileURL,
+                "data_url"
+            );
+            const file_url = await getDownloadURL(snapshot.ref);
+            updates[`data/messages/${chatId}/${messageId}/file_url`] = file_url;
+        }
     }
 };
