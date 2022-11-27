@@ -23,6 +23,7 @@ export default function MessageBubble(props) {
                 </Link>
                 <div onClick={props.handleEditMessage}>{props.text}</div>
                 <div>{props.timestamp}</div>
+                {props.fileURL && <img src={props.fileURL} alt="" />}
                 <button
                     onClick={() => setIsPopupOpen((prevState) => !prevState)}
                 >

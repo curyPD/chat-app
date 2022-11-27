@@ -23,23 +23,26 @@ export async function action({ request, params }) {
     const messageId = formData.get("messageId");
     const partnerUid = formData.get("partnerUid");
     const isLastMessage = formData.get("isLastMessage");
+    const fileBaseURL = formData.get("fileBaseURL");
     const updates = {};
     if (!messageId)
-        addNewMessage(
+        await addNewMessage(
             params.chatId,
             message,
             auth.currentUser.uid,
             partnerUid,
+            fileBaseURL,
             updates
         );
     else
-        editMessage(
+        await editMessage(
             params.chatId,
             message,
             messageId,
             isLastMessage,
             auth.currentUser.uid,
             partnerUid,
+            fileBaseURL,
             updates
         );
 
@@ -65,6 +68,7 @@ export default function Chat() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [editedMessageId, setEditedMessageId] = useState("");
+    const [filePreviewURL, setFilePreviewURL] = useState("");
 
     const { chatData } = useLoaderData();
     const fetcher = useFetcher();
@@ -115,7 +119,23 @@ export default function Chat() {
                       .text
                 : ""
         );
+        setFilePreviewURL(
+            editedMessageId
+                ? messages.find((message) => message.m_id === editedMessageId)
+                      .file_url
+                : ""
+        );
     }, [editedMessageId]);
+
+    const styles = {
+        clip: "rect(0 0 0 0)",
+        clipPath: "inset(50%)",
+        height: "1px",
+        overflow: "hidden",
+        position: "absolute",
+        whiteSpace: "nowrap",
+        width: "1px",
+    };
 
     function handleDeleteMessage(messageId) {
         const formData = new FormData();
@@ -136,10 +156,40 @@ export default function Chat() {
         });
     }
 
+    function attachFile(e) {
+        const [file] = e.target.files;
+        e.target.value = "";
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            setFilePreviewURL(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function cancelFileSelect() {
+        setFilePreviewURL("");
+    }
+
+    function handleFormSubmit(e) {
+        if (!input && !filePreviewURL) e.preventDefault();
+        setInput("");
+        setEditedMessageId("");
+        setFilePreviewURL("");
+    }
+
+    function cancelMessageEdit() {
+        setEditedMessageId("");
+    }
+
+    function handleMessageInputChange(e) {
+        setInput(e.target.value);
+    }
+
     const messageElements = messages.map((message) => (
         <MessageBubble
             key={message.m_id}
             text={message.text}
+            fileURL={message.file_url}
             timestamp={message.timestamp}
             senderAvatar={
                 message.sender === auth.currentUser.uid
@@ -164,21 +214,40 @@ export default function Chat() {
             <Link to={`/users/${chatData.partner_uid}`}>
                 {chatData.partner_name}
             </Link>
-            <fetcher.Form
-                method="post"
-                onSubmit={(e) => {
-                    if (!input) e.preventDefault();
-                    setInput("");
-                    setEditedMessageId("");
-                }}
-            >
+
+            {filePreviewURL && (
+                <div>
+                    <button onClick={cancelFileSelect}>X</button>
+                    <img
+                        src={filePreviewURL}
+                        alt="Selected image"
+                        className="w-16"
+                    />
+                </div>
+            )}
+            <div className="p-1 border border-rose-600">
+                <label htmlFor="fileInput">Attach file</label>
+                <input
+                    style={styles}
+                    type="file"
+                    name="fileBaseURL"
+                    id="fileInput"
+                    onChange={attachFile}
+                />
+            </div>
+            <fetcher.Form method="post" onSubmit={handleFormSubmit}>
                 <input
                     type="text"
                     name="message"
                     id="messageInput"
                     className="border border-slate-500 block"
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={handleMessageInputChange}
+                />
+                <input
+                    type="hidden"
+                    name="fileBaseURL"
+                    value={filePreviewURL}
                 />
                 <input type="hidden" name="messageId" value={editedMessageId} />
                 <input
@@ -196,10 +265,7 @@ export default function Chat() {
                     }
                 />
                 {editedMessageId && (
-                    <button
-                        type="button"
-                        onClick={() => setEditedMessageId("")}
-                    >
+                    <button type="button" onClick={cancelMessageEdit}>
                         Cancel
                     </button>
                 )}
