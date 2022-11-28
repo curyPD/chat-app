@@ -80,6 +80,7 @@ export default function Chat() {
         setMessages([]);
         setInput("");
         setEditedMessageId("");
+        setFilePreviewURL("");
         const childAddedUnsubscribe = onChildAdded(
             ref(database, `data/messages/${chatData?.chat_id}`),
             (snapshot) => {

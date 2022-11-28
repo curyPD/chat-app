@@ -80,17 +80,17 @@ export const editMessage = async function (
 
     if (prevAttachedFileURL) {
         if (prevAttachedFileURL === fileURL) {
-            // 3. Edit message with file and didn't change file
+            // 1. Edit message with file and didn't change the file
             return;
         } else if (!fileURL) {
-            // 4. Edit message with file and deleted file
+            // 2. Edit message with file and deleted the file
             await deleteObject(
                 storageRef(storage, `chats/${chatId}/${messageId}`)
             );
             updates[`data/messages/${chatId}/${messageId}/file_url`] = "";
             return;
         } else if (fileURL && prevAttachedFileURL !== fileURL) {
-            // 5. Edit message with file and changed file
+            // 3. Edit message with file and changed the file
             const storageReference = storageRef(
                 storage,
                 `chats/${chatId}/${messageId}`
@@ -106,10 +106,10 @@ export const editMessage = async function (
         }
     } else {
         if (!fileURL) {
-            // 1. Edit message with no file and didn't attach a file
+            // 4. Edit message with no file and didn't attach a file
             return;
         } else {
-            // 2. Edit message with no file and attached a new file
+            // 5. Edit message with no file and attached a new file
             const storageReference = storageRef(
                 storage,
                 `chats/${chatId}/${messageId}`

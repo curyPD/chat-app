@@ -20,6 +20,9 @@ export async function action({ request }) {
         uid: user.uid,
         name: user.displayName,
         email: user.email,
+        profile_picture: "",
+        bio: "",
+        twitter: "",
     });
     return redirect(`/edit`);
 }
