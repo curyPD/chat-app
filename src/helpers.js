@@ -6,6 +6,7 @@ import {
     getDownloadURL,
     deleteObject,
 } from "firebase/storage";
+import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 export const addNewChat = function (updates, curUser, otherUser) {
     const newChatKey = push(ref(database, `data/chats/${curUser.uid}`)).key;
@@ -122,5 +123,37 @@ export const editMessage = async function (
             const file_url = await getDownloadURL(snapshot.ref);
             updates[`data/messages/${chatId}/${messageId}/file_url`] = file_url;
         }
+    }
+};
+
+export const getAuthProviderObject = function (authProvider) {
+    if (authProvider === "google") return new GoogleAuthProvider();
+    if (authProvider === "facebook") return new FacebookAuthProvider();
+};
+
+export const getAuthCredential = function (providerId, providerToken) {
+    if (providerId === "google.com")
+        return GoogleAuthProvider.credential(providerToken);
+    if (providerId === "facebook.com")
+        return FacebookAuthProvider.credential(providerToken);
+};
+
+export const getAuthToken = function (authProvider, error) {
+    if (authProvider === "google") {
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        return credential.accessToken;
+    } else if (authProvider === "facebook") {
+        const credential = FacebookAuthProvider.credentialFromError(error);
+        return credential.accessToken;
+    }
+};
+
+export const getProviderId = function (authProvider, error) {
+    if (authProvider === "google") {
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        return credential.providerId;
+    } else if (authProvider === "facebook") {
+        const credential = FacebookAuthProvider.credentialFromError(error);
+        return credential.providerId;
     }
 };
