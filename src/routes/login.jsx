@@ -115,8 +115,13 @@ export default function Login() {
                     . We'll link{" "}
                     {providerId ? providerId : "the password you entered"} to
                     your account automatically.{" "}
-                    {password &&
+                    {newPassword &&
                         "You'll be able to change it later on your profile page."}
+                </div>
+            )}
+            {message && (
+                <div>
+                    <p>{message}</p>
                 </div>
             )}
             <Form method="post">
@@ -135,7 +140,6 @@ export default function Login() {
                     className="border border-slate-500 block"
                     autoComplete="current-password"
                 />
-                {message && <p>{message}</p>}
                 <button>Log In</button>
                 <hr />
                 <button
