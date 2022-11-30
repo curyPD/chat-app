@@ -57,6 +57,7 @@ export async function action({ request }) {
         }
         return redirect("/");
     } catch (err) {
+        console.error(err);
         if (
             formData.has("authProvider") &&
             err.code === "auth/account-exists-with-different-credential"
