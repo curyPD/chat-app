@@ -4,6 +4,7 @@ import {
     signInWithPopup,
     fetchSignInMethodsForEmail,
     linkWithCredential,
+    EmailAuthProvider,
 } from "firebase/auth";
 import { Form, Link, redirect, useActionData } from "react-router-dom";
 import { IoLogoFacebook } from "react-icons/io5";
@@ -46,6 +47,14 @@ export async function action({ request }) {
             const userCredential = await linkWithCredential(user, credential);
             console.log(userCredential);
         }
+        if (formData.has("newPassword")) {
+            console.log("Second try");
+            const newPassword = formData.get("newPassword");
+            const email = user.email;
+            const credential = EmailAuthProvider.credential(email, newPassword);
+            const userCredential = await linkWithCredential(user, credential);
+            console.log(userCredential);
+        }
         return redirect("/");
     } catch (err) {
         if (
@@ -61,6 +70,24 @@ export async function action({ request }) {
             );
             error.signInMethods = signInMethods;
             return error;
+        } else if (err.code === "auth/wrong-password") {
+            const signInMethods = await fetchSignInMethodsForEmail(
+                auth,
+                err.customData.email
+            );
+            if (signInMethods.includes("password")) {
+                error.message = "Incorrect password. Please try again.";
+                return error;
+            }
+            const password = formData.get("password");
+            error.newPassword = password;
+            error.signInMethods = signInMethods;
+            return error;
+        } else if (
+            err.code !== "auth/account-exists-with-different-credential"
+        ) {
+            error.message = "Failed to log in. Please try again.";
+            return error;
         }
     }
 }
@@ -69,7 +96,9 @@ export default function Login() {
     const error = useActionData();
     const providerToken = error?.providerToken;
     const providerId = error?.providerId;
+    const newPassword = error?.newPassword;
     const signInMethods = error?.signInMethods;
+    const message = error?.message;
     return (
         <main className="p-6">
             {signInMethods && (
@@ -79,13 +108,15 @@ export default function Login() {
                         ? "one of the methods"
                         : "the method"}{" "}
                     you've used before:{" "}
-                    {signInMethods.map((method, i, arr) => (
-                        <span key={i}>
-                            {method}
-                            {i === arr.length - 1 ? "" : ","}
-                        </span>
-                    ))}
-                    . We'll link {providerId} to your account automatically.
+                    {signInMethods.map(
+                        (method, i, arr) =>
+                            `${method}${i === arr.length - 1 ? "" : ","}`
+                    )}
+                    . We'll link{" "}
+                    {providerId ? providerId : "the password you entered"} to
+                    your account automatically.{" "}
+                    {password &&
+                        "You'll be able to change it later on your profile page."}
                 </div>
             )}
             <Form method="post">
@@ -104,6 +135,7 @@ export default function Login() {
                     className="border border-slate-500 block"
                     autoComplete="current-password"
                 />
+                {message && <p>{message}</p>}
                 <button>Log In</button>
                 <hr />
                 <button
@@ -123,14 +155,25 @@ export default function Login() {
                     <span>Continue with Facebook</span>
                 </button>
                 {providerToken && (
+                    <>
+                        <input
+                            type="hidden"
+                            name="providerToken"
+                            value={providerToken}
+                        />
+                        <input
+                            type="hidden"
+                            name="providerId"
+                            value={providerId}
+                        />
+                    </>
+                )}
+                {newPassword && (
                     <input
                         type="hidden"
-                        name="providerToken"
-                        value={providerToken}
+                        name="newPassword"
+                        value={newPassword}
                     />
-                )}
-                {providerId && (
-                    <input type="hidden" name="providerId" value={providerId} />
                 )}
             </Form>
             <Link to="/signup">Don't have an account yet?</Link>
