@@ -16,8 +16,6 @@ import Chat, {
     loader as chatLoader,
     action as chatAction,
 } from "./routes/chat";
-import { action as updateAvatarAction } from "./routes/updateAvatar";
-import { action as updateSignInDataAction } from "./routes/updateSignInData";
 import { action as deleteMessageAction } from "./routes/deleteMessage";
 
 import "./index.css";
@@ -43,11 +41,6 @@ const router = createBrowserRouter(
                 element={<EditProfile />}
                 loader={editProfileLoader}
                 action={editProfileAction}
-            />
-            <Route path="edit/update-avatar" action={updateAvatarAction} />
-            <Route
-                path="edit/update-signin-data"
-                action={updateSignInDataAction}
             />
             <Route
                 path="chats/:chatId"

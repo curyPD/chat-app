@@ -35,30 +35,34 @@ export const addNewMessage = async function (
     file,
     updates
 ) {
-    const newMessageRef = push(ref(database, `data/messages/${chatId}`));
-    const date = new Date();
-    const timestamp = date.getTime();
-    let file_url = "";
-    if (file) {
-        const snapshot = await uploadString(
-            storageRef(storage, `chats/${chatId}/${newMessageRef.key}`),
-            file,
-            "data_url"
-        );
-        file_url = await getDownloadURL(snapshot.ref);
+    try {
+        const newMessageRef = push(ref(database, `data/messages/${chatId}`));
+        const date = new Date();
+        const timestamp = date.getTime();
+        let file_url = "";
+        if (file) {
+            const snapshot = await uploadString(
+                storageRef(storage, `chats/${chatId}/${newMessageRef.key}`),
+                file,
+                "data_url"
+            );
+            file_url = await getDownloadURL(snapshot.ref);
+        }
+        updates[`data/messages/${chatId}/${newMessageRef.key}`] = {
+            m_id: newMessageRef.key,
+            text: message,
+            timestamp,
+            sender,
+            file_url,
+        };
+        [sender, recipient].forEach((uid) => {
+            updates[`data/chats/${uid}/${chatId}/last_message_sender`] = sender;
+            updates[`data/chats/${uid}/${chatId}/last_message_text`] = message;
+            updates[`data/chats/${uid}/${chatId}/timestamp`] = timestamp;
+        });
+    } catch (err) {
+        throw err;
     }
-    updates[`data/messages/${chatId}/${newMessageRef.key}`] = {
-        m_id: newMessageRef.key,
-        text: message,
-        timestamp,
-        sender,
-        file_url,
-    };
-    [sender, recipient].forEach((uid) => {
-        updates[`data/chats/${uid}/${chatId}/last_message_sender`] = sender;
-        updates[`data/chats/${uid}/${chatId}/last_message_text`] = message;
-        updates[`data/chats/${uid}/${chatId}/timestamp`] = timestamp;
-    });
 };
 
 export const editMessage = async function (
@@ -72,57 +76,64 @@ export const editMessage = async function (
     prevAttachedFileURL,
     updates
 ) {
-    updates[`data/messages/${chatId}/${messageId}/text`] = message;
-    if (isLastMessage === "true") {
-        [sender, recipient].forEach((uid) => {
-            updates[`data/chats/${uid}/${chatId}/last_message_text`] = message;
-        });
-    }
+    try {
+        updates[`data/messages/${chatId}/${messageId}/text`] = message;
+        if (isLastMessage === "true") {
+            [sender, recipient].forEach((uid) => {
+                updates[`data/chats/${uid}/${chatId}/last_message_text`] =
+                    message;
+            });
+        }
 
-    if (prevAttachedFileURL) {
-        if (prevAttachedFileURL === fileURL) {
-            // 1. Edit message with file and didn't change the file
-            return;
-        } else if (!fileURL) {
-            // 2. Edit message with file and deleted the file
-            await deleteObject(
-                storageRef(storage, `chats/${chatId}/${messageId}`)
-            );
-            updates[`data/messages/${chatId}/${messageId}/file_url`] = "";
-            return;
-        } else if (fileURL && prevAttachedFileURL !== fileURL) {
-            // 3. Edit message with file and changed the file
-            const storageReference = storageRef(
-                storage,
-                `chats/${chatId}/${messageId}`
-            );
-            await deleteObject(storageReference);
-            const snapshot = await uploadString(
-                storageReference,
-                fileURL,
-                "data_url"
-            );
-            const file_url = await getDownloadURL(snapshot.ref);
-            updates[`data/messages/${chatId}/${messageId}/file_url`] = file_url;
-        }
-    } else {
-        if (!fileURL) {
-            // 4. Edit message with no file and didn't attach a file
-            return;
+        if (prevAttachedFileURL) {
+            if (prevAttachedFileURL === fileURL) {
+                // 1. Edit message with file and didn't change the file
+                return;
+            } else if (!fileURL) {
+                // 2. Edit message with file and deleted the file
+                await deleteObject(
+                    storageRef(storage, `chats/${chatId}/${messageId}`)
+                );
+                updates[`data/messages/${chatId}/${messageId}/file_url`] = "";
+                return;
+            } else if (fileURL && prevAttachedFileURL !== fileURL) {
+                // 3. Edit message with file and changed the file
+                const storageReference = storageRef(
+                    storage,
+                    `chats/${chatId}/${messageId}`
+                );
+                await deleteObject(storageReference);
+                const snapshot = await uploadString(
+                    storageReference,
+                    fileURL,
+                    "data_url"
+                );
+                const file_url = await getDownloadURL(snapshot.ref);
+                updates[`data/messages/${chatId}/${messageId}/file_url`] =
+                    file_url;
+            }
         } else {
-            // 5. Edit message with no file and attached a new file
-            const storageReference = storageRef(
-                storage,
-                `chats/${chatId}/${messageId}`
-            );
-            const snapshot = await uploadString(
-                storageReference,
-                fileURL,
-                "data_url"
-            );
-            const file_url = await getDownloadURL(snapshot.ref);
-            updates[`data/messages/${chatId}/${messageId}/file_url`] = file_url;
+            if (!fileURL) {
+                // 4. Edit message with no file and didn't attach a file
+                return;
+            } else {
+                // 5. Edit message with no file and attached a new file
+                const storageReference = storageRef(
+                    storage,
+                    `chats/${chatId}/${messageId}`
+                );
+                const snapshot = await uploadString(
+                    storageReference,
+                    fileURL,
+                    "data_url"
+                );
+                const file_url = await getDownloadURL(snapshot.ref);
+                updates[`data/messages/${chatId}/${messageId}/file_url`] =
+                    file_url;
+            }
         }
+    } catch (err) {
+        throw err;
     }
 };
 
