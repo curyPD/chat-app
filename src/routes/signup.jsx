@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { auth, database } from "../firebase";
 import {
     createUserWithEmailAndPassword,
@@ -30,9 +29,25 @@ export async function action({ request }) {
             await update(ref(database), updates);
         } else {
             console.log("Password sign up");
+            const incorrectFields = [];
+            for (const entry of formData) {
+                if (entry[1] === "") incorrectFields.push(entry[0]);
+            }
+            if (incorrectFields.length > 0) {
+                error.incorrectFields = incorrectFields;
+                error.message =
+                    "Please fill out all the fields or continue with Google or Facebook.";
+                return error;
+            }
             const userName = formData.get("name");
             const email = formData.get("email");
             const password = formData.get("password");
+            const confirmPassword = formData.get("confirmPassword");
+            if (password !== confirmPassword) {
+                error.incorrectFields = ["password", "confirmPassword"];
+                error.message = "Passwords do not match.";
+                return error;
+            }
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 email,
@@ -72,11 +87,7 @@ export async function action({ request }) {
 export default function Signup() {
     const error = useActionData();
     const message = error?.message;
-    const [passwords, setPasswords] = useState({
-        password: "",
-        confirmPassword: "",
-    });
-    const [errorMessage, setErrorMessage] = useState("");
+    const incorrectFields = error?.incorrectFields;
 
     return (
         <main className="p-6">
@@ -85,53 +96,39 @@ export default function Signup() {
                     <p>{message}</p>
                 </div>
             )}
-            {errorMessage && (
-                <div>
-                    <p>{errorMessage}</p>
-                </div>
-            )}
-            <Form
-                method="post"
-                onSubmit={(e) => {
-                    setErrorMessage("");
-                    if (passwords.password !== passwords.confirmPassword) {
-                        e.preventDefault();
-                        setErrorMessage("Passwords do not match");
-                    }
-                }}
-            >
+            <Form method="post">
                 <label htmlFor="name">Name</label>
                 <input
                     id="name"
                     type="text"
                     name="name"
-                    className="border border-slate-500 block"
-                    // required
+                    className={
+                        incorrectFields?.includes("name")
+                            ? "border border-pink-500 block"
+                            : "border border-slate-500 block"
+                    }
                 />
                 <label htmlFor="email">Email</label>
                 <input
                     id="email"
                     type="email"
                     name="email"
-                    className="border border-slate-500 block"
-                    // required
+                    className={
+                        incorrectFields?.includes("email")
+                            ? "border border-pink-500 block"
+                            : "border border-slate-500 block"
+                    }
                 />
                 <label htmlFor="password">Password</label>
                 <input
                     id="password"
                     type="password"
                     name="password"
-                    className="border border-slate-500 block"
-                    value={passwords.password}
-                    // required
-                    onChange={(e) => {
-                        setPasswords((prevPasswords) => {
-                            return {
-                                ...prevPasswords,
-                                password: e.target.value,
-                            };
-                        });
-                    }}
+                    className={
+                        incorrectFields?.includes("password")
+                            ? "border border-pink-500 block"
+                            : "border border-slate-500 block"
+                    }
                     autoComplete="new-password"
                 />
                 <label htmlFor="confirmPassword">Confirm password</label>
@@ -139,17 +136,11 @@ export default function Signup() {
                     id="confirmPassword"
                     type="password"
                     name="confirmPassword"
-                    className="border border-slate-500 block"
-                    value={passwords.confirmPassword}
-                    // required
-                    onChange={(e) => {
-                        setPasswords((prevPasswords) => {
-                            return {
-                                ...prevPasswords,
-                                confirmPassword: e.target.value,
-                            };
-                        });
-                    }}
+                    className={
+                        incorrectFields?.includes("confirmPassword")
+                            ? "border border-pink-500 block"
+                            : "border border-slate-500 block"
+                    }
                     autoComplete="new-password"
                 />
                 <button>Sign Up</button>
