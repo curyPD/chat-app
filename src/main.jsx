@@ -11,6 +11,10 @@ import EditProfile, {
     loader as editProfileLoader,
     action as editProfileAction,
 } from "./routes/editProfile";
+import Account, {
+    loader as accountLoader,
+    action as accountAction,
+} from "./routes/account";
 import Root from "./routes/root";
 import Chat, {
     loader as chatLoader,
@@ -41,6 +45,12 @@ const router = createBrowserRouter(
                 element={<EditProfile />}
                 loader={editProfileLoader}
                 action={editProfileAction}
+            />
+            <Route
+                path="account"
+                element={<Account />}
+                loader={accountLoader}
+                action={accountAction}
             />
             <Route
                 path="chats/:chatId"
