@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Outlet, useNavigate, useRevalidator } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -8,6 +8,13 @@ import ChatLink from "../components/ChatLink";
 export default function Root() {
     const [curUser, setCurUser] = useState("");
     const [chats, setChats] = useState([]);
+    const [query, setQuery] = useState("");
+
+    const filteredChats = useMemo(() => {
+        return chats.filter((chat) =>
+            chat.partner_name.toLowerCase().includes(query.toLowerCase())
+        );
+    }, [chats, query]);
 
     const navigate = useNavigate();
     const revalidator = useRevalidator();
@@ -49,7 +56,7 @@ export default function Root() {
         };
     }, [curUser]);
 
-    const chatElements = chats.map((chat, i) => (
+    const chatElements = filteredChats.map((chat, i) => (
         <ChatLink
             key={i}
             id={chat.chat_id}
@@ -64,7 +71,14 @@ export default function Root() {
         </div>
     ) : (
         <main className="h-screen grid grid-cols-[350px_1fr]">
-            <section className="bg-slate-100">{chatElements}</section>
+            <section className="bg-slate-100">
+                <input
+                    type="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+                <div>{chatElements}</div>
+            </section>
             <section className="bg-sky-100">
                 <Outlet />
             </section>
