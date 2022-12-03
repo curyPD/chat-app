@@ -12,7 +12,7 @@ import { FcGoogle } from "react-icons/fc";
 import {
     getAuthProviderObject,
     getAuthToken,
-    getProviderId,
+    getProviderIdFromError,
     getAuthCredential,
 } from "../helpers";
 
@@ -69,7 +69,7 @@ export async function action({ request }) {
         ) {
             const authProvider = formData.get("authProvider");
             error.providerToken = getAuthToken(authProvider, err);
-            error.providerId = getProviderId(authProvider, err);
+            error.providerId = getProviderIdFromError(authProvider, err);
             const signInMethods = await fetchSignInMethodsForEmail(
                 auth,
                 err.customData.email

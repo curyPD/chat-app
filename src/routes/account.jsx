@@ -7,8 +7,17 @@ import {
     reauthenticateWithCredential,
     updateEmail,
     updatePassword,
+    linkWithPopup,
+    unlink,
 } from "firebase/auth";
 import SignInPopup from "../components/SignInPopup";
+import { IoLogoFacebook } from "react-icons/io5";
+import { FcGoogle } from "react-icons/fc";
+import {
+    getAuthProviderObject,
+    getProviderIdFromResult,
+    getProviderId,
+} from "../helpers";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -40,6 +49,22 @@ export async function action({ request }) {
             await updatePassword(userCredential.user, newPassword);
             response.message = "Password successfully updated🎉";
             return response;
+        } else if (formData.has("linkProvider")) {
+            const linkProvider = formData.get("linkProvider");
+            const providerObject = getAuthProviderObject(linkProvider);
+            const result = await linkWithPopup(
+                auth.currentUser,
+                providerObject
+            );
+            const providerId = getProviderIdFromResult(linkProvider, result);
+            response.message = `Connected to ${providerId} successfully.`;
+            return response;
+        } else if (formData.has("unlinkProvider")) {
+            const unlinkProvider = formData.get("unlinkProvider");
+            const providerId = getProviderId(unlinkProvider);
+            await unlink(auth.currentUser, providerId);
+            response.message = `Disconnected successfully.`;
+            return response;
         }
     } catch (err) {
         console.error(err, err.code);
@@ -59,6 +84,8 @@ export async function action({ request }) {
             response.error = "Incorrect password. Please try again.";
         } else if (err.code === "auth/weak-password") {
             response.error = "The new password is not strong enough.";
+        } else {
+            response.error = "Something went wrong.";
         }
         return response;
     }
@@ -135,6 +162,51 @@ export default function Account() {
                         </button>
                     </div>
                 )}
+            </fetcher.Form>
+
+            <fetcher.Form method="post">
+                <label htmlFor="google">Google ID</label>
+                <button
+                    name={
+                        signInMethods.includes("google.com")
+                            ? "unlinkProvider"
+                            : "linkProvider"
+                    }
+                    value="google"
+                    id="google"
+                    className="bg-sky-100 border border-slate-700 flex items-center"
+                >
+                    {signInMethods.includes("google.com") ? (
+                        <span>Disconnect</span>
+                    ) : (
+                        <>
+                            <FcGoogle />
+                            <span>Connect</span>
+                        </>
+                    )}
+                </button>
+            </fetcher.Form>
+            <fetcher.Form method="post">
+                <label htmlFor="facebook">Facebook ID</label>
+                <button
+                    name={
+                        signInMethods.includes("facebook.com")
+                            ? "unlinkProvider"
+                            : "linkProvider"
+                    }
+                    value="facebook"
+                    id="facebook"
+                    className="bg-sky-100 border border-slate-700 flex items-center"
+                >
+                    {signInMethods.includes("facebook.com") ? (
+                        <span>Disconnect</span>
+                    ) : (
+                        <>
+                            <IoLogoFacebook />
+                            <span>Connect</span>
+                        </>
+                    )}
+                </button>
             </fetcher.Form>
 
             {signInMethods.includes("password") && (

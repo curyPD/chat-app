@@ -159,12 +159,30 @@ export const getAuthToken = function (authProvider, error) {
     }
 };
 
-export const getProviderId = function (authProvider, error) {
+export const getProviderIdFromError = function (authProvider, error) {
     if (authProvider === "google") {
         const credential = GoogleAuthProvider.credentialFromError(error);
         return credential.providerId;
     } else if (authProvider === "facebook") {
         const credential = FacebookAuthProvider.credentialFromError(error);
         return credential.providerId;
+    }
+};
+
+export const getProviderIdFromResult = function (authProvider, result) {
+    if (authProvider === "google") {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        return credential.providerId;
+    } else if (authProvider === "facebook") {
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        return credential.providerId;
+    }
+};
+
+export const getProviderId = function (authProvider) {
+    if (authProvider === "google") {
+        return "google.com";
+    } else if (authProvider === "facebook") {
+        return "facebook.com";
     }
 };
