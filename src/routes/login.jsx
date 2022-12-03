@@ -79,7 +79,7 @@ export async function action({ request }) {
         } else if (err.code === "auth/wrong-password") {
             const signInMethods = await fetchSignInMethodsForEmail(
                 auth,
-                err.customData.email
+                err.email
             );
             if (signInMethods.includes("password")) {
                 error.message = "Incorrect password. Please try again.";
