@@ -1,16 +1,51 @@
 import { useState, useEffect, useMemo } from "react";
-import { Outlet, useNavigate, useRevalidator } from "react-router-dom";
+import {
+    Outlet,
+    useNavigate,
+    useRevalidator,
+    Form,
+    useLoaderData,
+    useSubmit,
+} from "react-router-dom";
 import { auth, database } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { ref, onChildAdded, onChildChanged } from "firebase/database";
+import {
+    ref,
+    onChildAdded,
+    onChildChanged,
+    get,
+    query,
+    orderByChild,
+    equalTo,
+} from "firebase/database";
 import ChatLink from "../components/ChatLink";
 
+export async function loader({ request }) {
+    const url = new URL(request.url);
+    const searchTerm = url.searchParams.get("q");
+    if (searchTerm === "") return {};
+    const usersQuery = query(
+        ref(database, `data/users`),
+        orderByChild("name"),
+        equalTo(searchTerm)
+    );
+    const snapshot = await get(usersQuery);
+    if (snapshot.exists()) {
+        const entries = Object.entries(snapshot.val());
+        const values = entries.map((entry) => entry[1]);
+        return { users: values };
+    }
+}
+
 export default function Root() {
+    const values = useLoaderData();
+    const users = values?.users;
     const [curUser, setCurUser] = useState("");
     const [chats, setChats] = useState([]);
     const [query, setQuery] = useState("");
-
+    console.log(users);
     const filteredChats = useMemo(() => {
+        if (!query) return chats;
         return chats.filter((chat) =>
             chat.partner_name.toLowerCase().includes(query.toLowerCase())
         );
@@ -18,6 +53,7 @@ export default function Root() {
 
     const navigate = useNavigate();
     const revalidator = useRevalidator();
+    const submit = useSubmit();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -65,6 +101,10 @@ export default function Root() {
         />
     ));
 
+    const userElements = users?.map((user) => (
+        <div key={user.uid}>{user.name}</div>
+    ));
+
     return !auth.currentUser || revalidator.state === "loading" ? (
         <div className="h-screen flex justify-center items-center">
             <div className="w-9 rounded-full h-9 bg-sky-400 animate-pulse"></div>
@@ -80,6 +120,19 @@ export default function Root() {
                 <div>{chatElements}</div>
             </section>
             <section className="bg-sky-100">
+                <div>
+                    <Form>
+                        <input
+                            type="text"
+                            name="q"
+                            onChange={(e) => {
+                                submit(e.currentTarget.form);
+                            }}
+                        />
+                        <button>Search</button>
+                    </Form>
+                    {userElements && <div>{userElements}</div>}
+                </div>
                 <Outlet />
             </section>
         </main>

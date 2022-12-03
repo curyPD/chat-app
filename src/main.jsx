@@ -15,7 +15,7 @@ import Account, {
     loader as accountLoader,
     action as accountAction,
 } from "./routes/account";
-import Root from "./routes/root";
+import Root, { loader as rootLoader } from "./routes/root";
 import Chat, {
     loader as chatLoader,
     action as chatAction,
@@ -33,7 +33,7 @@ import {
 
 const router = createBrowserRouter(
     createRoutesFromElements([
-        <Route path="/" element={<Root />}>
+        <Route path="/" element={<Root />} loader={rootLoader}>
             <Route
                 path="users/:userId"
                 element={<Profile />}
