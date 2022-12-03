@@ -55,7 +55,12 @@ export async function action({ request }) {
             const userCredential = await linkWithCredential(user, credential);
             console.log(userCredential);
         }
-        return redirect("/");
+        let shouldRedirect = true;
+        if (formData.has("redirect")) {
+            const redirect = formData.get("redirect");
+            shouldRedirect = redirect === "true" ? true : false;
+        }
+        return shouldRedirect ? redirect("/") : { status: "success" };
     } catch (err) {
         console.error(err);
         if (
@@ -84,9 +89,7 @@ export async function action({ request }) {
             error.newPassword = password;
             error.signInMethods = signInMethods;
             return error;
-        } else if (
-            err.code !== "auth/account-exists-with-different-credential"
-        ) {
+        } else {
             error.message = "Failed to log in. Please try again.";
             return error;
         }
@@ -117,7 +120,7 @@ export default function Login() {
                     {providerId ? providerId : "the password you entered"} to
                     your account automatically.{" "}
                     {newPassword &&
-                        "You'll be able to change it later on your profile page."}
+                        "You'll be able to change it later on your account page."}
                 </div>
             )}
             {message && (

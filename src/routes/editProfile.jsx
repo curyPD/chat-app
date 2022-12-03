@@ -83,10 +83,10 @@ export async function loader() {
 
 export default function EditProfile() {
     const { profileInfo } = useLoaderData();
-    const error = useActionData();
-    const message = error?.message;
-    const nameIsEmpty = error?.nameIsEmpty;
     const fetcher = useFetcher();
+    const response = fetcher.data;
+    const message = response?.message;
+    const nameIsEmpty = response?.nameIsEmpty;
 
     const styles = {
         clip: "rect(0 0 0 0)",
