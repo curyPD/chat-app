@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
     Outlet,
     useNavigate,
@@ -6,6 +6,7 @@ import {
     Form,
     useLoaderData,
     useSubmit,
+    useLocation,
 } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -19,31 +20,34 @@ import {
     equalTo,
 } from "firebase/database";
 import ChatLink from "../components/ChatLink";
+import UserLink from "../components/UserLink";
 
 export async function loader({ request }) {
     const url = new URL(request.url);
     const searchTerm = url.searchParams.get("q");
-    if (searchTerm === "") return {};
+    if (searchTerm === "" || !searchTerm) return { users: null, searchTerm };
     const usersQuery = query(
         ref(database, `data/users`),
         orderByChild("name"),
-        equalTo(searchTerm)
+        equalTo(searchTerm.trim())
     );
     const snapshot = await get(usersQuery);
     if (snapshot.exists()) {
         const entries = Object.entries(snapshot.val());
         const values = entries.map((entry) => entry[1]);
-        return { users: values };
-    }
+        return { users: values, searchTerm };
+    } else return { users: null, searchTerm };
 }
 
 export default function Root() {
-    const values = useLoaderData();
-    const users = values?.users;
+    const response = useLoaderData();
+    const users = response?.users;
+    const searchTerm = response?.searchTerm;
     const [curUser, setCurUser] = useState("");
     const [chats, setChats] = useState([]);
     const [query, setQuery] = useState("");
-    console.log(users);
+    const userSearchFieldRef = useRef(null);
+
     const filteredChats = useMemo(() => {
         if (!query) return chats;
         return chats.filter((chat) =>
@@ -54,6 +58,12 @@ export default function Root() {
     const navigate = useNavigate();
     const revalidator = useRevalidator();
     const submit = useSubmit();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (userSearchFieldRef.current)
+            userSearchFieldRef.current.value = searchTerm;
+    }, [searchTerm]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -101,8 +111,13 @@ export default function Root() {
         />
     ));
 
-    const userElements = users?.map((user) => (
-        <div key={user.uid}>{user.name}</div>
+    const userElements = users?.map((user, i) => (
+        <UserLink
+            key={i}
+            id={user.uid}
+            name={user.name}
+            photoURL={user.photo_url}
+        />
     ));
 
     return !auth.currentUser || revalidator.state === "loading" ? (
@@ -121,15 +136,16 @@ export default function Root() {
             </section>
             <section className="bg-sky-100">
                 <div>
-                    <Form>
+                    <Form action={location.pathname}>
                         <input
                             type="text"
                             name="q"
                             onChange={(e) => {
                                 submit(e.currentTarget.form);
                             }}
+                            ref={userSearchFieldRef}
+                            defaultValue={searchTerm}
                         />
-                        <button>Search</button>
                     </Form>
                     {userElements && <div>{userElements}</div>}
                 </div>
