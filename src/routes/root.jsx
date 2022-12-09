@@ -7,6 +7,8 @@ import {
     useLoaderData,
     useSubmit,
     useLocation,
+    useMatch,
+    NavLink,
 } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -59,6 +61,7 @@ export default function Root() {
     const revalidator = useRevalidator();
     const submit = useSubmit();
     const location = useLocation();
+    const matchesHomePage = useMatch("/");
 
     useEffect(() => {
         if (userSearchFieldRef.current)
@@ -121,36 +124,70 @@ export default function Root() {
     ));
 
     return !auth.currentUser || revalidator.state === "loading" ? (
-        <div className="h-screen flex justify-center items-center">
-            <div className="w-9 rounded-full h-9 bg-sky-400 animate-pulse"></div>
+        <div className="flex h-screen items-center justify-center">
+            <p>Loading...</p>
         </div>
     ) : (
-        <main className="h-screen grid grid-cols-[350px_1fr]">
-            <section className="bg-slate-100">
-                <input
-                    type="search"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                />
-                <div>{chatElements}</div>
-            </section>
-            <section className="bg-sky-100">
-                <div>
-                    <Form action={location.pathname}>
+        <>
+            {/* MOBILE */}
+            <main className="grid h-screen grid-cols-1 grid-rows-[1fr_44px]">
+                {matchesHomePage && (
+                    <section>
                         <input
-                            type="text"
-                            name="q"
-                            onChange={(e) => {
-                                submit(e.currentTarget.form);
-                            }}
-                            ref={userSearchFieldRef}
-                            defaultValue={searchTerm}
+                            type="search"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
                         />
-                    </Form>
-                    {userElements && <div>{userElements}</div>}
-                </div>
-                <Outlet />
-            </section>
-        </main>
+                        <div>{chatElements}</div>
+                    </section>
+                )}
+
+                {!matchesHomePage && (
+                    <section>
+                        <Outlet />
+                    </section>
+                )}
+
+                <footer>
+                    <nav className="flex h-full items-center justify-center gap-4 border-t border-slate-200 bg-slate-50 px-4">
+                        <NavLink to="/account">Settings</NavLink>
+                        <NavLink to="/">Messages</NavLink>
+                        <NavLink to="/search">Search</NavLink>
+                        <NavLink to={`/users/${auth.currentUser.uid}`}>
+                            Profile
+                        </NavLink>
+                    </nav>
+                </footer>
+            </main>
+
+            {/* DESKTOP */}
+            <div className="hidden">
+                <section className=" bg-slate-100">
+                    <input
+                        type="search"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <div>{chatElements}</div>
+                </section>
+                <main className=" bg-sky-200">
+                    <div>
+                        <Form action={location.pathname}>
+                            <input
+                                type="text"
+                                name="q"
+                                onChange={(e) => {
+                                    submit(e.currentTarget.form);
+                                }}
+                                ref={userSearchFieldRef}
+                                defaultValue={searchTerm}
+                            />
+                        </Form>
+                        {userElements && <div>{userElements}</div>}
+                    </div>
+                    <Outlet />
+                </main>
+            </div>
+        </>
     );
 }

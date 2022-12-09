@@ -21,6 +21,7 @@ import Chat, {
     action as chatAction,
 } from "./routes/chat";
 import { action as deleteMessageAction } from "./routes/deleteMessage";
+import Search from "./routes/search";
 
 import "./index.css";
 
@@ -62,6 +63,7 @@ const router = createBrowserRouter(
                 path="chats/:chatId/delete-message"
                 action={deleteMessageAction}
             />
+            <Route path="search" element={<Search />} loader={rootLoader} />
         </Route>,
         <Route path="login" element={<Login />} action={loginAction} />,
         <Route path="signup" element={<Signup />} action={signupAction} />,

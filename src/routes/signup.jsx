@@ -90,79 +90,121 @@ export default function Signup() {
     const incorrectFields = error?.incorrectFields;
 
     return (
-        <main className="p-6">
-            {message && (
-                <div>
-                    <p>{message}</p>
+        <main className="relative grid h-screen grid-cols-1">
+            <div className="hidden"></div>
+            <section className="py-10 px-4">
+                <div className="mx-auto max-w-xs px-4">
+                    <div className="mb-10">LOGO</div>
+                    <Form method="post">
+                        <label
+                            htmlFor="name"
+                            className="mb-1 block text-xs font-medium text-slate-700"
+                        >
+                            Name
+                        </label>
+                        <input
+                            id="name"
+                            type="text"
+                            name="name"
+                            className={`mb-4 block w-full rounded-md border ${
+                                incorrectFields?.includes("name")
+                                    ? "border-pink-500"
+                                    : " border-slate-300"
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                        />
+                        <label
+                            htmlFor="email"
+                            className="mb-1 block text-xs font-medium text-slate-700"
+                        >
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            className={`mb-4 block w-full rounded-md border ${
+                                incorrectFields?.includes("name")
+                                    ? "border-pink-500"
+                                    : " border-slate-300"
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                        />
+                        <label
+                            htmlFor="password"
+                            className="mb-1 block text-xs font-medium text-slate-700"
+                        >
+                            Password
+                        </label>
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            className={`mb-4 block w-full rounded-md border ${
+                                incorrectFields?.includes("name")
+                                    ? "border-pink-500"
+                                    : " border-slate-300"
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                            autoComplete="new-password"
+                        />
+                        <label
+                            htmlFor="confirmPassword"
+                            className="mb-1 block text-xs font-medium text-slate-700"
+                        >
+                            Confirm password
+                        </label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            name="confirmPassword"
+                            className={`mb-5 block w-full rounded-md border ${
+                                incorrectFields?.includes("name")
+                                    ? "border-pink-500"
+                                    : " border-slate-300"
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                            autoComplete="new-password"
+                        />
+                        <div className="flex">
+                            <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white">
+                                Sign Up
+                            </button>
+                        </div>
+                        <div className="my-4 flex items-center gap-3">
+                            <div className="h-[1px] flex-1 bg-slate-200"></div>
+                            <span className="text-sm text-slate-300">or</span>
+                            <div className="h-[1px] flex-1 bg-slate-200"></div>
+                        </div>
+                        <button
+                            name="authProvider"
+                            value="google"
+                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700"
+                        >
+                            <FcGoogle className="h-6 w-6" />
+                            <span>Continue with Google</span>
+                        </button>
+                        <button
+                            name="authProvider"
+                            value="facebook"
+                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700"
+                        >
+                            <IoLogoFacebook className="h-6 w-6 text-blue-600" />
+                            <span>Continue with Facebook</span>
+                        </button>
+                    </Form>
+                    <p className="mt-6 text-center text-xs text-slate-500">
+                        Already have an account?{" "}
+                        <Link
+                            to="/login"
+                            className="text-slate-800 underline decoration-sky-400 underline-offset-2"
+                        >
+                            Log In
+                        </Link>
+                    </p>
+                    {message && (
+                        <div>
+                            <p>{message}</p>
+                        </div>
+                    )}
                 </div>
-            )}
-            <Form method="post">
-                <label htmlFor="name">Name</label>
-                <input
-                    id="name"
-                    type="text"
-                    name="name"
-                    className={
-                        incorrectFields?.includes("name")
-                            ? "border border-pink-500 block"
-                            : "border border-slate-500 block"
-                    }
-                />
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    className={
-                        incorrectFields?.includes("email")
-                            ? "border border-pink-500 block"
-                            : "border border-slate-500 block"
-                    }
-                />
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    className={
-                        incorrectFields?.includes("password")
-                            ? "border border-pink-500 block"
-                            : "border border-slate-500 block"
-                    }
-                    autoComplete="new-password"
-                />
-                <label htmlFor="confirmPassword">Confirm password</label>
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    name="confirmPassword"
-                    className={
-                        incorrectFields?.includes("confirmPassword")
-                            ? "border border-pink-500 block"
-                            : "border border-slate-500 block"
-                    }
-                    autoComplete="new-password"
-                />
-                <button>Sign Up</button>
-                <hr />
-                <button
-                    name="authProvider"
-                    value="google"
-                    className="bg-sky-100 border border-slate-700 flex items-center"
-                >
-                    <FcGoogle />
-                    <span>Continue with Google</span>
-                </button>
-                <button
-                    name="authProvider"
-                    value="facebook"
-                    className="bg-sky-100 border border-slate-700 flex items-center"
-                >
-                    <IoLogoFacebook />
-                    <span>Continue with Facebook</span>
-                </button>
-            </Form>
-            <Link to="/login">Already have an account?</Link>
+            </section>
         </main>
     );
 }
