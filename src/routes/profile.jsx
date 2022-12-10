@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Form, Link, redirect, useLoaderData } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { ref, get, update } from "firebase/database";
-import { HiOutlineUserCircle } from "react-icons/hi";
 import { addNewChat, addNewMessage } from "../helpers";
+import { HiOutlineUser, HiOutlineEnvelope } from "react-icons/hi2";
+import { IoLogoTwitter } from "react-icons/io";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -60,26 +61,75 @@ export default function Profile() {
     }
 
     return (
-        <>
-            <h1>{profileInfo.name}'s profile</h1>
-            <div>
-                {profileInfo.photo_url ? (
-                    <img src={profileInfo.photo_url} alt={profileInfo.name} />
+        <div className="h-full bg-slate-50 px-3 pb-12 pt-20">
+            <main className="relative max-w-sm rounded-xl border border-slate-200 bg-white px-4 pb-10">
+                {profileInfo.profile_picture ? (
+                    <div className="absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2">
+                        <img
+                            src={profileInfo.profile_picture}
+                            alt={profileInfo.name}
+                            className="h-28 w-28 rounded-full border-4 border-white object-cover"
+                        />
+                    </div>
                 ) : (
-                    <div className="w-16 h-16 rounded-full border-2 border-sky-400 flex items-center justify-center">
-                        <HiOutlineUserCircle className="h-12 w-12" />
+                    <div className="absolute top-0 left-1/2 flex h-28 w-28 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-slate-100">
+                        <HiOutlineUser className="h-12 w-12 text-slate-400" />
                     </div>
                 )}
-            </div>
-            {isCurUser ? (
-                <Link to="/edit">Edit profile</Link>
-            ) : chatId ? (
-                <Link to={`/chats/${chatId}`}>Send message</Link>
-            ) : (
-                <button onClick={() => setIsDialogOpen(true)}>
-                    Send message
-                </button>
-            )}
+                <h1 className="mt-16 mb-5 text-center text-lg font-semibold text-slate-900">
+                    {profileInfo.name}
+                </h1>
+                {isCurUser ? (
+                    <Link
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white"
+                        to="/edit"
+                    >
+                        Edit profile
+                    </Link>
+                ) : chatId ? (
+                    <Link
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white"
+                        to={`/chats/${chatId}`}
+                    >
+                        Send message
+                    </Link>
+                ) : (
+                    <button
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white"
+                        onClick={() => setIsDialogOpen(true)}
+                    >
+                        Send message
+                    </button>
+                )}
+                {profileInfo.bio && (
+                    <p className="mb-4 text-sm text-slate-800">
+                        {profileInfo.bio}
+                    </p>
+                )}
+                {profileInfo.twitter && (
+                    <div className="mb-4 flex items-center gap-3">
+                        <IoLogoTwitter className="h-5 w-5 text-slate-500" />
+                        <a
+                            className="text-sm text-slate-800"
+                            href={`https://twitter.com/${profileInfo.twitter}`}
+                        >
+                            @{profileInfo.twitter}
+                        </a>
+                    </div>
+                )}
+
+                {isCurUser && profileInfo.email && (
+                    <div className="mb-4 flex items-center gap-3">
+                        <HiOutlineEnvelope className="h-5 w-5 text-slate-500" />
+                        <a
+                            className="text-sm text-slate-900"
+                            href={`mailto:${profileInfo.email}`}
+                        >
+                            {profileInfo.email}
+                        </a>
+                    </div>
+                )}
+            </main>
             {isDialogOpen && (
                 <div>
                     <button onClick={() => setIsDialogOpen(false)}>X</button>
@@ -95,7 +145,7 @@ export default function Profile() {
                             name="message"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            className="border border-slate-500 block"
+                            className="block border border-slate-500"
                         />
                         <input
                             type="hidden"
@@ -115,6 +165,6 @@ export default function Profile() {
                     </Form>
                 </div>
             )}
-        </>
+        </div>
     );
 }
