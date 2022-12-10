@@ -16,6 +16,13 @@ import {
 } from "firebase/database";
 import MessageBubble from "../components/MessageBubble";
 import { addNewMessage, editMessage } from "../helpers";
+import {
+    HiOutlineUser,
+    HiArrowLeft,
+    HiOutlineCamera,
+    HiOutlinePaperAirplane,
+    HiXMark,
+} from "react-icons/hi2";
 
 export async function action({ request, params }) {
     const formData = await request.formData();
@@ -205,84 +212,134 @@ export default function Chat() {
                     : chatData.partner_name
             }
             senderUid={message.sender}
+            isCurUser={message.sender === auth.currentUser.uid}
             handleEditMessage={() => {
                 setEditedMessageId(message.m_id);
             }}
             handleDeleteMessage={() => handleDeleteMessage(message.m_id)}
         />
     ));
-
     return (
-        <>
-            <Link to={`/users/${chatData.partner_uid}`}>
-                {chatData.partner_name}
-            </Link>
+        <div className="pb-24 pt-14">
+            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow">
+                <Link to=".." className="group focus:outline-none">
+                    <HiArrowLeft className="h-5 w-5 text-slate-600 group-focus-visible:text-sky-500" />
+                </Link>
+                <Link
+                    to={`/users/${chatData.partner_uid}`}
+                    className="group mr-2 flex flex-row-reverse items-center focus:outline-none"
+                >
+                    <div className="shrink-0 ">
+                        {chatData.partner_profile_picture ? (
+                            <img
+                                className="h-9 w-9 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
+                                src={chatData.partner_profile_picture}
+                                alt={`${chatData.partner_name}'s avatar`}
+                            />
+                        ) : (
+                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
+                                <HiOutlineUser className="h-6 w-6 text-slate-500" />
+                            </div>
+                        )}
+                    </div>
+                    <p className="mr-3 text-sm font-semibold text-slate-900">
+                        {chatData.partner_name}
+                    </p>
+                </Link>
+            </header>
 
-            {filePreviewURL && (
-                <div>
-                    <button onClick={cancelFileSelect}>X</button>
-                    <img
-                        src={filePreviewURL}
-                        alt="Selected image"
-                        className="w-16"
+            <div className="fixed bottom-0 left-0 z-10 mb-12 w-full border-t border-slate-200">
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-2">
+                    <label htmlFor="fileInput">
+                        <HiOutlineCamera className="h-6 w-6 text-slate-400" />
+                    </label>
+                    <input
+                        style={styles}
+                        type="file"
+                        name="fileBaseURL"
+                        id="fileInput"
+                        onChange={attachFile}
                     />
                 </div>
-            )}
-            <div className="p-1 border border-rose-600">
-                <label htmlFor="fileInput">Attach file</label>
-                <input
-                    style={styles}
-                    type="file"
-                    name="fileBaseURL"
-                    id="fileInput"
-                    onChange={attachFile}
-                />
-            </div>
-            <fetcher.Form method="post" onSubmit={handleFormSubmit}>
-                <input
-                    type="text"
-                    name="message"
-                    id="messageInput"
-                    className="border border-slate-500 block"
-                    value={input}
-                    onChange={handleMessageInputChange}
-                />
-                <input
-                    type="hidden"
-                    name="fileBaseURL"
-                    value={filePreviewURL}
-                />
-                <input type="hidden" name="messageId" value={editedMessageId} />
-                <input
-                    type="hidden"
-                    name="prevAttachedFile"
-                    value={
-                        messages.find((m) => m.m_id === editedMessageId)
-                            ?.file_url ?? ""
-                    }
-                />
-                <input
-                    type="hidden"
-                    name="partnerUid"
-                    value={chatData.partner_uid}
-                />
-                <input
-                    type="hidden"
-                    name="isLastMessage"
-                    value={
-                        editedMessageId === messages.at(-1)?.m_id
-                            ? "true"
-                            : "false"
-                    }
-                />
-                {editedMessageId && (
-                    <button type="button" onClick={cancelMessageEdit}>
-                        Cancel
+                <fetcher.Form method="post" onSubmit={handleFormSubmit}>
+                    <input
+                        type="text"
+                        name="message"
+                        id="messageInput"
+                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none"
+                        value={input}
+                        onChange={handleMessageInputChange}
+                        placeholder="Send a message..."
+                    />
+                    <input
+                        type="hidden"
+                        name="fileBaseURL"
+                        value={filePreviewURL}
+                    />
+                    <input
+                        type="hidden"
+                        name="messageId"
+                        value={editedMessageId}
+                    />
+                    <input
+                        type="hidden"
+                        name="prevAttachedFile"
+                        value={
+                            messages.find((m) => m.m_id === editedMessageId)
+                                ?.file_url ?? ""
+                        }
+                    />
+                    <input
+                        type="hidden"
+                        name="partnerUid"
+                        value={chatData.partner_uid}
+                    />
+                    <input
+                        type="hidden"
+                        name="isLastMessage"
+                        value={
+                            editedMessageId === messages.at(-1)?.m_id
+                                ? "true"
+                                : "false"
+                        }
+                    />
+                    {editedMessageId && (
+                        <button
+                            type="button"
+                            onClick={cancelMessageEdit}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 focus:outline-none focus-visible:ring focus-visible:ring-sky-300"
+                        >
+                            Cancel
+                        </button>
+                    )}
+                    <button
+                        type="submit"
+                        className="group absolute right-0 top-1/2 -translate-y-1/2 -translate-x-3 focus:outline-none"
+                    >
+                        <HiOutlinePaperAirplane className="h-6 w-6 text-slate-400 group-focus-visible:text-sky-500" />
                     </button>
-                )}
-                <button type="submit">Send</button>
-            </fetcher.Form>
-            <div>{messageElements}</div>
-        </>
+                </fetcher.Form>
+            </div>
+
+            {filePreviewURL && (
+                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4">
+                    <div className="relative inline-block">
+                        <button
+                            className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600"
+                            onClick={cancelFileSelect}
+                        >
+                            <HiXMark className="h-3 w-3 text-white" />
+                        </button>
+                        <img
+                            src={filePreviewURL}
+                            alt="Selected image"
+                            className="w-16"
+                        />
+                    </div>
+                </div>
+            )}
+
+            <ol className="flex flex-col py-5 px-3">{messageElements}</ol>
+        </div>
     );
 }

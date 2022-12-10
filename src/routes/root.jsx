@@ -23,6 +23,11 @@ import {
 } from "firebase/database";
 import ChatLink from "../components/ChatLink";
 import UserLink from "../components/UserLink";
+import MobileNavLink from "../components/MobileNavLink";
+import { HiMagnifyingGlass } from "react-icons/hi2";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
+import { HiOutlineChatBubbleOvalLeftEllipsis } from "react-icons/hi2";
+import { HiOutlineUser } from "react-icons/hi2";
 
 export async function loader({ request }) {
     const url = new URL(request.url);
@@ -105,18 +110,19 @@ export default function Root() {
         };
     }, [curUser]);
 
-    const chatElements = filteredChats.map((chat, i) => (
+    const chatElements = filteredChats.map((chat) => (
         <ChatLink
-            key={i}
+            key={chat.chat_id}
             id={chat.chat_id}
             partnerName={chat.partner_name}
+            partnerProfilePicture={chat.partner_profile_picture}
             lastMessage={chat.last_message_text}
         />
     ));
 
-    const userElements = users?.map((user, i) => (
+    const userElements = users?.map((user) => (
         <UserLink
-            key={i}
+            key={user.uid}
             id={user.uid}
             name={user.name}
             photoURL={user.photo_url}
@@ -130,35 +136,57 @@ export default function Root() {
     ) : (
         <>
             {/* MOBILE */}
-            <main className="grid h-screen grid-cols-1 grid-rows-[1fr_44px]">
+            <div className="relative h-screen bg-white">
                 {matchesHomePage && (
-                    <section>
-                        <input
-                            type="search"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                        />
-                        <div>{chatElements}</div>
-                    </section>
+                    <>
+                        <header className="fixed top-0 left-0 z-10 flex h-16 w-full items-center border-b border-slate-200 bg-slate-100 px-6">
+                            <input
+                                type="search"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                className="w-full rounded-full border border-transparent bg-white py-1.5 px-4 text-sm text-slate-700 shadow placeholder:text-slate-300 focus:border-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                placeholder="Filter chats by names"
+                            />
+                            <div className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-8 bg-white pl-2">
+                                <HiMagnifyingGlass className="h-5 w-5 text-slate-300 " />
+                            </div>
+                        </header>
+                        {chatElements.length ? (
+                            <main className="pb-12 pt-16">
+                                <ul className="divide-y divide-solid divide-slate-200 py-5 px-4">
+                                    {chatElements}
+                                </ul>
+                            </main>
+                        ) : (
+                            <div className="flex h-full items-center justify-center">
+                                <span>No messages yet...</span>
+                            </div>
+                        )}
+                    </>
                 )}
 
-                {!matchesHomePage && (
-                    <section>
-                        <Outlet />
-                    </section>
-                )}
+                {!matchesHomePage && <Outlet />}
 
-                <footer>
-                    <nav className="flex h-full items-center justify-center gap-4 border-t border-slate-200 bg-slate-50 px-4">
-                        <NavLink to="/account">Settings</NavLink>
-                        <NavLink to="/">Messages</NavLink>
-                        <NavLink to="/search">Search</NavLink>
-                        <NavLink to={`/users/${auth.currentUser.uid}`}>
-                            Profile
-                        </NavLink>
+                <footer className="fixed bottom-0 left-0 z-10 h-12 w-full">
+                    <nav className="flex h-full items-center justify-evenly border-t border-slate-200 bg-slate-50 px-4">
+                        <MobileNavLink text="Settings" to="/account">
+                            <HiOutlineCog6Tooth className="mb-1 h-5 w-5" />
+                        </MobileNavLink>
+                        <MobileNavLink text="Messages" to="/">
+                            <HiOutlineChatBubbleOvalLeftEllipsis className="mb-1 h-5 w-5" />
+                        </MobileNavLink>
+                        <MobileNavLink text="Search" to="/search">
+                            <HiMagnifyingGlass className="mb-1 h-5 w-5" />
+                        </MobileNavLink>
+                        <MobileNavLink
+                            text="Profile"
+                            to={`/users/${auth.currentUser.uid}`}
+                        >
+                            <HiOutlineUser className="mb-1 h-5 w-5" />
+                        </MobileNavLink>
                     </nav>
                 </footer>
-            </main>
+            </div>
 
             {/* DESKTOP */}
             <div className="hidden">

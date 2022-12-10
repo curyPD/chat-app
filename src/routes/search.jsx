@@ -1,10 +1,17 @@
-import { useLoaderData } from "react-router-dom";
+import { useRef, useEffect } from "react";
+import { useLoaderData, Form } from "react-router-dom";
 import UserLink from "../components/UserLink";
 
 export default function Search() {
     const response = useLoaderData();
     const users = response?.users;
     const searchTerm = response?.searchTerm;
+    const userSearchFieldRef = useRef(null);
+
+    useEffect(() => {
+        if (userSearchFieldRef.current)
+            userSearchFieldRef.current.value = searchTerm;
+    }, [searchTerm]);
 
     const userElements = users?.map((user, i) => (
         <UserLink
