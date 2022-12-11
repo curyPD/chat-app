@@ -117,6 +117,7 @@ export default function Root() {
             partnerName={chat.partner_name}
             partnerProfilePicture={chat.partner_profile_picture}
             lastMessage={chat.last_message_text}
+            timestamp={chat.timestamp}
         />
     ));
 
@@ -153,7 +154,7 @@ export default function Root() {
                         </header>
                         {chatElements.length ? (
                             <main className="pb-12 pt-16">
-                                <ul className="divide-y divide-solid divide-slate-200 py-5 px-4">
+                                <ul className="divide-y divide-solid divide-slate-200 py-5 px-5">
                                     {chatElements}
                                 </ul>
                             </main>

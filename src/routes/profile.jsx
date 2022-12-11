@@ -61,18 +61,18 @@ export default function Profile() {
     }
 
     return (
-        <div className="h-full bg-slate-50 px-3 pb-12 pt-20">
-            <main className="relative max-w-sm rounded-xl border border-slate-200 bg-white px-4 pb-10">
+        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24">
+            <main className="relative min-h-full max-w-sm rounded-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
                 {profileInfo.profile_picture ? (
-                    <div className="absolute top-0 left-1/2 -translate-y-1/2 -translate-x-1/2">
+                    <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full border-4 border-white bg-slate-100">
                         <img
                             src={profileInfo.profile_picture}
                             alt={profileInfo.name}
-                            className="h-28 w-28 rounded-full border-4 border-white object-cover"
+                            className="h-24 w-24 rounded-full object-cover"
                         />
                     </div>
                 ) : (
-                    <div className="absolute top-0 left-1/2 flex h-28 w-28 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-slate-100">
+                    <div className="absolute top-0 left-1/2 flex h-24 w-24 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-slate-100">
                         <HiOutlineUser className="h-12 w-12 text-slate-400" />
                     </div>
                 )}
@@ -81,21 +81,21 @@ export default function Profile() {
                 </h1>
                 {isCurUser ? (
                     <Link
-                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white"
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                         to="/edit"
                     >
                         Edit profile
                     </Link>
                 ) : chatId ? (
                     <Link
-                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white"
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                         to={`/chats/${chatId}`}
                     >
                         Send message
                     </Link>
                 ) : (
                     <button
-                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white"
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                         onClick={() => setIsDialogOpen(true)}
                     >
                         Send message
@@ -110,7 +110,7 @@ export default function Profile() {
                     <div className="mb-4 flex items-center gap-3">
                         <IoLogoTwitter className="h-5 w-5 text-slate-500" />
                         <a
-                            className="text-sm text-slate-800"
+                            className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-600"
                             href={`https://twitter.com/${profileInfo.twitter}`}
                         >
                             @{profileInfo.twitter}
@@ -122,7 +122,7 @@ export default function Profile() {
                     <div className="mb-4 flex items-center gap-3">
                         <HiOutlineEnvelope className="h-5 w-5 text-slate-500" />
                         <a
-                            className="text-sm text-slate-900"
+                            className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-600"
                             href={`mailto:${profileInfo.email}`}
                         >
                             {profileInfo.email}

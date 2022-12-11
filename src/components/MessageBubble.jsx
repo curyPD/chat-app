@@ -7,7 +7,7 @@ export default function MessageBubble(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
-    const date = new Date(props.timestamp);
+    const date = new Date(+props.timestamp);
     const formattedDate = new Intl.DateTimeFormat(navigator.language, {
         timeStyle: "short",
     }).format(date);

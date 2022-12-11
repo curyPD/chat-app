@@ -7,6 +7,7 @@ import {
     uploadBytesResumable,
     getDownloadURL,
 } from "firebase/storage";
+import { HiOutlineCamera, HiOutlineUser } from "react-icons/hi2";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -124,56 +125,101 @@ export default function EditProfile() {
     }
 
     return (
-        <>
-            <h1 className="text-2xl font-bold">Edit profile</h1>
+        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24">
             {message && (
                 <div>
                     <p>{message}</p>
                 </div>
             )}
-            <div className="p-1 border border-green-400">
-                <label htmlFor="fileInput">Profile picture</label>
-                <input
-                    style={styles}
-                    type="file"
-                    name="file"
-                    id="fileInput"
-                    onChange={handleFileUpload}
-                />
-            </div>
-            <fetcher.Form method="post">
-                <label htmlFor="nameInput">Change name</label>
-                <input
-                    className={
-                        nameIsEmpty
-                            ? "border border-pink-500 block"
-                            : "border border-slate-500 block"
-                    }
-                    type="text"
-                    defaultValue={profileInfo.name}
-                    name="name"
-                    id="nameInput"
-                />
-                <label htmlFor="bio">Bio</label>
-                <textarea
-                    name="bio"
-                    id="bio"
-                    cols="30"
-                    rows="10"
-                    className="border border-slate-500 block"
-                    defaultValue={profileInfo.bio}
-                />
+            <main className="relative min-h-full max-w-sm rounded-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
+                {profileInfo.profile_picture ? (
+                    <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 overflow-hidden rounded-full border-4 border-white bg-slate-100">
+                        <img
+                            src={profileInfo.profile_picture}
+                            alt={profileInfo.name}
+                            className="h-24 w-24 rounded-full object-cover"
+                        />
+                        <ProfilePictureSelect
+                            styles={styles}
+                            handleFileUpload={handleFileUpload}
+                        />
+                    </div>
+                ) : (
+                    <div className="absolute top-0 left-1/2 z-10 flex h-24 w-24 -translate-y-1/2 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100">
+                        <HiOutlineUser className="h-12 w-12 text-slate-400" />
+                        <ProfilePictureSelect
+                            styles={styles}
+                            handleFileUpload={handleFileUpload}
+                        />
+                    </div>
+                )}
 
-                <label htmlFor="twitterInput">Twitter username</label>
-                <input
-                    className="border border-slate-500 block"
-                    type="text"
-                    defaultValue={profileInfo.twitter}
-                    name="twitter"
-                    id="twitterInput"
-                />
-                <button className="block border border-sky-500">Submit</button>
-            </fetcher.Form>
-        </>
+                <fetcher.Form method="post" className="mt-16 block">
+                    <label
+                        htmlFor="nameInput"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700"
+                    >
+                        Name
+                    </label>
+                    <input
+                        className={`mb-4 block w-full rounded-md border focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 ${
+                            nameIsEmpty ? "border-pink-500" : "border-slate-300"
+                        } bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm`}
+                        type="text"
+                        defaultValue={profileInfo.name}
+                        name="name"
+                        id="nameInput"
+                    />
+                    <label
+                        htmlFor="bio"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700"
+                    >
+                        Bio
+                    </label>
+                    <textarea
+                        name="bio"
+                        id="bio"
+                        cols="30"
+                        rows="10"
+                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300"
+                        defaultValue={profileInfo.bio}
+                    />
+
+                    <label
+                        htmlFor="twitterInput"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700"
+                    >
+                        Twitter username
+                    </label>
+                    <input
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300"
+                        type="text"
+                        defaultValue={profileInfo.twitter}
+                        name="twitter"
+                        id="twitterInput"
+                    />
+                    <button className="block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                        Submit
+                    </button>
+                </fetcher.Form>
+            </main>
+        </div>
+    );
+}
+
+function ProfilePictureSelect({ styles, handleFileUpload }) {
+    return (
+        <div className="absolute bottom-0 left-0 flex h-full w-full items-center justify-center rounded-full bg-slate-900/70">
+            <label htmlFor="fileInput">
+                <HiOutlineCamera className="h-9 w-9 text-white/80" />
+            </label>
+            <input
+                style={styles}
+                type="file"
+                name="file"
+                id="fileInput"
+                onChange={handleFileUpload}
+            />
+        </div>
     );
 }

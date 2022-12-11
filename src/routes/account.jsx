@@ -13,6 +13,7 @@ import {
 import SignInPopup from "../components/SignInPopup";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 import {
     getAuthProviderObject,
     getProviderIdFromResult,
@@ -115,7 +116,7 @@ export default function Account() {
     );
 
     return (
-        <>
+        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24">
             {error && (
                 <div>
                     <p>{error}</p>
@@ -134,128 +135,211 @@ export default function Account() {
                     setSignInPopupOpen={setSignInPopupOpen}
                 />
             )}
-
-            <fetcher.Form method="post">
-                <label htmlFor="newEmail">Email</label>
-                <input
-                    type="email"
-                    defaultValue={auth.currentUser.email}
-                    name="newEmail"
-                    id="newEmail"
-                    disabled={!allowEditEmail}
-                />
-                {!allowEditEmail ? (
-                    <button
-                        type="button"
-                        onClick={() => setAllowEditEmail(true)}
-                    >
-                        Edit email
-                    </button>
+            <main className="relative min-h-full max-w-sm rounded-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
+                {auth.currentUser.photoURL ? (
+                    <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full border-4 border-white bg-slate-100">
+                        <img
+                            src={auth.currentUser.photoURL}
+                            alt={auth.currentUser.displayName}
+                            className="h-24 w-24 rounded-full object-cover"
+                        />
+                    </div>
                 ) : (
-                    <div>
-                        <button>Submit</button>
-                        <button
-                            type="button"
-                            onClick={() => setAllowEditEmail(false)}
-                        >
-                            Cancel
-                        </button>
+                    <div className="absolute top-0 left-1/2 flex h-24 w-24 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-slate-100">
+                        <HiOutlineUser className="h-12 w-12 text-slate-400" />
                     </div>
                 )}
-            </fetcher.Form>
-
-            <fetcher.Form method="post">
-                <label htmlFor="google">Google ID</label>
-                <button
-                    name={
-                        signInMethods.includes("google.com")
-                            ? "unlinkProvider"
-                            : "linkProvider"
-                    }
-                    value="google"
-                    id="google"
-                    className="bg-sky-100 border border-slate-700 flex items-center"
-                >
-                    {signInMethods.includes("google.com") ? (
-                        <span>Disconnect</span>
-                    ) : (
-                        <>
-                            <FcGoogle />
-                            <span>Connect</span>
-                        </>
-                    )}
-                </button>
-            </fetcher.Form>
-            <fetcher.Form method="post">
-                <label htmlFor="facebook">Facebook ID</label>
-                <button
-                    name={
-                        signInMethods.includes("facebook.com")
-                            ? "unlinkProvider"
-                            : "linkProvider"
-                    }
-                    value="facebook"
-                    id="facebook"
-                    className="bg-sky-100 border border-slate-700 flex items-center"
-                >
-                    {signInMethods.includes("facebook.com") ? (
-                        <span>Disconnect</span>
-                    ) : (
-                        <>
-                            <IoLogoFacebook />
-                            <span>Connect</span>
-                        </>
-                    )}
-                </button>
-            </fetcher.Form>
-
-            {signInMethods.includes("password") && (
-                <div>
-                    {allowEditPassword ? (
-                        <fetcher.Form method="post">
-                            <label htmlFor="oldPassword">Old Password</label>
+                <h1 className="mt-16 mb-5 text-center text-lg font-semibold text-slate-900">
+                    {auth.currentUser.displayName}
+                </h1>
+                <section className="mb-5">
+                    <fetcher.Form method="post">
+                        <label
+                            htmlFor="newEmail"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700"
+                        >
+                            Email
+                        </label>
+                        <div
+                            className={`flex ${
+                                !allowEditEmail
+                                    ? "flex-row items-center gap-4"
+                                    : "flex-col gap-3"
+                            }`}
+                        >
                             <input
-                                type="password"
-                                name="oldPassword"
-                                autoComplete="current-password"
-                                required
+                                type="email"
+                                defaultValue={auth.currentUser.email}
+                                name="newEmail"
+                                id="newEmail"
+                                disabled={!allowEditEmail}
+                                className="block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300  focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:bg-slate-50 disabled:text-slate-500"
                             />
-                            <label htmlFor="newPassword">New Password</label>
-                            <input
-                                type="password"
-                                name="newPassword"
-                                autoComplete="new-password"
-                                required
-                            />
-                            <label htmlFor="confirmPassword">
-                                Confirm Password
-                            </label>
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                autoComplete="new-password"
-                                required
-                            />
-                            <div>
-                                <button>Confirm</button>
+                            {!allowEditEmail ? (
                                 <button
                                     type="button"
-                                    onClick={() => setAllowEditPassword(false)}
+                                    onClick={() => setAllowEditEmail(true)}
                                 >
-                                    Cancel
+                                    <HiOutlinePencilSquare className="h-5 w-5 text-slate-500" />
+                                </button>
+                            ) : (
+                                <div className="flex items-center justify-end gap-2">
+                                    <button
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900"
+                                        type="button"
+                                        onClick={() => setAllowEditEmail(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white">
+                                        Submit
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </fetcher.Form>
+                </section>
+
+                <section className="mb-5">
+                    <fetcher.Form method="post" className="mb-4 last:mb-0">
+                        <label
+                            htmlFor="google"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700"
+                        >
+                            Google ID
+                        </label>
+                        <button
+                            name={
+                                signInMethods.includes("google.com")
+                                    ? "unlinkProvider"
+                                    : "linkProvider"
+                            }
+                            value="google"
+                            id="google"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2"
+                        >
+                            {signInMethods.includes("google.com") ? (
+                                <span className="text-sm font-semibold text-slate-900">
+                                    Disconnect
+                                </span>
+                            ) : (
+                                <>
+                                    <FcGoogle className="h-6 w-6" />
+                                    <span className="mr-5 text-sm font-semibold text-slate-900">
+                                        Connect
+                                    </span>
+                                </>
+                            )}
+                        </button>
+                    </fetcher.Form>
+                    <fetcher.Form method="post" className="mb-4 last:mb-0">
+                        <label
+                            htmlFor="facebook"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700"
+                        >
+                            Facebook ID
+                        </label>
+                        <button
+                            name={
+                                signInMethods.includes("facebook.com")
+                                    ? "unlinkProvider"
+                                    : "linkProvider"
+                            }
+                            value="facebook"
+                            id="facebook"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2"
+                        >
+                            {signInMethods.includes("facebook.com") ? (
+                                <span className="text-sm font-semibold text-slate-900">
+                                    Disconnect
+                                </span>
+                            ) : (
+                                <>
+                                    <IoLogoFacebook className="h-6 w-6 text-blue-600" />
+                                    <span className="mr-5 text-sm font-semibold text-slate-900">
+                                        Connect
+                                    </span>
+                                </>
+                            )}
+                        </button>
+                    </fetcher.Form>
+                </section>
+
+                {signInMethods.includes("password") && (
+                    <section>
+                        {allowEditPassword ? (
+                            <fetcher.Form method="post">
+                                <label
+                                    htmlFor="oldPassword"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700"
+                                >
+                                    Old Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="oldPassword"
+                                    autoComplete="current-password"
+                                    required
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                />
+                                <label
+                                    htmlFor="newPassword"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700"
+                                >
+                                    New Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="newPassword"
+                                    autoComplete="new-password"
+                                    required
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                />
+                                <label
+                                    htmlFor="confirmPassword"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700"
+                                >
+                                    Confirm Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="confirmPassword"
+                                    autoComplete="new-password"
+                                    required
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                />
+
+                                <div className="flex items-center justify-end gap-2">
+                                    <button
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900"
+                                        type="button"
+                                        onClick={() =>
+                                            setAllowEditPassword(false)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white">
+                                        Confirm
+                                    </button>
+                                </div>
+                            </fetcher.Form>
+                        ) : (
+                            <div>
+                                <h2 className="mb-1 inline-block text-xs font-medium text-slate-700">
+                                    Password
+                                </h2>
+                                <button
+                                    onClick={() => setAllowEditPassword(true)}
+                                    className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900"
+                                >
+                                    Update Password
                                 </button>
                             </div>
-                        </fetcher.Form>
-                    ) : (
-                        <div>
-                            <h4>Password</h4>
-                            <button onClick={() => setAllowEditPassword(true)}>
-                                Update Password
-                            </button>
-                        </div>
-                    )}
-                </div>
-            )}
-        </>
+                        )}
+                    </section>
+                )}
+            </main>
+        </div>
     );
 }
