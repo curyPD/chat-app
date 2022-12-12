@@ -16,17 +16,17 @@ export default function ChatLink(props) {
                 <div className="shrink-0">
                     {props.partnerProfilePicture ? (
                         <img
-                            className="h-10 w-10 rounded-full object-cover"
+                            className="h-12 w-12 rounded-full object-cover"
                             src={props.partnerProfilePicture}
                             alt={`${props.partnerName}'s avatar`}
                         />
                     ) : (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
                             <HiOutlineUser className="h-6 w-6 text-slate-500" />
                         </div>
                     )}
                 </div>
-                <div className="ml-3 flex-1 overflow-hidden">
+                <div className="ml-4 flex-1 overflow-hidden">
                     <p className="text-sm font-medium text-slate-900">
                         {props.partnerName}
                     </p>

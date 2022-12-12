@@ -237,7 +237,7 @@ export default function Chat() {
                                 alt={`${chatData.partner_name}'s avatar`}
                             />
                         ) : (
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100">
                                 <HiOutlineUser className="h-6 w-6 text-slate-500" />
                             </div>
                         )}

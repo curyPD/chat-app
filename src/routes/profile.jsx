@@ -76,41 +76,42 @@ export default function Profile() {
                         <HiOutlineUser className="h-12 w-12 text-slate-400" />
                     </div>
                 )}
-                <h1 className="mt-16 mb-5 text-center text-lg font-semibold text-slate-900">
+                <h1 className="mt-16 mb-4 text-center text-lg font-semibold text-slate-900">
                     {profileInfo.name}
                 </h1>
+                {profileInfo.bio && (
+                    <p className="mb-5 text-sm text-slate-800">
+                        {profileInfo.bio}
+                    </p>
+                )}
                 {isCurUser ? (
                     <Link
-                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                         to="/edit"
                     >
                         Edit profile
                     </Link>
                 ) : chatId ? (
                     <Link
-                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                         to={`/chats/${chatId}`}
                     >
                         Send message
                     </Link>
                 ) : (
                     <button
-                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                        className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
                         onClick={() => setIsDialogOpen(true)}
                     >
                         Send message
                     </button>
                 )}
-                {profileInfo.bio && (
-                    <p className="mb-4 text-sm text-slate-800">
-                        {profileInfo.bio}
-                    </p>
-                )}
+
                 {profileInfo.twitter && (
                     <div className="mb-4 flex items-center gap-3">
                         <IoLogoTwitter className="h-5 w-5 text-slate-500" />
                         <a
-                            className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-600"
+                            className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-500"
                             href={`https://twitter.com/${profileInfo.twitter}`}
                         >
                             @{profileInfo.twitter}
@@ -122,7 +123,7 @@ export default function Profile() {
                     <div className="mb-4 flex items-center gap-3">
                         <HiOutlineEnvelope className="h-5 w-5 text-slate-500" />
                         <a
-                            className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-600"
+                            className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-500"
                             href={`mailto:${profileInfo.email}`}
                         >
                             {profileInfo.email}

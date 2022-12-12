@@ -162,7 +162,7 @@ export default function EditProfile() {
                         Name
                     </label>
                     <input
-                        className={`mb-4 block w-full rounded-md border focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 ${
+                        className={`mb-4 block w-full rounded-md border focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 ${
                             nameIsEmpty ? "border-pink-500" : "border-slate-300"
                         } bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm`}
                         type="text"
@@ -181,7 +181,7 @@ export default function EditProfile() {
                         id="bio"
                         cols="30"
                         rows="10"
-                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300"
+                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
                         defaultValue={profileInfo.bio}
                     />
 
@@ -192,13 +192,13 @@ export default function EditProfile() {
                         Twitter username
                     </label>
                     <input
-                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300"
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
                         type="text"
                         defaultValue={profileInfo.twitter}
                         name="twitter"
                         id="twitterInput"
                     />
-                    <button className="block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-sm font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                    <button className="block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
                         Submit
                     </button>
                 </fetcher.Form>

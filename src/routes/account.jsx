@@ -13,7 +13,7 @@ import {
 import SignInPopup from "../components/SignInPopup";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
-import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { HiOutlinePencil } from "react-icons/hi2";
 import {
     getAuthProviderObject,
     getProviderIdFromResult,
@@ -179,19 +179,20 @@ export default function Account() {
                                 <button
                                     type="button"
                                     onClick={() => setAllowEditEmail(true)}
+                                    className="group focus:outline-none"
                                 >
-                                    <HiOutlinePencilSquare className="h-5 w-5 text-slate-500" />
+                                    <HiOutlinePencil className="h-5 w-5 text-slate-500 group-focus:text-sky-500" />
                                 </button>
                             ) : (
                                 <div className="flex items-center justify-end gap-2">
                                     <button
-                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900"
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-300"
                                         type="button"
                                         onClick={() => setAllowEditEmail(false)}
                                     >
                                         Cancel
                                     </button>
-                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white">
+                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-sky-300">
                                         Submit
                                     </button>
                                 </div>
@@ -216,7 +217,7 @@ export default function Account() {
                             }
                             value="google"
                             id="google"
-                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 focus:outline-none focus:ring-1 focus:ring-sky-300"
                         >
                             {signInMethods.includes("google.com") ? (
                                 <span className="text-sm font-semibold text-slate-900">
@@ -247,7 +248,7 @@ export default function Account() {
                             }
                             value="facebook"
                             id="facebook"
-                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 focus:outline-none focus:ring-1 focus:ring-sky-300"
                         >
                             {signInMethods.includes("facebook.com") ? (
                                 <span className="text-sm font-semibold text-slate-900">
@@ -311,7 +312,7 @@ export default function Account() {
 
                                 <div className="flex items-center justify-end gap-2">
                                     <button
-                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900"
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-300"
                                         type="button"
                                         onClick={() =>
                                             setAllowEditPassword(false)
@@ -319,7 +320,7 @@ export default function Account() {
                                     >
                                         Cancel
                                     </button>
-                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white">
+                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-sky-300">
                                         Confirm
                                     </button>
                                 </div>
@@ -331,7 +332,7 @@ export default function Account() {
                                 </h2>
                                 <button
                                     onClick={() => setAllowEditPassword(true)}
-                                    className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900"
+                                    className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-300"
                                 >
                                     Update Password
                                 </button>

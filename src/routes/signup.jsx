@@ -9,6 +9,7 @@ import { Form, Link, redirect, useActionData } from "react-router-dom";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { getAuthProviderObject } from "../helpers";
+import logo from "../assets/logo.png";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -92,9 +93,15 @@ export default function Signup() {
     return (
         <main className="relative grid h-screen grid-cols-1">
             <div className="hidden"></div>
-            <section className="py-10 px-4">
+            <section className="py-12 px-4">
                 <div className="mx-auto max-w-xs px-4">
-                    <div className="mb-10">LOGO</div>
+                    <div className="mb-16">
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="mx-auto block h-10 w-10"
+                        />
+                    </div>
                     <Form method="post">
                         <label
                             htmlFor="name"
@@ -110,7 +117,7 @@ export default function Signup() {
                                 incorrectFields?.includes("name")
                                     ? "border-pink-500"
                                     : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
                         />
                         <label
                             htmlFor="email"
@@ -126,7 +133,7 @@ export default function Signup() {
                                 incorrectFields?.includes("name")
                                     ? "border-pink-500"
                                     : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:border-pink-500 focus:invalid:ring-pink-500`}
                         />
                         <label
                             htmlFor="password"
@@ -142,7 +149,7 @@ export default function Signup() {
                                 incorrectFields?.includes("name")
                                     ? "border-pink-500"
                                     : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
                             autoComplete="new-password"
                         />
                         <label
@@ -159,11 +166,11 @@ export default function Signup() {
                                 incorrectFields?.includes("name")
                                     ? "border-pink-500"
                                     : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
                             autoComplete="new-password"
                         />
                         <div className="flex">
-                            <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white">
+                            <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
                                 Sign Up
                             </button>
                         </div>
@@ -175,7 +182,7 @@ export default function Signup() {
                         <button
                             name="authProvider"
                             value="google"
-                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700"
+                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
                         >
                             <FcGoogle className="h-6 w-6" />
                             <span>Continue with Google</span>
@@ -183,7 +190,7 @@ export default function Signup() {
                         <button
                             name="authProvider"
                             value="facebook"
-                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700"
+                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
                         >
                             <IoLogoFacebook className="h-6 w-6 text-blue-600" />
                             <span>Continue with Facebook</span>
@@ -193,7 +200,7 @@ export default function Signup() {
                         Already have an account?{" "}
                         <Link
                             to="/login"
-                            className="text-slate-800 underline decoration-sky-400 underline-offset-2"
+                            className="text-slate-800 underline decoration-sky-400 underline-offset-2 focus:no-underline focus:outline-none"
                         >
                             Log In
                         </Link>

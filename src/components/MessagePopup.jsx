@@ -1,9 +1,5 @@
 import Overlay from "./Overlay";
-import {
-    HiXMark,
-    HiOutlinePencilSquare,
-    HiOutlineTrash,
-} from "react-icons/hi2";
+import { HiXMark, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
 
 export default function MessagePopup(props) {
     return (
@@ -19,7 +15,7 @@ export default function MessagePopup(props) {
                     className="flex w-full items-center gap-7 py-3 px-5"
                     onClick={props.handleEditMessage}
                 >
-                    <HiOutlinePencilSquare className="h-5 w-5 text-sky-500" />
+                    <HiOutlinePencil className="h-5 w-5 text-sky-500" />
                     <span className="text-sm text-slate-900">Edit message</span>
                 </button>
                 <button

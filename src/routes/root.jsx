@@ -28,6 +28,7 @@ import { HiMagnifyingGlass } from "react-icons/hi2";
 import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import { HiOutlineChatBubbleOvalLeftEllipsis } from "react-icons/hi2";
 import { HiOutlineUser } from "react-icons/hi2";
+import logo from "../assets/logo.png";
 
 export async function loader({ request }) {
     const url = new URL(request.url);
@@ -131,8 +132,9 @@ export default function Root() {
     ));
 
     return !auth.currentUser || revalidator.state === "loading" ? (
-        <div className="flex h-screen items-center justify-center">
-            <p>Loading...</p>
+        <div className="flex h-screen flex-col items-center justify-center gap-4">
+            <img src={logo} alt="Logo" className="h-8 w-8 shrink-0" />
+            <span className="text-sm text-slate-500">Loading...</span>
         </div>
     ) : (
         <>
@@ -145,7 +147,7 @@ export default function Root() {
                                 type="search"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                className="w-full rounded-full border border-transparent bg-white py-1.5 px-4 text-sm text-slate-700 shadow placeholder:text-slate-300 focus:border-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                className="block w-full rounded-full border border-transparent bg-white py-1.5 px-4 text-sm text-slate-700 shadow placeholder:text-slate-300 focus:border-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-300"
                                 placeholder="Filter chats by names"
                             />
                             <div className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-8 bg-white pl-2">
@@ -154,13 +156,18 @@ export default function Root() {
                         </header>
                         {chatElements.length ? (
                             <main className="pb-12 pt-16">
-                                <ul className="divide-y divide-solid divide-slate-200 py-5 px-5">
-                                    {chatElements}
-                                </ul>
+                                <ul className="py-5 px-5">{chatElements}</ul>
                             </main>
                         ) : (
-                            <div className="flex h-full items-center justify-center">
-                                <span>No messages yet...</span>
+                            <div className="flex h-full flex-col items-center justify-center gap-4">
+                                <img
+                                    src={logo}
+                                    alt="Logo"
+                                    className="h-8 w-8 shrink-0"
+                                />
+                                <span className="text-sm text-slate-500">
+                                    No messages yet...
+                                </span>
                             </div>
                         )}
                     </>
