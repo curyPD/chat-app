@@ -78,10 +78,8 @@ export async function action({ request }) {
             response.signInMethods = signInMethods;
             return response;
         } else if (err.code === "auth/wrong-password") {
-            const signInMethods = await fetchSignInMethodsForEmail(
-                auth,
-                err.email
-            );
+            const email = formData.get("email");
+            const signInMethods = await fetchSignInMethodsForEmail(auth, email);
             if (signInMethods.includes("password")) {
                 response.error = "Incorrect password. Please try again.";
                 return response;
@@ -106,101 +104,101 @@ export default function Login() {
     const error = response?.error;
 
     return (
-        <main className="relative grid h-screen grid-cols-1">
-            <div className="hidden"></div>
-            <section className="py-12 px-4">
-                <div className="mx-auto max-w-xs px-4">
-                    <div className="mb-16">
-                        <img
-                            src={logo}
-                            alt="Logo"
-                            className="mx-auto block h-10 w-10"
-                        />
+        <main className="relative min-h-screen bg-custom-gradient py-16">
+            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md">
+                <div className="mb-8">
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        className="mx-auto block h-10 w-10"
+                    />
+                </div>
+                <h1 className="mb-6 text-center text-lg font-bold text-slate-800">
+                    Login to your account
+                </h1>
+                <Form method="post">
+                    <label
+                        className="mb-1 block text-xs font-medium text-slate-700"
+                        htmlFor="email"
+                    >
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                    />
+                    <label
+                        className="mb-1 block text-xs font-medium text-slate-700"
+                        htmlFor="password"
+                    >
+                        Password
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                        autoComplete="current-password"
+                    />
+                    <div className="flex">
+                        <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                            Log In
+                        </button>
                     </div>
-                    <Form method="post">
-                        <label
-                            className="mb-1 block text-xs font-medium text-slate-700"
-                            htmlFor="email"
-                        >
-                            Email
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-                        />
-                        <label
-                            className="mb-1 block text-xs font-medium text-slate-700"
-                            htmlFor="password"
-                        >
-                            Password
-                        </label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                            autoComplete="current-password"
-                        />
-                        <div className="flex">
-                            <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-                                Log In
-                            </button>
-                        </div>
-                        <div className="my-4 flex items-center gap-3">
-                            <div className="h-[1px] flex-1 bg-slate-200"></div>
-                            <span className="text-sm text-slate-300">or</span>
-                            <div className="h-[1px] flex-1 bg-slate-200"></div>
-                        </div>
-                        <button
-                            name="authProvider"
-                            value="google"
-                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                        >
-                            <FcGoogle className="h-6 w-6" />
-                            <span>Continue with Google</span>
-                        </button>
-                        <button
-                            name="authProvider"
-                            value="facebook"
-                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                        >
-                            <IoLogoFacebook className="h-6 w-6 text-blue-600" />
-                            <span>Continue with Facebook</span>
-                        </button>
-                        {providerToken && (
-                            <>
-                                <input
-                                    type="hidden"
-                                    name="providerToken"
-                                    value={providerToken}
-                                />
-                                <input
-                                    type="hidden"
-                                    name="providerId"
-                                    value={providerId}
-                                />
-                            </>
-                        )}
-                        {newPassword && (
+                    <div className="my-4 flex items-center gap-3">
+                        <div className="h-[1px] flex-1 bg-slate-200"></div>
+                        <span className="text-sm text-slate-300">or</span>
+                        <div className="h-[1px] flex-1 bg-slate-200"></div>
+                    </div>
+                    <button
+                        name="authProvider"
+                        value="google"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                    >
+                        <FcGoogle className="h-6 w-6" />
+                        <span>Continue with Google</span>
+                    </button>
+                    <button
+                        name="authProvider"
+                        value="facebook"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                    >
+                        <IoLogoFacebook className="h-6 w-6 text-blue-600" />
+                        <span>Continue with Facebook</span>
+                    </button>
+                    {providerToken && (
+                        <>
                             <input
                                 type="hidden"
-                                name="newPassword"
-                                value={newPassword}
+                                name="providerToken"
+                                value={providerToken}
                             />
-                        )}
-                    </Form>
-                    <p className="mt-6 text-center text-xs text-slate-500">
-                        Don't have an account yet?{" "}
-                        <Link
-                            to="/signup"
-                            className="rounded-sm text-slate-800 underline decoration-sky-400 underline-offset-2 focus:no-underline focus:outline-none"
-                        >
-                            Sign Up
-                        </Link>
-                    </p>
-                </div>
+                            <input
+                                type="hidden"
+                                name="providerId"
+                                value={providerId}
+                            />
+                        </>
+                    )}
+                    {newPassword && (
+                        <input
+                            type="hidden"
+                            name="newPassword"
+                            value={newPassword}
+                        />
+                    )}
+                </Form>
+                <p className="mt-6 text-center text-xs text-slate-500">
+                    Don't have an account yet?{" "}
+                    <Link
+                        to="/signup"
+                        className="rounded-sm text-slate-800 underline decoration-sky-400 underline-offset-2 focus:no-underline focus:outline-none"
+                    >
+                        Sign Up
+                    </Link>
+                </p>
             </section>
             {signInMethods && (
                 <div className="absolute">

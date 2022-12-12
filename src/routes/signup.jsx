@@ -91,126 +91,126 @@ export default function Signup() {
     const incorrectFields = error?.incorrectFields;
 
     return (
-        <main className="relative grid h-screen grid-cols-1">
-            <div className="hidden"></div>
-            <section className="py-12 px-4">
-                <div className="mx-auto max-w-xs px-4">
-                    <div className="mb-16">
-                        <img
-                            src={logo}
-                            alt="Logo"
-                            className="mx-auto block h-10 w-10"
-                        />
-                    </div>
-                    <Form method="post">
-                        <label
-                            htmlFor="name"
-                            className="mb-1 block text-xs font-medium text-slate-700"
-                        >
-                            Name
-                        </label>
-                        <input
-                            id="name"
-                            type="text"
-                            name="name"
-                            className={`mb-4 block w-full rounded-md border ${
-                                incorrectFields?.includes("name")
-                                    ? "border-pink-500"
-                                    : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
-                        />
-                        <label
-                            htmlFor="email"
-                            className="mb-1 block text-xs font-medium text-slate-700"
-                        >
-                            Email
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            className={`mb-4 block w-full rounded-md border ${
-                                incorrectFields?.includes("name")
-                                    ? "border-pink-500"
-                                    : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:border-pink-500 focus:invalid:ring-pink-500`}
-                        />
-                        <label
-                            htmlFor="password"
-                            className="mb-1 block text-xs font-medium text-slate-700"
-                        >
-                            Password
-                        </label>
-                        <input
-                            id="password"
-                            type="password"
-                            name="password"
-                            className={`mb-4 block w-full rounded-md border ${
-                                incorrectFields?.includes("name")
-                                    ? "border-pink-500"
-                                    : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
-                            autoComplete="new-password"
-                        />
-                        <label
-                            htmlFor="confirmPassword"
-                            className="mb-1 block text-xs font-medium text-slate-700"
-                        >
-                            Confirm password
-                        </label>
-                        <input
-                            id="confirmPassword"
-                            type="password"
-                            name="confirmPassword"
-                            className={`mb-5 block w-full rounded-md border ${
-                                incorrectFields?.includes("name")
-                                    ? "border-pink-500"
-                                    : " border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
-                            autoComplete="new-password"
-                        />
-                        <div className="flex">
-                            <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-                                Sign Up
-                            </button>
-                        </div>
-                        <div className="my-4 flex items-center gap-3">
-                            <div className="h-[1px] flex-1 bg-slate-200"></div>
-                            <span className="text-sm text-slate-300">or</span>
-                            <div className="h-[1px] flex-1 bg-slate-200"></div>
-                        </div>
-                        <button
-                            name="authProvider"
-                            value="google"
-                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                        >
-                            <FcGoogle className="h-6 w-6" />
-                            <span>Continue with Google</span>
-                        </button>
-                        <button
-                            name="authProvider"
-                            value="facebook"
-                            className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                        >
-                            <IoLogoFacebook className="h-6 w-6 text-blue-600" />
-                            <span>Continue with Facebook</span>
-                        </button>
-                    </Form>
-                    <p className="mt-6 text-center text-xs text-slate-500">
-                        Already have an account?{" "}
-                        <Link
-                            to="/login"
-                            className="text-slate-800 underline decoration-sky-400 underline-offset-2 focus:no-underline focus:outline-none"
-                        >
-                            Log In
-                        </Link>
-                    </p>
-                    {message && (
-                        <div>
-                            <p>{message}</p>
-                        </div>
-                    )}
+        <main className="relative min-h-screen bg-custom-gradient py-16">
+            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md">
+                <div className="mb-8">
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        className="mx-auto block h-10 w-10"
+                    />
                 </div>
+                <h1 className="mb-6 text-center text-lg font-bold text-slate-800">
+                    Create a new account
+                </h1>
+                <Form method="post">
+                    <label
+                        htmlFor="name"
+                        className="mb-1 block text-xs font-medium text-slate-700"
+                    >
+                        Name
+                    </label>
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        className={`mb-4 block w-full rounded-md border ${
+                            incorrectFields?.includes("name")
+                                ? "border-pink-500"
+                                : " border-slate-300"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
+                    />
+                    <label
+                        htmlFor="email"
+                        className="mb-1 block text-xs font-medium text-slate-700"
+                    >
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        className={`mb-4 block w-full rounded-md border ${
+                            incorrectFields?.includes("name")
+                                ? "border-pink-500"
+                                : " border-slate-300"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:border-pink-500 focus:invalid:ring-pink-500`}
+                    />
+                    <label
+                        htmlFor="password"
+                        className="mb-1 block text-xs font-medium text-slate-700"
+                    >
+                        Password
+                    </label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        className={`mb-4 block w-full rounded-md border ${
+                            incorrectFields?.includes("name")
+                                ? "border-pink-500"
+                                : " border-slate-300"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
+                        autoComplete="new-password"
+                    />
+                    <label
+                        htmlFor="confirmPassword"
+                        className="mb-1 block text-xs font-medium text-slate-700"
+                    >
+                        Confirm password
+                    </label>
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                        className={`mb-5 block w-full rounded-md border ${
+                            incorrectFields?.includes("name")
+                                ? "border-pink-500"
+                                : " border-slate-300"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300`}
+                        autoComplete="new-password"
+                    />
+                    <div className="flex">
+                        <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                            Sign Up
+                        </button>
+                    </div>
+                    <div className="my-4 flex items-center gap-3">
+                        <div className="h-[1px] flex-1 bg-slate-200"></div>
+                        <span className="text-sm text-slate-300">or</span>
+                        <div className="h-[1px] flex-1 bg-slate-200"></div>
+                    </div>
+                    <button
+                        name="authProvider"
+                        value="google"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                    >
+                        <FcGoogle className="h-6 w-6" />
+                        <span>Continue with Google</span>
+                    </button>
+                    <button
+                        name="authProvider"
+                        value="facebook"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                    >
+                        <IoLogoFacebook className="h-6 w-6 text-blue-600" />
+                        <span>Continue with Facebook</span>
+                    </button>
+                </Form>
+                <p className="mt-6 text-center text-xs text-slate-500">
+                    Already have an account?{" "}
+                    <Link
+                        to="/login"
+                        className="text-slate-800 underline decoration-sky-400 underline-offset-2 focus:no-underline focus:outline-none"
+                    >
+                        Log In
+                    </Link>
+                </p>
+                {message && (
+                    <div>
+                        <p>{message}</p>
+                    </div>
+                )}
             </section>
         </main>
     );
