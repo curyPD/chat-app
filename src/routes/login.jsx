@@ -104,7 +104,7 @@ export default function Login() {
     const error = response?.error;
 
     return (
-        <main className="relative min-h-screen bg-custom-gradient py-16">
+        <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16">
             <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md">
                 <div className="mb-8">
                     <img

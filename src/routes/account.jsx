@@ -132,7 +132,7 @@ export default function Account() {
                 <SignInPopup
                     fetcher={fetcher}
                     signInMethods={signInMethods}
-                    setSignInPopupOpen={setSignInPopupOpen}
+                    closePopup={() => setSignInPopupOpen(false)}
                 />
             )}
             <main className="relative min-h-full rounded-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
