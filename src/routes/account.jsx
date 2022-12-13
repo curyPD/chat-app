@@ -150,7 +150,7 @@ export default function Account() {
                             <HiOutlineUser className="h-12 w-12 text-slate-400" />
                         </div>
                     )}
-                    <h1 className="mt-16 mb-5 text-center text-lg font-bold text-slate-800">
+                    <h1 className="mt-16 mb-5 text-center text-lg font-bold text-slate-900">
                         {auth.currentUser.displayName}
                     </h1>
                     <section className="mb-5">

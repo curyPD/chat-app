@@ -266,7 +266,7 @@ export default function Chat() {
                         type="text"
                         name="message"
                         id="messageInput"
-                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-900 placeholder:text-slate-300 focus:outline-none"
+                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none"
                         value={input}
                         onChange={handleMessageInputChange}
                         placeholder="Send a message..."

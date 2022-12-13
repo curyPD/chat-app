@@ -7,7 +7,8 @@ import {
     uploadBytesResumable,
     getDownloadURL,
 } from "firebase/storage";
-import { HiOutlineCamera, HiOutlineUser } from "react-icons/hi2";
+import { HiOutlineUser } from "react-icons/hi2";
+import ProfilePictureSelect from "../components/ProfilePictureSelect";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -167,7 +168,7 @@ export default function EditProfile() {
                                 nameIsEmpty
                                     ? "border-pink-500"
                                     : "border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm`}
+                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
                             type="text"
                             defaultValue={profileInfo.name}
                             name="name"
@@ -184,7 +185,7 @@ export default function EditProfile() {
                             id="bio"
                             cols="30"
                             rows="10"
-                            className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                            className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
                             defaultValue={profileInfo.bio}
                         />
 
@@ -195,7 +196,7 @@ export default function EditProfile() {
                             Twitter username
                         </label>
                         <input
-                            className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-900 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                            className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
                             type="text"
                             defaultValue={profileInfo.twitter}
                             name="twitter"
@@ -207,23 +208,6 @@ export default function EditProfile() {
                     </fetcher.Form>
                 </div>
             </main>
-        </div>
-    );
-}
-
-function ProfilePictureSelect({ styles, handleFileUpload }) {
-    return (
-        <div className="absolute bottom-0 left-0 flex h-full w-full items-center justify-center rounded-full bg-slate-900/70">
-            <label htmlFor="fileInput">
-                <HiOutlineCamera className="h-9 w-9 text-white/80" />
-            </label>
-            <input
-                style={styles}
-                type="file"
-                name="file"
-                id="fileInput"
-                onChange={handleFileUpload}
-            />
         </div>
     );
 }

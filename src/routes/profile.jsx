@@ -77,7 +77,7 @@ export default function Profile() {
                             <HiOutlineUser className="h-12 w-12 text-slate-400" />
                         </div>
                     )}
-                    <h1 className="mt-16 mb-4 text-center text-lg font-bold text-slate-800">
+                    <h1 className="mt-16 mb-4 text-center text-lg font-bold text-slate-900">
                         {profileInfo.name}
                     </h1>
                     {profileInfo.bio && (
