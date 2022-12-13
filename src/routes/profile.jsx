@@ -61,8 +61,8 @@ export default function Profile() {
     }
 
     return (
-        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24">
-            <main className="relative min-h-full rounded-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
+        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0">
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
                 <div className="mx-auto min-h-full max-w-md">
                     {profileInfo.profile_picture ? (
                         <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full border-4 border-white bg-slate-100">

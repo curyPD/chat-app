@@ -142,7 +142,7 @@ export default function Root() {
             <div className="relative h-screen bg-white">
                 {matchesHomePage && (
                     <>
-                        <header className="fixed top-0 left-0 z-10 flex h-16 w-full items-center border-b border-slate-200 bg-slate-100 px-6">
+                        <header className="fixed top-0 left-0 z-10 flex h-16 w-full items-center border-b border-slate-200 bg-slate-100 px-6 sm:px-8 md:ml-14 md:w-fixed-bar-tablet md:px-6">
                             <input
                                 type="search"
                                 value={query}
@@ -150,13 +150,15 @@ export default function Root() {
                                 className="block w-full rounded-full border border-transparent bg-white py-1.5 px-4 text-sm text-slate-700 shadow placeholder:text-slate-300 focus:border-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-300"
                                 placeholder="Filter chats by names"
                             />
-                            <div className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-8 bg-white pl-2">
+                            <div className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-8 bg-white pl-2 sm:-translate-x-10 md:-translate-x-8">
                                 <HiMagnifyingGlass className="h-5 w-5 text-slate-300 " />
                             </div>
                         </header>
                         {chatElements.length ? (
-                            <main className="pb-12 pt-16">
-                                <ul className="py-5 px-5">{chatElements}</ul>
+                            <main className="pb-12 pt-16 md:ml-14 md:pb-0">
+                                <ul className="py-5 px-5 sm:px-8 md:px-6">
+                                    {chatElements}
+                                </ul>
                             </main>
                         ) : (
                             <div className="flex h-full flex-col items-center justify-center gap-4">
@@ -175,22 +177,22 @@ export default function Root() {
 
                 {!matchesHomePage && <Outlet />}
 
-                <footer className="fixed bottom-0 left-0 z-10 h-12 w-full">
-                    <nav className="flex h-full items-center justify-evenly border-t border-slate-200 bg-slate-50 px-4">
+                <footer className="fixed bottom-0 left-0 z-10 h-12 w-full md:h-full md:w-14 md:shadow-md">
+                    <nav className="flex h-full items-center justify-evenly border-t border-slate-200 bg-slate-50 px-4 md:flex-col-reverse md:justify-end md:gap-9 md:px-0 md:pt-4">
                         <MobileNavLink text="Settings" to="/account">
-                            <HiOutlineCog6Tooth className="mb-1 h-5 w-5" />
-                        </MobileNavLink>
-                        <MobileNavLink text="Messages" to="/">
-                            <HiOutlineChatBubbleOvalLeftEllipsis className="mb-1 h-5 w-5" />
+                            <HiOutlineCog6Tooth className="mb-1 h-5 w-5 md:h-7 md:w-7" />
                         </MobileNavLink>
                         <MobileNavLink text="Search" to="/search">
-                            <HiMagnifyingGlass className="mb-1 h-5 w-5" />
+                            <HiMagnifyingGlass className="mb-1 h-5 w-5 md:h-7 md:w-7" />
+                        </MobileNavLink>
+                        <MobileNavLink text="Messages" to="/">
+                            <HiOutlineChatBubbleOvalLeftEllipsis className="mb-1 h-5 w-5 md:h-7 md:w-7" />
                         </MobileNavLink>
                         <MobileNavLink
                             text="Profile"
                             to={`/users/${auth.currentUser.uid}`}
                         >
-                            <HiOutlineUser className="mb-1 h-5 w-5" />
+                            <HiOutlineUser className="mb-1 h-5 w-5 md:h-7 md:w-7" />
                         </MobileNavLink>
                     </nav>
                 </footer>

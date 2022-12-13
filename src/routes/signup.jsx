@@ -197,7 +197,7 @@ export default function Signup() {
                         <span>Continue with Facebook</span>
                     </button>
                 </Form>
-                <p className="mt-6 text-center text-xs text-slate-500 lg:text-sm">
+                <p className="mt-6 text-center text-xs text-slate-500 lg:mt-9 lg:text-sm">
                     Already have an account?{" "}
                     <Link
                         to="/login"

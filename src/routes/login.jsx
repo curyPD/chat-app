@@ -190,7 +190,7 @@ export default function Login() {
                         />
                     )}
                 </Form>
-                <p className="mt-6 text-center text-xs text-slate-500 lg:text-sm">
+                <p className="mt-6 text-center text-xs text-slate-500 lg:mt-9 lg:text-sm">
                     Don't have an account yet?{" "}
                     <Link
                         to="/signup"

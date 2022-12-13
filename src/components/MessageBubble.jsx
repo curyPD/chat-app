@@ -67,7 +67,7 @@ export default function MessageBubble(props) {
                         <img
                             src={props.fileURL}
                             alt=""
-                            className="mt-4 block"
+                            className="mt-4 block rounded-xl"
                         />
                     </div>
                 )}

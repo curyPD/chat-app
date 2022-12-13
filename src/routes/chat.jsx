@@ -220,8 +220,8 @@ export default function Chat() {
         />
     ));
     return (
-        <div className="pb-24 pt-14">
-            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow">
+        <div className="pb-24 pt-14 md:pb-12">
+            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow md:ml-14 md:w-fixed-bar-tablet">
                 <Link to=".." className="group focus:outline-none">
                     <HiArrowLeft className="h-5 w-5 text-slate-600 group-focus-visible:text-sky-500" />
                 </Link>
@@ -248,8 +248,8 @@ export default function Chat() {
                 </Link>
             </header>
 
-            <div className="fixed bottom-0 left-0 z-10 mb-12 w-full border-t border-slate-200">
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-2">
+            <div className="fixed bottom-0 left-0 z-10 mb-12 w-full border-t border-slate-200 md:mb-0 md:ml-14 md:w-fixed-bar-tablet">
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-3">
                     <label htmlFor="fileInput">
                         <HiOutlineCamera className="h-6 w-6 text-slate-400" />
                     </label>
@@ -266,7 +266,7 @@ export default function Chat() {
                         type="text"
                         name="message"
                         id="messageInput"
-                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none"
+                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none md:pl-12 md:pr-14"
                         value={input}
                         onChange={handleMessageInputChange}
                         placeholder="Send a message..."
@@ -307,14 +307,14 @@ export default function Chat() {
                         <button
                             type="button"
                             onClick={cancelMessageEdit}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 focus:outline-none focus-visible:ring focus-visible:ring-sky-300"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 md:-translate-x-12"
                         >
                             Cancel
                         </button>
                     )}
                     <button
                         type="submit"
-                        className="group absolute right-0 top-1/2 -translate-y-1/2 -translate-x-3 focus:outline-none"
+                        className="group absolute right-0 top-1/2 -translate-y-1/2 -translate-x-3 focus:outline-none md:-translate-x-4"
                     >
                         <HiOutlinePaperAirplane className="h-6 w-6 text-slate-400 group-focus-visible:text-sky-500" />
                     </button>
@@ -322,7 +322,7 @@ export default function Chat() {
             </div>
 
             {filePreviewURL && (
-                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4">
+                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4 md:mb-11 md:ml-14 md:w-fixed-bar-tablet">
                     <div className="relative inline-block">
                         <button
                             className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600"
@@ -338,8 +338,9 @@ export default function Chat() {
                     </div>
                 </div>
             )}
-
-            <ol className="flex flex-col py-5 px-3">{messageElements}</ol>
+            <main>
+                <ol className="flex flex-col py-5 px-3">{messageElements}</ol>
+            </main>
         </div>
     );
 }
