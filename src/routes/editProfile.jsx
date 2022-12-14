@@ -134,11 +134,11 @@ export default function EditProfile() {
             )}
             <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
                 <div className="mx-auto min-h-full max-w-md">
-                    {profileInfo.profile_picture ? (
+                    {profileInfo?.profile_picture ? (
                         <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 overflow-hidden rounded-full border-4 border-white bg-slate-100">
                             <img
-                                src={profileInfo.profile_picture}
-                                alt={profileInfo.name}
+                                src={profileInfo?.profile_picture}
+                                alt={profileInfo?.name}
                                 className="h-24 w-24 rounded-full object-cover"
                             />
                             <ProfilePictureSelect
@@ -170,7 +170,7 @@ export default function EditProfile() {
                                     : "border-slate-300"
                             } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
                             type="text"
-                            defaultValue={profileInfo.name}
+                            defaultValue={profileInfo?.name}
                             name="name"
                             id="nameInput"
                         />
@@ -186,7 +186,7 @@ export default function EditProfile() {
                             cols="30"
                             rows="10"
                             className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                            defaultValue={profileInfo.bio}
+                            defaultValue={profileInfo?.bio}
                         />
 
                         <label
@@ -198,7 +198,7 @@ export default function EditProfile() {
                         <input
                             className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
                             type="text"
-                            defaultValue={profileInfo.twitter}
+                            defaultValue={profileInfo?.twitter}
                             name="twitter"
                             id="twitterInput"
                         />

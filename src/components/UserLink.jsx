@@ -6,7 +6,7 @@ export default function UserLink(props) {
         <li className="group">
             <Link
                 to={`/users/${props.id}`}
-                className="flex items-center bg-white py-4 focus:bg-slate-50 focus:outline-none group-first:pt-0 group-last:pb-0"
+                className="flex items-center bg-white py-4 focus:bg-slate-50 focus:outline-none group-first:pt-0 group-last:pb-0 lg:px-3"
             >
                 <div className="shrink-0">
                     {props.photoURL ? (

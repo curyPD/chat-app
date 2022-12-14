@@ -214,7 +214,7 @@ export default function Account() {
                             </label>
                             <button
                                 name={
-                                    signInMethods.includes("google.com")
+                                    signInMethods?.includes("google.com")
                                         ? "unlinkProvider"
                                         : "linkProvider"
                                 }
@@ -222,7 +222,7 @@ export default function Account() {
                                 id="google"
                                 className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 focus:outline-none focus:ring-1 focus:ring-sky-300"
                             >
-                                {signInMethods.includes("google.com") ? (
+                                {signInMethods?.includes("google.com") ? (
                                     <span className="text-sm font-semibold text-slate-900">
                                         Disconnect
                                     </span>
@@ -245,7 +245,7 @@ export default function Account() {
                             </label>
                             <button
                                 name={
-                                    signInMethods.includes("facebook.com")
+                                    signInMethods?.includes("facebook.com")
                                         ? "unlinkProvider"
                                         : "linkProvider"
                                 }
@@ -253,7 +253,7 @@ export default function Account() {
                                 id="facebook"
                                 className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 focus:outline-none focus:ring-1 focus:ring-sky-300"
                             >
-                                {signInMethods.includes("facebook.com") ? (
+                                {signInMethods?.includes("facebook.com") ? (
                                     <span className="text-sm font-semibold text-slate-900">
                                         Disconnect
                                     </span>
@@ -269,7 +269,7 @@ export default function Account() {
                         </fetcher.Form>
                     </section>
 
-                    {signInMethods.includes("password") && (
+                    {signInMethods?.includes("password") && (
                         <section>
                             {allowEditPassword ? (
                                 <fetcher.Form method="post">
@@ -282,6 +282,7 @@ export default function Account() {
                                     <input
                                         type="password"
                                         name="oldPassword"
+                                        id="oldPassword"
                                         autoComplete="current-password"
                                         required
                                         className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
@@ -295,6 +296,7 @@ export default function Account() {
                                     <input
                                         type="password"
                                         name="newPassword"
+                                        id="newPassword"
                                         autoComplete="new-password"
                                         required
                                         className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
@@ -308,6 +310,7 @@ export default function Account() {
                                     <input
                                         type="password"
                                         name="confirmPassword"
+                                        id="confirmPassword"
                                         autoComplete="new-password"
                                         required
                                         className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
