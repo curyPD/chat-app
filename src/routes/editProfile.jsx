@@ -126,87 +126,86 @@ export default function EditProfile() {
     }
 
     return (
-        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0">
+        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
             {message && (
                 <div>
                     <p>{message}</p>
                 </div>
             )}
-            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
-                <div className="mx-auto min-h-full max-w-md">
-                    {profileInfo?.profile_picture ? (
-                        <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 overflow-hidden rounded-full border-4 border-white bg-slate-100">
-                            <img
-                                src={profileInfo?.profile_picture}
-                                alt={profileInfo?.name}
-                                className="h-24 w-24 rounded-full object-cover"
-                            />
-                            <ProfilePictureSelect
-                                styles={styles}
-                                handleFileUpload={handleFileUpload}
-                            />
-                        </div>
-                    ) : (
-                        <div className="absolute top-0 left-1/2 z-10 flex h-24 w-24 -translate-y-1/2 -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100">
-                            <HiOutlineUser className="h-12 w-12 text-slate-400" />
-                            <ProfilePictureSelect
-                                styles={styles}
-                                handleFileUpload={handleFileUpload}
-                            />
-                        </div>
-                    )}
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
+                {profileInfo?.profile_picture ? (
+                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 overflow-hidden rounded-full border-4 border-white lg:translate-y-6 lg:border-transparent">
+                        <img
+                            src={profileInfo?.profile_picture}
+                            alt={profileInfo?.name}
+                            className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
+                        />
+                        <ProfilePictureSelect
+                            styles={styles}
+                            handleFileUpload={handleFileUpload}
+                        />
+                    </div>
+                ) : (
+                    <div className="absolute top-0  left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 sm:h-28 sm:w-28 lg:translate-y-6 lg:border-transparent">
+                        <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
+                        <ProfilePictureSelect
+                            styles={styles}
+                            handleFileUpload={handleFileUpload}
+                        />
+                    </div>
+                )}
 
-                    <fetcher.Form method="post" className="mt-16 block">
-                        <label
-                            htmlFor="nameInput"
-                            className="mb-1 inline-block text-xs font-medium text-slate-700"
-                        >
-                            Name
-                        </label>
-                        <input
-                            className={`mb-4 block w-full rounded-md border focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 ${
-                                nameIsEmpty
-                                    ? "border-pink-500"
-                                    : "border-slate-300"
-                            } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm`}
-                            type="text"
-                            defaultValue={profileInfo?.name}
-                            name="name"
-                            id="nameInput"
-                        />
-                        <label
-                            htmlFor="bio"
-                            className="mb-1 inline-block text-xs font-medium text-slate-700"
-                        >
-                            Bio
-                        </label>
-                        <textarea
-                            name="bio"
-                            id="bio"
-                            cols="30"
-                            rows="10"
-                            className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                            defaultValue={profileInfo?.bio}
-                        />
+                <fetcher.Form
+                    method="post"
+                    className="mt-20 block sm:mt-24 lg:mt-36"
+                >
+                    <label
+                        htmlFor="nameInput"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                    >
+                        Name
+                    </label>
+                    <input
+                        className={`mb-4 block w-full rounded-md border focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 ${
+                            nameIsEmpty ? "border-pink-500" : "border-slate-300"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm lg:py-2 lg:px-3 lg:text-sm`}
+                        type="text"
+                        defaultValue={profileInfo?.name}
+                        name="name"
+                        id="nameInput"
+                    />
+                    <label
+                        htmlFor="bio"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                    >
+                        Bio
+                    </label>
+                    <textarea
+                        name="bio"
+                        id="bio"
+                        cols="30"
+                        rows="10"
+                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                        defaultValue={profileInfo?.bio}
+                    />
 
-                        <label
-                            htmlFor="twitterInput"
-                            className="mb-1 inline-block text-xs font-medium text-slate-700"
-                        >
-                            Twitter username
-                        </label>
-                        <input
-                            className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                            type="text"
-                            defaultValue={profileInfo?.twitter}
-                            name="twitter"
-                            id="twitterInput"
-                        />
-                        <button className="block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-                            Submit
-                        </button>
-                    </fetcher.Form>
-                </div>
+                    <label
+                        htmlFor="twitterInput"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                    >
+                        Twitter username
+                    </label>
+                    <input
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                        type="text"
+                        defaultValue={profileInfo?.twitter}
+                        name="twitter"
+                        id="twitterInput"
+                    />
+                    <button className="block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:px-5 lg:text-sm">
+                        Submit
+                    </button>
+                </fetcher.Form>
             </main>
         </div>
     );

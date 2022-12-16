@@ -61,58 +61,59 @@ export default function Profile() {
     }
 
     return (
-        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0">
-            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
-                <div className="mx-auto min-h-full max-w-md">
-                    {profileInfo.profile_picture ? (
-                        <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full border-4 border-white bg-slate-100">
-                            <img
-                                src={profileInfo.profile_picture}
-                                alt={profileInfo.name}
-                                className="h-24 w-24 rounded-full object-cover"
-                            />
-                        </div>
-                    ) : (
-                        <div className="absolute top-0 left-1/2 flex h-24 w-24 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-slate-100">
-                            <HiOutlineUser className="h-12 w-12 text-slate-400" />
-                        </div>
-                    )}
-                    <h1 className="mt-16 mb-4 text-center text-lg font-bold text-slate-900">
-                        {profileInfo.name}
-                    </h1>
-                    {profileInfo.bio && (
-                        <p className="mb-5 text-sm text-slate-800">
-                            {profileInfo.bio}
-                        </p>
-                    )}
+        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
+                {profileInfo.profile_picture ? (
+                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white lg:translate-y-6 lg:border-transparent">
+                        <img
+                            src={profileInfo.profile_picture}
+                            alt={profileInfo.name}
+                            className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
+                        />
+                    </div>
+                ) : (
+                    <div className="absolute top-0 left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center rounded-full border-4 border-white bg-slate-100 sm:h-28 sm:w-28 lg:translate-y-6 lg:border-transparent">
+                        <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
+                    </div>
+                )}
+                <div className="mt-4 flex justify-end">
                     {isCurUser ? (
                         <Link
-                            className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                            className="rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:px-5 lg:text-sm"
                             to="/edit"
                         >
                             Edit profile
                         </Link>
                     ) : chatId ? (
                         <Link
-                            className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                            className="rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:px-5 lg:text-sm"
                             to={`/chats/${chatId}`}
                         >
                             Send message
                         </Link>
                     ) : (
                         <button
-                            className="mb-6 block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                            className="rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:px-5 lg:text-sm"
                             onClick={() => setIsDialogOpen(true)}
                         >
                             Send message
                         </button>
                     )}
-
+                </div>
+                <h1 className="mt-8 mb-4 text-left text-lg font-bold text-slate-900 sm:mt-10 lg:mt-24 lg:text-xl">
+                    {profileInfo.name}
+                </h1>
+                {profileInfo.bio && (
+                    <p className="mb-4 text-xs text-slate-900 lg:text-sm">
+                        {profileInfo.bio}
+                    </p>
+                )}
+                <div className="flex flex-wrap items-center space-x-5">
                     {profileInfo.twitter && (
-                        <div className="mb-4 flex items-center gap-3">
-                            <IoLogoTwitter className="h-5 w-5 text-slate-500" />
+                        <div className="flex items-center gap-2">
+                            <IoLogoTwitter className="h-4 w-4 text-slate-500" />
                             <a
-                                className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-500"
+                                className="text-xs text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:text-sky-500 lg:text-sm"
                                 href={`https://twitter.com/${profileInfo.twitter}`}
                             >
                                 @{profileInfo.twitter}
@@ -121,10 +122,10 @@ export default function Profile() {
                     )}
 
                     {isCurUser && profileInfo.email && (
-                        <div className="mb-4 flex items-center gap-3">
-                            <HiOutlineEnvelope className="h-5 w-5 text-slate-500" />
+                        <div className="flex items-center gap-2">
+                            <HiOutlineEnvelope className="h-4 w-4 text-slate-500" />
                             <a
-                                className="text-sm text-slate-900 focus:outline-none focus-visible:text-sky-500"
+                                className="text-xs text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:text-sky-500 lg:text-sm"
                                 href={`mailto:${profileInfo.email}`}
                             >
                                 {profileInfo.email}

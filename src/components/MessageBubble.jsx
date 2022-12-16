@@ -17,7 +17,7 @@ export default function MessageBubble(props) {
             <li
                 className={`${
                     props.isCurUser ? "self-end" : "self-start"
-                } mb-5 max-w-xs`}
+                } mb-5 max-w-xs lg:mb-7 lg:max-w-sm`}
             >
                 <div
                     className={`flex items-start gap-2 ${
@@ -35,20 +35,23 @@ export default function MessageBubble(props) {
                         />
                     </Link>
                     {props.text && (
-                        <div onClick={() => setIsPopupOpen(true)}>
+                        <div
+                            onClick={() => setIsPopupOpen(true)}
+                            className="relative"
+                        >
                             <p
                                 className={`${
                                     props.isCurUser
                                         ? "bg-sky-500 text-white"
                                         : "bg-slate-100 text-slate-900"
-                                } rounded-2xl py-2 px-3 text-xs font-medium`}
+                                } rounded-2xl py-2 px-3 text-xs font-medium lg:rounded-3xl lg:px-4 lg:text-sm`}
                             >
                                 {props.text}
                             </p>
                             <span
                                 className={`${
                                     props.isCurUser ? "text-left" : "text-right"
-                                } absolute mt-1 text-[10px] text-slate-400`}
+                                } absolute top-full mt-1 text-[10px] text-slate-400`}
                             >
                                 {formattedDate}
                             </span>

@@ -158,7 +158,7 @@ export default function Chat() {
             formData.append("newLastMessageText", text);
             formData.append("newLastMessageSender", sender);
             formData.append("timestamp", timestamp);
-            formData.append("partnerUid", chatData.partner_uid);
+            formData.append("partnerUid", chatData?.partner_uid);
         }
         fetcher.submit(formData, {
             method: "post",
@@ -204,12 +204,12 @@ export default function Chat() {
             senderAvatar={
                 message.sender === auth.currentUser.uid
                     ? auth.currentUser.photoURL
-                    : chatData.partner_profile_picture
+                    : chatData?.partner_profile_picture
             }
             senderName={
                 message.sender === auth.currentUser.uid
                     ? auth.currentUser.displayName
-                    : chatData.partner_name
+                    : chatData?.partner_name
             }
             senderUid={message.sender}
             isCurUser={message.sender === auth.currentUser.uid}
@@ -220,21 +220,21 @@ export default function Chat() {
         />
     ));
     return (
-        <div className="pb-24 pt-14 md:pb-12">
-            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow md:ml-14 md:w-fixed-bar-tablet">
-                <Link to=".." className="group focus:outline-none">
+        <div className="pb-24 pt-14 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0">
+            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:justify-end lg:shadow-none">
+                <Link to=".." className="group focus:outline-none lg:hidden">
                     <HiArrowLeft className="h-5 w-5 text-slate-600 group-focus-visible:text-sky-500" />
                 </Link>
                 <Link
-                    to={`/users/${chatData.partner_uid}`}
+                    to={`/users/${chatData?.partner_uid}`}
                     className="group mr-2 flex flex-row-reverse items-center focus:outline-none"
                 >
                     <div className="shrink-0 ">
-                        {chatData.partner_profile_picture ? (
+                        {chatData?.partner_profile_picture ? (
                             <img
                                 className="h-9 w-9 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
-                                src={chatData.partner_profile_picture}
-                                alt={`${chatData.partner_name}'s avatar`}
+                                src={chatData?.partner_profile_picture}
+                                alt={`${chatData?.partner_name}'s avatar`}
                             />
                         ) : (
                             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100">
@@ -243,15 +243,36 @@ export default function Chat() {
                         )}
                     </div>
                     <p className="mr-3 text-sm font-semibold text-slate-900">
-                        {chatData.partner_name}
+                        {chatData?.partner_name}
                     </p>
                 </Link>
             </header>
 
-            <div className="fixed bottom-0 left-0 z-10 mb-12 w-full border-t border-slate-200 md:mb-0 md:ml-14 md:w-fixed-bar-tablet">
+            <main className="min-h-full bg-white/50">
+                <ol className="flex flex-col py-5 px-3">{messageElements}</ol>
+            </main>
+
+            {filePreviewURL && (
+                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4 md:mb-11 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:bottom-11 lg:top-10 lg:mb-0 lg:ml-0 lg:w-full">
+                    <div className="relative inline-block">
+                        <button
+                            className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600 transition-colors hover:bg-slate-800"
+                            onClick={cancelFileSelect}
+                        >
+                            <HiXMark className="h-3 w-3 text-white" />
+                        </button>
+                        <img
+                            src={filePreviewURL}
+                            alt="Selected image"
+                            className="w-16"
+                        />
+                    </div>
+                </div>
+            )}
+            <div className="fixed bottom-0 left-0 z-10 mb-12 w-full md:mb-0 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:border-t-transparent">
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-3">
-                    <label htmlFor="fileInput">
-                        <HiOutlineCamera className="h-6 w-6 text-slate-400" />
+                    <label htmlFor="fileInput" className="group cursor-pointer">
+                        <HiOutlineCamera className="h-6 w-6 text-slate-400 transition-colors group-hover:text-slate-500" />
                     </label>
                     <input
                         style={styles}
@@ -266,7 +287,7 @@ export default function Chat() {
                         type="text"
                         name="message"
                         id="messageInput"
-                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none md:pl-12 md:pr-14"
+                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none md:pl-12 md:pr-14 lg:border-t lg:border-slate-200"
                         value={input}
                         onChange={handleMessageInputChange}
                         placeholder="Send a message..."
@@ -292,7 +313,7 @@ export default function Chat() {
                     <input
                         type="hidden"
                         name="partnerUid"
-                        value={chatData.partner_uid}
+                        value={chatData?.partner_uid}
                     />
                     <input
                         type="hidden"
@@ -307,7 +328,7 @@ export default function Chat() {
                         <button
                             type="button"
                             onClick={cancelMessageEdit}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 md:-translate-x-12"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 md:-translate-x-12"
                         >
                             Cancel
                         </button>
@@ -316,31 +337,10 @@ export default function Chat() {
                         type="submit"
                         className="group absolute right-0 top-1/2 -translate-y-1/2 -translate-x-3 focus:outline-none md:-translate-x-4"
                     >
-                        <HiOutlinePaperAirplane className="h-6 w-6 text-slate-400 group-focus-visible:text-sky-500" />
+                        <HiOutlinePaperAirplane className="h-6 w-6 text-slate-400 transition-colors group-hover:text-slate-500 group-focus-visible:text-sky-500" />
                     </button>
                 </fetcher.Form>
             </div>
-
-            {filePreviewURL && (
-                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4 md:mb-11 md:ml-14 md:w-fixed-bar-tablet">
-                    <div className="relative inline-block">
-                        <button
-                            className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600"
-                            onClick={cancelFileSelect}
-                        >
-                            <HiXMark className="h-3 w-3 text-white" />
-                        </button>
-                        <img
-                            src={filePreviewURL}
-                            alt="Selected image"
-                            className="w-16"
-                        />
-                    </div>
-                </div>
-            )}
-            <main>
-                <ol className="flex flex-col py-5 px-3">{messageElements}</ol>
-            </main>
         </div>
     );
 }

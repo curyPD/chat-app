@@ -10,7 +10,7 @@ module.exports = {
             },
             backgroundImage: {
                 "custom-gradient":
-                    "linear-gradient(234deg,rgb(255,255,255),rgb(237,233,254) 7%,rgb(255,255,255) 17%,rgb(224,242,254) 21%,rgb(237,233,254) 26%,rgb(255,255,255) 30%,rgb(252,231,243) 36%,rgb(243,232,255) 42%,transparent 50%)",
+                    "linear-gradient(234deg,rgba(255,255,255,0.7),rgba(237,233,254,0.7) 7%,rgba(255,255,255,0.7) 17%,rgba(224,242,254,0.7) 21%,rgba(237,233,254,0.7) 26%,rgba(255,255,255,0.7) 30%,rgba(252,231,243,0.7) 36%,rgba(243,232,255,0.7) 42%,transparent 50%)",
             },
             spacing: {
                 "fixed-bar-tablet": "calc(100% - 56px)",

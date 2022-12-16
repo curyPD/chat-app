@@ -105,7 +105,7 @@ export default function Login() {
 
     return (
         <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16 md:py-20">
-            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md lg:py-8 lg:px-9">
+            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md md:max-w-lg md:px-12 lg:py-8">
                 <div className="mb-8 lg:mb-6">
                     <img
                         src={logo}

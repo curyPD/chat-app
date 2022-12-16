@@ -13,7 +13,7 @@ import {
 import SignInPopup from "../components/SignInPopup";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
-import { HiOutlinePencil } from "react-icons/hi2";
+import { HiOutlinePencil, HiOutlineUser } from "react-icons/hi2";
 import {
     getAuthProviderObject,
     getProviderIdFromResult,
@@ -116,7 +116,7 @@ export default function Account() {
     );
 
     return (
-        <div className="h-full overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0">
+        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
             {error && (
                 <div>
                     <p>{error}</p>
@@ -135,220 +135,217 @@ export default function Account() {
                     closePopup={() => setSignInPopupOpen(false)}
                 />
             )}
-            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md">
-                <div className="mx-auto min-h-full max-w-md">
-                    {auth.currentUser.photoURL ? (
-                        <div className="absolute top-0 left-1/2 z-10 -translate-y-1/2 -translate-x-1/2 rounded-full border-4 border-white bg-slate-100">
-                            <img
-                                src={auth.currentUser.photoURL}
-                                alt={auth.currentUser.displayName}
-                                className="h-24 w-24 rounded-full object-cover"
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
+                {auth.currentUser.photoURL ? (
+                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white bg-slate-100 lg:hidden">
+                        <img
+                            src={auth.currentUser.photoURL}
+                            alt={auth.currentUser.displayName}
+                            className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28 lg:h-32 lg:w-32"
+                        />
+                    </div>
+                ) : (
+                    <div className="absolute top-0 left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center rounded-full border-4 border-white bg-slate-100 sm:h-28 sm:w-28 lg:hidden">
+                        <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-16 lg:w-16" />
+                    </div>
+                )}
+                <h1 className="mt-20 mb-4 text-left text-lg font-bold text-slate-900 lg:hidden">
+                    {auth.currentUser.displayName}
+                </h1>
+                <h1 className="mb-8 hidden text-2xl font-bold text-slate-900 lg:block">
+                    Settings
+                </h1>
+                <section className="mb-5">
+                    <fetcher.Form method="post">
+                        <label
+                            htmlFor="newEmail"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                        >
+                            Email
+                        </label>
+                        <div
+                            className={`flex ${
+                                !allowEditEmail
+                                    ? "flex-row items-center gap-4"
+                                    : "flex-col gap-3"
+                            }`}
+                        >
+                            <input
+                                type="email"
+                                defaultValue={auth.currentUser.email}
+                                name="newEmail"
+                                id="newEmail"
+                                disabled={!allowEditEmail}
+                                className="block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300  focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:bg-slate-50 disabled:text-slate-500 lg:py-2 lg:px-3 lg:text-sm"
                             />
-                        </div>
-                    ) : (
-                        <div className="absolute top-0 left-1/2 flex h-24 w-24 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-slate-100">
-                            <HiOutlineUser className="h-12 w-12 text-slate-400" />
-                        </div>
-                    )}
-                    <h1 className="mt-16 mb-5 text-center text-lg font-bold text-slate-900">
-                        {auth.currentUser.displayName}
-                    </h1>
-                    <section className="mb-5">
-                        <fetcher.Form method="post">
-                            <label
-                                htmlFor="newEmail"
-                                className="mb-1 inline-block text-xs font-medium text-slate-700"
-                            >
-                                Email
-                            </label>
-                            <div
-                                className={`flex ${
-                                    !allowEditEmail
-                                        ? "flex-row items-center gap-4"
-                                        : "flex-col gap-3"
-                                }`}
-                            >
-                                <input
-                                    type="email"
-                                    defaultValue={auth.currentUser.email}
-                                    name="newEmail"
-                                    id="newEmail"
-                                    disabled={!allowEditEmail}
-                                    className="block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300  focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:bg-slate-50 disabled:text-slate-500"
-                                />
-                                {!allowEditEmail ? (
-                                    <button
-                                        type="button"
-                                        onClick={() => setAllowEditEmail(true)}
-                                        className="group focus:outline-none"
-                                    >
-                                        <HiOutlinePencil className="h-5 w-5 text-slate-500 group-focus:text-sky-500" />
-                                    </button>
-                                ) : (
-                                    <div className="flex items-center justify-end gap-2">
-                                        <button
-                                            className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                                            type="button"
-                                            onClick={() =>
-                                                setAllowEditEmail(false)
-                                            }
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-sky-300">
-                                            Submit
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        </fetcher.Form>
-                    </section>
-
-                    <section className="mb-5">
-                        <fetcher.Form method="post" className="mb-4 last:mb-0">
-                            <label
-                                htmlFor="google"
-                                className="mb-1 inline-block text-xs font-medium text-slate-700"
-                            >
-                                Google ID
-                            </label>
-                            <button
-                                name={
-                                    signInMethods?.includes("google.com")
-                                        ? "unlinkProvider"
-                                        : "linkProvider"
-                                }
-                                value="google"
-                                id="google"
-                                className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                            >
-                                {signInMethods?.includes("google.com") ? (
-                                    <span className="text-sm font-semibold text-slate-900">
-                                        Disconnect
-                                    </span>
-                                ) : (
-                                    <>
-                                        <FcGoogle className="h-6 w-6" />
-                                        <span className="mr-5 text-sm font-semibold text-slate-900">
-                                            Connect
-                                        </span>
-                                    </>
-                                )}
-                            </button>
-                        </fetcher.Form>
-                        <fetcher.Form method="post" className="mb-4 last:mb-0">
-                            <label
-                                htmlFor="facebook"
-                                className="mb-1 inline-block text-xs font-medium text-slate-700"
-                            >
-                                Facebook ID
-                            </label>
-                            <button
-                                name={
-                                    signInMethods?.includes("facebook.com")
-                                        ? "unlinkProvider"
-                                        : "linkProvider"
-                                }
-                                value="facebook"
-                                id="facebook"
-                                className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                            >
-                                {signInMethods?.includes("facebook.com") ? (
-                                    <span className="text-sm font-semibold text-slate-900">
-                                        Disconnect
-                                    </span>
-                                ) : (
-                                    <>
-                                        <IoLogoFacebook className="h-6 w-6 text-blue-600" />
-                                        <span className="mr-5 text-sm font-semibold text-slate-900">
-                                            Connect
-                                        </span>
-                                    </>
-                                )}
-                            </button>
-                        </fetcher.Form>
-                    </section>
-
-                    {signInMethods?.includes("password") && (
-                        <section>
-                            {allowEditPassword ? (
-                                <fetcher.Form method="post">
-                                    <label
-                                        htmlFor="oldPassword"
-                                        className="mb-1 inline-block text-xs font-medium text-slate-700"
-                                    >
-                                        Old Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        name="oldPassword"
-                                        id="oldPassword"
-                                        autoComplete="current-password"
-                                        required
-                                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                                    />
-                                    <label
-                                        htmlFor="newPassword"
-                                        className="mb-1 inline-block text-xs font-medium text-slate-700"
-                                    >
-                                        New Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        name="newPassword"
-                                        id="newPassword"
-                                        autoComplete="new-password"
-                                        required
-                                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                                    />
-                                    <label
-                                        htmlFor="confirmPassword"
-                                        className="mb-1 inline-block text-xs font-medium text-slate-700"
-                                    >
-                                        Confirm Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        id="confirmPassword"
-                                        autoComplete="new-password"
-                                        required
-                                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                                    />
-
-                                    <div className="flex items-center justify-end gap-2">
-                                        <button
-                                            className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-300"
-                                            type="button"
-                                            onClick={() =>
-                                                setAllowEditPassword(false)
-                                            }
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-sky-300">
-                                            Confirm
-                                        </button>
-                                    </div>
-                                </fetcher.Form>
+                            {!allowEditEmail ? (
+                                <button
+                                    type="button"
+                                    onClick={() => setAllowEditEmail(true)}
+                                    className="group focus:outline-none"
+                                >
+                                    <HiOutlinePencil className="h-5 w-5 text-slate-500 transition-colors hover:text-sky-500 group-focus:text-sky-500" />
+                                </button>
                             ) : (
-                                <div>
-                                    <h2 className="mb-1 inline-block text-xs font-medium text-slate-700">
-                                        Password
-                                    </h2>
+                                <div className="flex items-center justify-end gap-2">
                                     <button
-                                        onClick={() =>
-                                            setAllowEditPassword(true)
-                                        }
-                                        className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:px-3 lg:py-1.5 lg:text-sm"
+                                        type="button"
+                                        onClick={() => setAllowEditEmail(false)}
                                     >
-                                        Update Password
+                                        Cancel
+                                    </button>
+                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white transition-colors hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 lg:py-1.5 lg:px-3 lg:text-sm">
+                                        Submit
                                     </button>
                                 </div>
                             )}
-                        </section>
-                    )}
-                </div>
+                        </div>
+                    </fetcher.Form>
+                </section>
+
+                <section className="mb-5">
+                    <fetcher.Form method="post" className="mb-4 last:mb-0">
+                        <label
+                            htmlFor="google"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                        >
+                            Google ID
+                        </label>
+                        <button
+                            name={
+                                signInMethods?.includes("google.com")
+                                    ? "unlinkProvider"
+                                    : "linkProvider"
+                            }
+                            value="google"
+                            id="google"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                        >
+                            {signInMethods?.includes("google.com") ? (
+                                <span className="text-sm font-semibold text-slate-900">
+                                    Disconnect
+                                </span>
+                            ) : (
+                                <>
+                                    <FcGoogle className="h-6 w-6" />
+                                    <span className="mr-5 text-sm font-semibold text-slate-900">
+                                        Connect
+                                    </span>
+                                </>
+                            )}
+                        </button>
+                    </fetcher.Form>
+                    <fetcher.Form method="post" className="mb-4 last:mb-0">
+                        <label
+                            htmlFor="facebook"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                        >
+                            Facebook ID
+                        </label>
+                        <button
+                            name={
+                                signInMethods?.includes("facebook.com")
+                                    ? "unlinkProvider"
+                                    : "linkProvider"
+                            }
+                            value="facebook"
+                            id="facebook"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                        >
+                            {signInMethods?.includes("facebook.com") ? (
+                                <span className="text-sm font-semibold text-slate-900">
+                                    Disconnect
+                                </span>
+                            ) : (
+                                <>
+                                    <IoLogoFacebook className="h-6 w-6 text-blue-600" />
+                                    <span className="mr-5 text-sm font-semibold text-slate-900">
+                                        Connect
+                                    </span>
+                                </>
+                            )}
+                        </button>
+                    </fetcher.Form>
+                </section>
+
+                {signInMethods?.includes("password") && (
+                    <section>
+                        {allowEditPassword ? (
+                            <fetcher.Form method="post">
+                                <label
+                                    htmlFor="oldPassword"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                                >
+                                    Old Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="oldPassword"
+                                    id="oldPassword"
+                                    autoComplete="current-password"
+                                    required
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                                />
+                                <label
+                                    htmlFor="newPassword"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                                >
+                                    New Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="newPassword"
+                                    id="newPassword"
+                                    autoComplete="new-password"
+                                    required
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                                />
+                                <label
+                                    htmlFor="confirmPassword"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                                >
+                                    Confirm Password
+                                </label>
+                                <input
+                                    type="password"
+                                    name="confirmPassword"
+                                    id="confirmPassword"
+                                    autoComplete="new-password"
+                                    required
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                                />
+
+                                <div className="flex items-center justify-end gap-2">
+                                    <button
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:px-3 lg:py-1.5 lg:text-sm"
+                                        type="button"
+                                        onClick={() =>
+                                            setAllowEditPassword(false)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button className="rounded-md bg-sky-500 py-1 px-2 text-xs font-medium text-white transition-colors hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-300 lg:py-1.5 lg:px-3 lg:text-sm">
+                                        Confirm
+                                    </button>
+                                </div>
+                            </fetcher.Form>
+                        ) : (
+                            <div>
+                                <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm">
+                                    Password
+                                </h2>
+                                <button
+                                    onClick={() => setAllowEditPassword(true)}
+                                    className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                >
+                                    Update Password
+                                </button>
+                            </div>
+                        )}
+                    </section>
+                )}
             </main>
         </div>
     );

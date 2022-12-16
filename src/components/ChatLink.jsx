@@ -8,10 +8,10 @@ export default function ChatLink(props) {
     }).format(date);
 
     return (
-        <li className="group bg-white hover:bg-slate-50 lg:px-3">
+        <li className="group hover:bg-slate-50">
             <NavLink
                 to={`/chats/${props.id}`}
-                className="flex items-center py-3 focus:bg-slate-50 focus:outline-none"
+                className="flex items-center px-5 py-3 focus:bg-slate-50 focus:outline-none sm:px-8 md:px-6 lg:px-4"
             >
                 <div className="shrink-0">
                     {props.partnerProfilePicture ? (
