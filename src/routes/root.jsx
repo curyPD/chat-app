@@ -9,6 +9,7 @@ import {
     useLocation,
     useMatch,
     Link,
+    useFetcher,
 } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -69,6 +70,7 @@ export default function Root() {
         );
     }, [chats, query]);
 
+    const fetcher = useFetcher();
     const navigate = useNavigate();
     const revalidator = useRevalidator();
     const submit = useSubmit();
@@ -210,15 +212,20 @@ export default function Root() {
                                 onMouseEnter={openDesktopNav}
                                 onMouseLeave={closeDesktopNav}
                             >
-                                <Link to={`users/${auth.currentUser.uid}`}>
+                                <Link
+                                    to={`users/${auth.currentUser.uid}`}
+                                    className="group focus:outline-none"
+                                >
                                     <img
                                         src={auth.currentUser.photoURL}
                                         alt="Current user's avatar"
-                                        className="h-11 w-11 rounded-full object-cover"
+                                        className="h-11 w-11 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
                                     />
                                 </Link>
 
-                                {isDesktopNavOpen && <DesktopNav />}
+                                {isDesktopNavOpen && (
+                                    <DesktopNav fetcher={fetcher} />
+                                )}
                             </div>
                         </div>
                     </header>

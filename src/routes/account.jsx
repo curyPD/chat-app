@@ -270,7 +270,7 @@ export default function Account() {
                 </section>
 
                 {signInMethods?.includes("password") && (
-                    <section>
+                    <section className="mb-5">
                         {allowEditPassword ? (
                             <fetcher.Form method="post">
                                 <label
@@ -346,6 +346,11 @@ export default function Account() {
                         )}
                     </section>
                 )}
+                <fetcher.Form method="post" action="/signOut" className="mt-7">
+                    <button className="rounded-md py-1 text-sm font-semibold text-red-600 transition-colors hover:text-red-500 focus:outline-none focus:ring-1 focus:ring-red-200">
+                        Sign Out
+                    </button>
+                </fetcher.Form>
             </main>
         </div>
     );

@@ -22,6 +22,8 @@ import Chat, {
 } from "./routes/chat";
 import { action as deleteMessageAction } from "./routes/deleteMessage";
 import Search from "./routes/search";
+import { action as signOutAction } from "./routes/signOut";
+import ErrorPage from "./errorPage";
 
 import "./index.css";
 
@@ -34,7 +36,12 @@ import {
 
 const router = createBrowserRouter(
     createRoutesFromElements([
-        <Route path="/" element={<Root />} loader={rootLoader}>
+        <Route
+            path="/"
+            element={<Root />}
+            loader={rootLoader}
+            errorElement={<ErrorPage />}
+        >
             <Route
                 path="users/:userId"
                 element={<Profile />}
@@ -64,6 +71,7 @@ const router = createBrowserRouter(
                 action={deleteMessageAction}
             />
             <Route path="search" element={<Search />} loader={rootLoader} />
+            <Route path="signOut" action={signOutAction} />
         </Route>,
         <Route path="login" element={<Login />} action={loginAction} />,
         <Route path="signup" element={<Signup />} action={signupAction} />,

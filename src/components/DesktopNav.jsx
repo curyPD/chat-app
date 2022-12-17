@@ -6,7 +6,7 @@ import {
     HiOutlineCog6Tooth,
     HiArrowRightOnRectangle,
 } from "react-icons/hi2";
-export default function DesktopNav() {
+export default function DesktopNav({ fetcher }) {
     return (
         <div className="absolute top-full right-0 z-20 translate-x-1 -translate-y-1 pt-3">
             <div className="w-72 rounded-lg border border-slate-200 bg-white py-2 shadow-lg">
@@ -47,18 +47,12 @@ export default function DesktopNav() {
 
                     <span className="text-sm">Settings</span>
                 </NavLink>
-                <NavLink
-                    to="/login"
-                    className={({ isActive }) =>
-                        isActive
-                            ? "flex items-center gap-4 bg-slate-50 py-3 px-4 font-medium text-sky-500 hover:text-sky-500 focus:outline-none focus-visible:bg-slate-50"
-                            : "flex items-center gap-4 bg-white py-3 px-4 font-medium text-slate-700 hover:text-sky-500 focus:outline-none focus-visible:bg-slate-50"
-                    }
-                >
-                    <HiArrowRightOnRectangle className="h-7 w-7" />
-
-                    <span className="text-sm">Sign Out</span>
-                </NavLink>
+                <fetcher.Form method="post" action="/signOut">
+                    <button className="flex w-full items-center gap-4 bg-white py-3 px-4 font-medium text-slate-700 hover:text-sky-500 focus:outline-none focus-visible:bg-slate-50">
+                        <HiArrowRightOnRectangle className="h-7 w-7" />
+                        <span className="text-sm">Sign Out</span>
+                    </button>
+                </fetcher.Form>
             </div>
         </div>
     );
