@@ -24,6 +24,7 @@ import { action as deleteMessageAction } from "./routes/deleteMessage";
 import Search from "./routes/search";
 import { action as signOutAction } from "./routes/signOut";
 import ErrorPage from "./errorPage";
+import Index from "./routes/index";
 
 import "./index.css";
 
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
             loader={rootLoader}
             errorElement={<ErrorPage />}
         >
+            <Route index element={<Index />} />
             <Route
                 path="users/:userId"
                 element={<Profile />}
