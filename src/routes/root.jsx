@@ -18,12 +18,12 @@ import {
     equalTo,
 } from "firebase/database";
 import ChatLink from "../components/ChatLink";
-import logo from "../assets/logo.png";
 import useCheckIsMobile from "../hooks/useCheckIsMobile";
 import LoadingScreen from "../components/LoadingScreen";
 import DesktopHeader from "../components/DesktopHeader";
 import MobileNav from "../components/MobileNav";
 import ChatFilterInput from "../components/ChatFilterInput";
+import NoMessagesScreen from "../components/NoMessagesScreen";
 
 export async function loader({ request }) {
     const url = new URL(request.url);
@@ -133,16 +133,7 @@ export default function Root() {
                                 {chatElements.length ? (
                                     <ul>{chatElements}</ul>
                                 ) : (
-                                    <div className="mt-44 flex flex-col items-center justify-center gap-4">
-                                        <img
-                                            src={logo}
-                                            alt="Logo"
-                                            className="h-8 w-8 shrink-0"
-                                        />
-                                        <span className="text-sm text-slate-500">
-                                            No messages yet...
-                                        </span>
-                                    </div>
+                                    <NoMessagesScreen />
                                 )}
                             </div>
 
@@ -162,16 +153,7 @@ export default function Root() {
                             </ul>
                         </main>
                     ) : (
-                        <div className="flex h-screen flex-col items-center justify-center gap-4">
-                            <img
-                                src={logo}
-                                alt="Logo"
-                                className="h-8 w-8 shrink-0"
-                            />
-                            <span className="text-sm text-slate-500">
-                                No messages yet...
-                            </span>
-                        </div>
+                        <NoMessagesScreen />
                     )}
                 </>
             ) : (

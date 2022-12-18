@@ -14,6 +14,7 @@ module.exports = {
             },
             spacing: {
                 "fixed-bar-tablet": "calc(100% - 56px)",
+                "no-messages-screen": "calc(100% - 90px)",
             },
         },
     },
