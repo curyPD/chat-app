@@ -7,6 +7,55 @@ import {
     deleteObject,
 } from "firebase/storage";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import Resizer from "react-image-file-resizer";
+
+export const resizeFile = function (file, maxW, maxH, q, minW, minH) {
+    return new Promise((resolve) => {
+        Resizer.imageFileResizer(
+            file,
+            maxW,
+            maxH,
+            "JPEG",
+            q,
+            0,
+            (uri) => {
+                resolve(uri);
+            },
+            "base64",
+            minW,
+            minH
+        );
+    });
+};
+
+export async function handleAvatarUpload(e, submit, setError) {
+    try {
+        const file = e.target.files[0];
+        const imageSm = await resizeFile(file, 96, 96, 60, 96, 48);
+        const imageLg = await resizeFile(file, 224, 224, 80, 224, 112);
+        const snapshotSm = await uploadString(
+            storageRef(storage, `avatars/${auth.currentUser.uid}/sm`),
+            imageSm,
+            "base64"
+        );
+        const snapshotLg = await uploadString(
+            storageRef(storage, `avatars/${auth.currentUser.uid}/lg`),
+            imageLg,
+            "base64"
+        );
+        const avatarSm = await getDownloadURL(snapshotSm.ref);
+        const avatarLg = await getDownloadURL(snapshotLg.ref);
+        const formData = new FormData();
+        formData.append("avatarSm", avatarSm);
+        formData.append("avatarLg", avatarLg);
+        submit(formData, {
+            method: "post",
+        });
+    } catch (err) {
+        console.error(err);
+        setError("Couldn't upload the picture. Please try again.");
+    }
+}
 
 export const addNewChat = function (updates, curUser, otherUser) {
     const newChatKey = push(ref(database, `data/chats/${curUser.uid}`)).key;

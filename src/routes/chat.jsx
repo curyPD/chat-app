@@ -67,9 +67,14 @@ export async function loader({ params }) {
     );
     if (!chatShapshot.exists())
         throw new Response("No chat found", { status: 404 });
+    const curUserSnapshot = await get(ref(database, `data/users/${uid}`));
+    if (!curUserSnapshot.exists())
+        throw new Response("No user information found", { status: 404 });
     const chatVal = chatShapshot.val();
+    const curUserVal = curUserSnapshot.val();
     return {
         chatData: chatVal,
+        curUserData: curUserVal,
     };
 }
 
@@ -79,7 +84,7 @@ export default function Chat() {
     const [editedMessageId, setEditedMessageId] = useState("");
     const [filePreviewURL, setFilePreviewURL] = useState("");
 
-    const { chatData } = useLoaderData();
+    const { chatData, curUserData } = useLoaderData();
     const fetcher = useFetcher();
     const deleteMessagePath = useFormAction("delete-message");
 
@@ -203,7 +208,7 @@ export default function Chat() {
             timestamp={message.timestamp}
             senderAvatar={
                 message.sender === auth.currentUser.uid
-                    ? auth.currentUser.photoURL
+                    ? curUserData?.profile_picture_sm
                     : chatData?.partner_profile_picture
             }
             senderName={

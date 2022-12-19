@@ -1,16 +1,11 @@
 import { useState } from "react";
-import {
-    Form,
-    Link,
-    redirect,
-    useLoaderData,
-    useActionData,
-} from "react-router-dom";
+import { Link, redirect, useLoaderData, useActionData } from "react-router-dom";
 import { auth, database } from "../firebase";
 import { ref, get, update } from "firebase/database";
 import { addNewChat, addNewMessage } from "../helpers";
 import { HiOutlineUser, HiOutlineEnvelope } from "react-icons/hi2";
 import { IoLogoTwitter } from "react-icons/io";
+import FirstMessageDialogWindow from "../components/FirstMessageDialogWindow";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -20,13 +15,16 @@ export async function action({ request }) {
         const partnerUid = formData.get("partnerUid");
         const partnerName = formData.get("partnerName");
         const partnerProfilePicture = formData.get("partnerProfilePicture");
+        const curUserUid = formData.get("curUserUid");
+        const curUserName = formData.get("curUserName");
+        const curUserProfilePicture = formData.get("curUserProfilePicture");
         const updates = {};
         const newChatKey = addNewChat(
             updates,
             {
-                name: auth.currentUser.displayName,
-                uid: auth.currentUser.uid,
-                profilePicture: auth.currentUser.photoURL,
+                name: curUserName,
+                uid: curUserUid,
+                profilePicture: curUserProfilePicture,
             },
             {
                 name: partnerName,
@@ -51,16 +49,27 @@ export async function action({ request }) {
 
 export async function loader({ params }) {
     const snapshot = await get(ref(database, `data/users/${params.userId}`));
-    if (!snapshot.exists())
+    if (!snapshot.exists()) {
         throw new Response("No user found", { status: 404 });
-    return { profileInfo: snapshot.val() };
+    }
+    const { currentUser } = auth;
+    if (!currentUser) return {};
+    let curUserSnapshot;
+    if (snapshot.val().uid !== currentUser.uid) {
+        curUserSnapshot = await get(
+            ref(database, `data/users/${currentUser.uid}`)
+        );
+    }
+    return {
+        profileInfo: snapshot.val(),
+        curUserProfileInfo: curUserSnapshot ? curUserSnapshot.val() : {},
+    };
 }
 
 export default function Profile() {
-    const { profileInfo } = useLoaderData();
+    const { profileInfo, curUserProfileInfo } = useLoaderData();
     const response = useActionData();
     const error = response?.error;
-    const [input, setInput] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const isCurUser = auth.currentUser.uid === profileInfo.uid;
@@ -154,39 +163,11 @@ export default function Profile() {
                 </div>
             </main>
             {isDialogOpen && (
-                <div>
-                    <button onClick={() => setIsDialogOpen(false)}>X</button>
-                    <Form
-                        method="post"
-                        onSubmit={(e) => {
-                            if (!input) e.preventDefault();
-                        }}
-                    >
-                        <h3>Send message to {profileInfo.name}</h3>
-                        <input
-                            type="text"
-                            name="message"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            className="block border border-slate-500"
-                        />
-                        <input
-                            type="hidden"
-                            name="partnerUid"
-                            value={profileInfo.uid}
-                        />
-                        <input
-                            type="hidden"
-                            name="partnerName"
-                            value={profileInfo.name}
-                        />
-                        <input
-                            type="hidden"
-                            name="partnerProfilePicture"
-                            value={profileInfo.profile_picture}
-                        />
-                    </Form>
-                </div>
+                <FirstMessageDialogWindow
+                    closeDialog={() => setIsDialogOpen(false)}
+                    profileInfo={profileInfo}
+                    curUserProfileInfo={curUserProfileInfo}
+                />
             )}
         </div>
     );

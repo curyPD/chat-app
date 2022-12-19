@@ -6,41 +6,40 @@ import {
     redirect,
     useSubmit,
 } from "react-router-dom";
-import { auth, database, storage } from "../firebase";
+import { auth, database } from "../firebase";
 import { ref, get, update } from "firebase/database";
 import { updateProfile } from "firebase/auth";
-import {
-    ref as storageRef,
-    uploadBytesResumable,
-    getDownloadURL,
-} from "firebase/storage";
 import { HiOutlineUser } from "react-icons/hi2";
 import ProfilePictureSelect from "../components/ProfilePictureSelect";
+import { handleAvatarUpload } from "../helpers";
 
 export async function action({ request }) {
     const formData = await request.formData();
     const response = {};
     try {
-        if (formData.has("avatarURL")) {
+        if (formData.has("avatarSm") && formData.has("avatarLg")) {
             console.log("Update avatar");
-            const photoURL = formData.get("avatarURL");
+            const avatarSm = formData.get("avatarSm");
+            const avatarLg = formData.get("avatarLg");
             const userSnapshot = await get(
                 ref(database, `data/users/${auth.currentUser.uid}`)
             );
             const user = userSnapshot.val();
             const updates = {};
             updates[`data/users/${auth.currentUser.uid}/profile_picture`] =
-                photoURL;
+                avatarLg;
+            updates[`data/users/${auth.currentUser.uid}/profile_picture_sm`] =
+                avatarSm;
             user.chats &&
                 Object.values(user.chats).forEach((obj) => {
                     updates[
                         `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_profile_picture`
-                    ] = photoURL;
+                    ] = avatarSm;
                 });
             await Promise.all([
                 update(ref(database), updates),
                 updateProfile(auth.currentUser, {
-                    photoURL,
+                    avatarLg,
                 }),
             ]);
             response.message = "Profile picture updated successfully.";
@@ -115,32 +114,6 @@ export default function EditProfile() {
         width: "1px",
     };
 
-    function handleFileUpload(e) {
-        const file = e.target.files[0];
-        const uploadTask = uploadBytesResumable(
-            storageRef(storage, `avatars/${auth.currentUser.uid}`),
-            file
-        );
-        uploadTask.on(
-            "state_changed",
-            null,
-            (error) => {
-                console.error(error);
-                setError("Couldn't upload the picture. Please try again.");
-            },
-            async () => {
-                const downloadURL = await getDownloadURL(
-                    uploadTask.snapshot.ref
-                );
-                const formData = new FormData();
-                formData.append("avatarURL", downloadURL);
-                submit(formData, {
-                    method: "post",
-                });
-            }
-        );
-    }
-
     return (
         <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
             {message && (
@@ -163,7 +136,9 @@ export default function EditProfile() {
                         />
                         <ProfilePictureSelect
                             styles={styles}
-                            handleFileUpload={handleFileUpload}
+                            handleFileUpload={(e) =>
+                                handleAvatarUpload(e, submit, setError)
+                            }
                         />
                     </div>
                 ) : (
@@ -171,7 +146,9 @@ export default function EditProfile() {
                         <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
                         <ProfilePictureSelect
                             styles={styles}
-                            handleFileUpload={handleFileUpload}
+                            handleFileUpload={(e) =>
+                                handleAvatarUpload(e, submit, setError)
+                            }
                         />
                     </div>
                 )}
