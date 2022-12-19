@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFetcher, useLoaderData } from "react-router-dom";
 import { auth } from "../firebase";
 import {
@@ -114,6 +114,11 @@ export default function Account() {
     const [signInPopupOpen, setSignInPopupOpen] = useState(
         displaySignInPopup || false
     );
+
+    useEffect(() => {
+        if (typeof displaySignInPopup === "boolean")
+            return setSignInPopupOpen(displaySignInPopup);
+    }, [displaySignInPopup]);
 
     return (
         <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">

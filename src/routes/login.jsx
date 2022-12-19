@@ -142,10 +142,16 @@ export default function Login() {
                         className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
                         autoComplete="current-password"
                     />
-                    <div className="flex lg:justify-end">
+                    <div className="flex flex-col gap-4 lg:flex-row-reverse lg:items-center lg:justify-between lg:gap-0">
                         <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:w-auto lg:px-5 lg:text-base">
                             Log In
                         </button>
+                        <Link
+                            to="/forgot-password"
+                            className="rounded-sm text-xs text-sky-500 underline underline-offset-2 hover:no-underline focus:no-underline focus:outline-none lg:text-sm"
+                        >
+                            Forgot password?
+                        </Link>
                     </div>
                     <div className="my-4 flex items-center gap-3 lg:my-5">
                         <div className="h-[1px] flex-1 bg-slate-200"></div>

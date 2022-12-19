@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Form, Link, redirect, useLoaderData } from "react-router-dom";
+import {
+    Form,
+    Link,
+    redirect,
+    useLoaderData,
+    useActionData,
+} from "react-router-dom";
 import { auth, database } from "../firebase";
 import { ref, get, update } from "firebase/database";
 import { addNewChat, addNewMessage } from "../helpers";
@@ -8,33 +14,39 @@ import { IoLogoTwitter } from "react-icons/io";
 
 export async function action({ request }) {
     const formData = await request.formData();
-    const message = formData.get("message");
-    const partnerUid = formData.get("partnerUid");
-    const partnerName = formData.get("partnerName");
-    const partnerProfilePicture = formData.get("partnerProfilePicture");
-    const updates = {};
-    const newChatKey = addNewChat(
-        updates,
-        {
-            name: auth.currentUser.displayName,
-            uid: auth.currentUser.uid,
-            profilePicture: auth.currentUser.photoURL,
-        },
-        {
-            name: partnerName,
-            uid: partnerUid,
-            profilePicture: partnerProfilePicture,
-        }
-    );
-    addNewMessage(
-        newChatKey,
-        message,
-        auth.currentUser.uid,
-        partnerUid,
-        updates
-    );
-    await update(ref(database), updates);
-    return redirect(`/chats/${newChatKey}`);
+    const response = {};
+    try {
+        const message = formData.get("message");
+        const partnerUid = formData.get("partnerUid");
+        const partnerName = formData.get("partnerName");
+        const partnerProfilePicture = formData.get("partnerProfilePicture");
+        const updates = {};
+        const newChatKey = addNewChat(
+            updates,
+            {
+                name: auth.currentUser.displayName,
+                uid: auth.currentUser.uid,
+                profilePicture: auth.currentUser.photoURL,
+            },
+            {
+                name: partnerName,
+                uid: partnerUid,
+                profilePicture: partnerProfilePicture,
+            }
+        );
+        await addNewMessage(
+            newChatKey,
+            message,
+            auth.currentUser.uid,
+            partnerUid,
+            updates
+        );
+        await update(ref(database), updates);
+        return redirect(`/chats/${newChatKey}`);
+    } catch (err) {
+        console.error(err);
+        response.error = "Something went wrong. Please try again.";
+    }
 }
 
 export async function loader({ params }) {
@@ -46,6 +58,8 @@ export async function loader({ params }) {
 
 export default function Profile() {
     const { profileInfo } = useLoaderData();
+    const response = useActionData();
+    const error = response?.error;
     const [input, setInput] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -62,6 +76,11 @@ export default function Profile() {
 
     return (
         <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
+            {error && (
+                <div>
+                    <p>{error}</p>
+                </div>
+            )}
             <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
                 {profileInfo.profile_picture ? (
                     <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white lg:translate-y-6 lg:border-transparent">

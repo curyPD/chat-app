@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 
 import Login, { action as loginAction } from "./routes/login";
 import Signup, { action as signupAction } from "./routes/signup";
+import ForgotPassword, {
+    action as forgotPasswordAction,
+} from "./routes/forgotPassword";
 import Profile, {
     loader as profileLoader,
     action as profileAction,
@@ -77,6 +80,11 @@ const router = createBrowserRouter(
         </Route>,
         <Route path="login" element={<Login />} action={loginAction} />,
         <Route path="signup" element={<Signup />} action={signupAction} />,
+        <Route
+            path="forgot-password"
+            element={<ForgotPassword />}
+            action={forgotPasswordAction}
+        />,
     ])
 );
 

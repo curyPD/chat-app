@@ -13,7 +13,7 @@ import logo from "../assets/logo.png";
 
 export async function action({ request }) {
     const formData = await request.formData();
-    const error = {};
+    const response = {};
     try {
         if (formData.has("authProvider")) {
             console.log("Auth provider sign up");
@@ -35,19 +35,19 @@ export async function action({ request }) {
                 if (entry[1] === "") incorrectFields.push(entry[0]);
             }
             if (incorrectFields.length > 0) {
-                error.incorrectFields = incorrectFields;
-                error.message =
+                response.incorrectFields = incorrectFields;
+                response.error =
                     "Please fill out all the fields or continue with Google or Facebook.";
-                return error;
+                return response;
             }
             const userName = formData.get("name");
             const email = formData.get("email");
             const password = formData.get("password");
             const confirmPassword = formData.get("confirmPassword");
             if (password !== confirmPassword) {
-                error.incorrectFields = ["password", "confirmPassword"];
-                error.message = "Passwords do not match.";
-                return error;
+                response.incorrectFields = ["password", "confirmPassword"];
+                response.error = "Passwords do not match.";
+                return response;
             }
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
@@ -72,23 +72,23 @@ export async function action({ request }) {
             err.code === "auth/email-already-in-use" ||
             err.code === "auth/account-exists-with-different-credential"
         ) {
-            error.message =
+            response.error =
                 "There already exists an account with the given email address.";
         } else if (err.code === "auth/invalid-email") {
-            error.message = "The email address is not valid.";
+            response.error = "The email address is not valid.";
         } else if (err.code === "auth/weak-password") {
-            error.message = "The password is too weak.";
+            response.error = "The password is too weak.";
         } else {
-            error.message = "Failed to sign up. Please try again.";
+            response.error = "Failed to sign up. Please try again.";
         }
-        return error;
+        return response;
     }
 }
 
 export default function Signup() {
-    const error = useActionData();
-    const message = error?.message;
-    const incorrectFields = error?.incorrectFields;
+    const response = useActionData();
+    const error = response?.error;
+    const incorrectFields = response?.incorrectFields;
 
     return (
         <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16 md:py-20">
@@ -206,9 +206,9 @@ export default function Signup() {
                         Log In
                     </Link>
                 </p>
-                {message && (
+                {error && (
                     <div>
-                        <p>{message}</p>
+                        <p>{error}</p>
                     </div>
                 )}
             </section>

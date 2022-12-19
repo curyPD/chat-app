@@ -7,7 +7,7 @@ export default function ErrorPage() {
             return (
                 <main className="flex h-screen items-center justify-center bg-custom-gradient">
                     <div className="-mt-16 max-w-screen-lg px-8 text-center">
-                        <div className="mb-16 lg:mb-20">
+                        <div className="mb-8 lg:mb-10">
                             <img
                                 src={logo}
                                 className="mx-auto block h-10 w-10 lg:h-12 lg:w-12"
@@ -33,7 +33,7 @@ export default function ErrorPage() {
         return (
             <main className="flex h-screen items-center justify-center bg-custom-gradient">
                 <div className="-mt-16 max-w-screen-lg px-8 text-center">
-                    <div className="mb-16 lg:mb-20">
+                    <div className="mb-8 lg:mb-10">
                         <img
                             src={logo}
                             className="mx-auto block h-10 w-10 lg:h-12 lg:w-12"
@@ -60,8 +60,16 @@ export default function ErrorPage() {
         );
     } else {
         return (
-            <div className="flex h-screen items-center justify-center bg-custom-gradient px-8 text-lg font-bold text-slate-900">
-                Oops! Something went wrong
+            <div className="flex h-screen items-center justify-center bg-custom-gradient px-8 ">
+                <h1 className="mb-8 text-lg font-bold text-slate-900">
+                    Oops! Something went wrong
+                </h1>
+                <Link
+                    className="rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:px-5 lg:text-sm"
+                    to="/"
+                >
+                    Go back home
+                </Link>
             </div>
         );
     }

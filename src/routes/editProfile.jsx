@@ -1,4 +1,11 @@
-import { useLoaderData, useFetcher, useActionData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+    useLoaderData,
+    useActionData,
+    Form,
+    redirect,
+    useSubmit,
+} from "react-router-dom";
 import { auth, database, storage } from "../firebase";
 import { ref, get, update } from "firebase/database";
 import { updateProfile } from "firebase/auth";
@@ -12,7 +19,7 @@ import ProfilePictureSelect from "../components/ProfilePictureSelect";
 
 export async function action({ request }) {
     const formData = await request.formData();
-    const error = {};
+    const response = {};
     try {
         if (formData.has("avatarURL")) {
             console.log("Update avatar");
@@ -30,18 +37,20 @@ export async function action({ request }) {
                         `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_profile_picture`
                     ] = photoURL;
                 });
-            return Promise.all([
+            await Promise.all([
                 update(ref(database), updates),
                 updateProfile(auth.currentUser, {
                     photoURL,
                 }),
             ]);
+            response.message = "Profile picture updated successfully.";
+            return response;
         } else {
             const profileInfo = Object.fromEntries(formData);
             if (profileInfo.name === "") {
-                error.nameIsEmpty = true;
-                error.message = "Please fill out the name field.";
-                return error;
+                response.nameIsEmpty = true;
+                response.error = "Please fill out the name field.";
+                return response;
             }
             const userSnapshot = await get(
                 ref(database, `data/users/${auth.currentUser.uid}`)
@@ -59,17 +68,18 @@ export async function action({ request }) {
                         `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_name`
                     ] = profileInfo.name;
                 });
-            return auth.currentUser.displayName !== profileInfo.name
-                ? Promise.all([
-                      update(ref(database), updates),
-                      updateProfile(auth.currentUser, {
-                          displayName: profileInfo.name,
-                      }),
-                  ])
-                : update(ref(database), updates);
+            await Promise.all([
+                update(ref(database), updates),
+                updateProfile(auth.currentUser, {
+                    displayName: profileInfo.name,
+                }),
+            ]);
+            return redirect(`/users/${auth.currentUser.uid}`);
         }
     } catch (err) {
         console.error(err);
+        response.error = "Couldn't update profile. Please try again.";
+        return response;
     }
 }
 
@@ -85,10 +95,15 @@ export async function loader() {
 
 export default function EditProfile() {
     const { profileInfo } = useLoaderData();
-    const fetcher = useFetcher();
-    const response = fetcher.data;
+    const response = useActionData();
     const message = response?.message;
     const nameIsEmpty = response?.nameIsEmpty;
+    const submit = useSubmit();
+    const [error, setError] = useState(response?.error);
+
+    useEffect(() => {
+        return setError(response?.error);
+    }, [response?.error]);
 
     const styles = {
         clip: "rect(0 0 0 0)",
@@ -111,6 +126,7 @@ export default function EditProfile() {
             null,
             (error) => {
                 console.error(error);
+                setError("Couldn't upload the picture. Please try again.");
             },
             async () => {
                 const downloadURL = await getDownloadURL(
@@ -118,7 +134,7 @@ export default function EditProfile() {
                 );
                 const formData = new FormData();
                 formData.append("avatarURL", downloadURL);
-                fetcher.submit(formData, {
+                submit(formData, {
                     method: "post",
                 });
             }
@@ -130,6 +146,11 @@ export default function EditProfile() {
             {message && (
                 <div>
                     <p>{message}</p>
+                </div>
+            )}
+            {error && (
+                <div>
+                    <p>{error}</p>
                 </div>
             )}
             <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
@@ -155,10 +176,7 @@ export default function EditProfile() {
                     </div>
                 )}
 
-                <fetcher.Form
-                    method="post"
-                    className="mt-20 block sm:mt-24 lg:mt-36"
-                >
+                <Form method="post" className="mt-20 block sm:mt-24 lg:mt-36">
                     <label
                         htmlFor="nameInput"
                         className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
@@ -205,7 +223,7 @@ export default function EditProfile() {
                     <button className="block w-full rounded-md bg-sky-500 py-2 px-4 text-center text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:px-5 lg:text-sm">
                         Submit
                     </button>
-                </fetcher.Form>
+                </Form>
             </main>
         </div>
     );
