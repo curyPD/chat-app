@@ -31,9 +31,15 @@ export default function ChatLink(props) {
                         {props.partnerName}
                     </p>
                     <div className="flex items-center">
-                        <p className="truncate text-sm font-normal text-slate-500">
-                            {props.lastMessage}
-                        </p>
+                        {props.lastMessage ? (
+                            <p className="truncate text-sm font-normal text-slate-500">
+                                {props.lastMessage}
+                            </p>
+                        ) : (
+                            <p className="text-sm font-normal text-sky-400">
+                                File
+                            </p>
+                        )}
                         <span className="ml-auto shrink-0 pl-3 text-xs text-slate-300">
                             {formattedDate}
                         </span>

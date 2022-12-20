@@ -60,7 +60,7 @@ export default function ErrorPage() {
         );
     } else {
         return (
-            <div className="flex h-screen items-center justify-center bg-custom-gradient px-8 ">
+            <div className="flex h-screen flex-col items-center justify-center gap-4 bg-custom-gradient px-8 ">
                 <h1 className="mb-8 text-lg font-bold text-slate-900">
                     Oops! Something went wrong
                 </h1>

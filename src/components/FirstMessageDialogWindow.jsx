@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Overlay from "./Overlay";
-import Form from "react-router-dom";
+import { Form } from "react-router-dom";
 import { HiXMark } from "react-icons/hi2";
 
 export default function FirstMessageDialogWindow(props) {

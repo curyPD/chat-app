@@ -23,39 +23,44 @@ import {
     HiOutlinePaperAirplane,
     HiXMark,
 } from "react-icons/hi2";
+import { resizeFile } from "../helpers";
 
 export async function action({ request, params }) {
     const formData = await request.formData();
-    const message = formData.get("message");
-    const messageId = formData.get("messageId");
-    const partnerUid = formData.get("partnerUid");
-    const isLastMessage = formData.get("isLastMessage");
-    const fileBaseURL = formData.get("fileBaseURL");
-    const prevAttachedFile = formData.get("prevAttachedFile");
-    const updates = {};
-    if (!messageId)
-        await addNewMessage(
-            params.chatId,
-            message,
-            auth.currentUser.uid,
-            partnerUid,
-            fileBaseURL,
-            updates
-        );
-    else
-        await editMessage(
-            params.chatId,
-            message,
-            messageId,
-            isLastMessage,
-            auth.currentUser.uid,
-            partnerUid,
-            fileBaseURL,
-            prevAttachedFile,
-            updates
-        );
+    try {
+        const message = formData.get("message");
+        const messageId = formData.get("messageId");
+        const partnerUid = formData.get("partnerUid");
+        const isLastMessage = formData.get("isLastMessage");
+        const fileBaseURL = formData.get("fileBaseURL");
+        const prevAttachedFile = formData.get("prevAttachedFile");
+        const updates = {};
+        if (!messageId)
+            await addNewMessage(
+                params.chatId,
+                message,
+                auth.currentUser.uid,
+                partnerUid,
+                fileBaseURL,
+                updates
+            );
+        else
+            await editMessage(
+                params.chatId,
+                message,
+                messageId,
+                isLastMessage,
+                auth.currentUser.uid,
+                partnerUid,
+                fileBaseURL,
+                prevAttachedFile,
+                updates
+            );
 
-    return update(ref(database), updates);
+        return update(ref(database), updates);
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 export async function loader({ params }) {
@@ -171,14 +176,11 @@ export default function Chat() {
         });
     }
 
-    function attachFile(e) {
+    async function attachFile(e) {
         const [file] = e.target.files;
         e.target.value = "";
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            setFilePreviewURL(e.target.result);
-        };
-        reader.readAsDataURL(file);
+        const imageURL = await resizeFile(file, 768, 1920, 80);
+        setFilePreviewURL(imageURL);
     }
 
     function cancelFileSelect() {
@@ -254,7 +256,9 @@ export default function Chat() {
             </header>
 
             <main className="min-h-full bg-white/50">
-                <ol className="flex flex-col py-5 px-3">{messageElements}</ol>
+                <ol className="flex flex-col space-y-6 py-5 px-3 lg:space-y-7">
+                    {messageElements}
+                </ol>
             </main>
 
             {filePreviewURL && (

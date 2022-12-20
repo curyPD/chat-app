@@ -1,4 +1,4 @@
-import { database, storage } from "./firebase";
+import { database, storage, auth } from "./firebase";
 import { ref, push } from "firebase/database";
 import {
     ref as storageRef,
@@ -36,12 +36,12 @@ export async function handleAvatarUpload(e, submit, setError) {
         const snapshotSm = await uploadString(
             storageRef(storage, `avatars/${auth.currentUser.uid}/sm`),
             imageSm,
-            "base64"
+            "data_url"
         );
         const snapshotLg = await uploadString(
             storageRef(storage, `avatars/${auth.currentUser.uid}/lg`),
             imageLg,
-            "base64"
+            "data_url"
         );
         const avatarSm = await getDownloadURL(snapshotSm.ref);
         const avatarLg = await getDownloadURL(snapshotLg.ref);
@@ -53,7 +53,7 @@ export async function handleAvatarUpload(e, submit, setError) {
         });
     } catch (err) {
         console.error(err);
-        setError("Couldn't upload the picture. Please try again.");
+        setError("Couldn't upload the image. Please try again.");
     }
 }
 

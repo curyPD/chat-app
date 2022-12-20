@@ -39,7 +39,7 @@ export async function action({ request }) {
             await Promise.all([
                 update(ref(database), updates),
                 updateProfile(auth.currentUser, {
-                    avatarLg,
+                    photoURL: avatarLg,
                 }),
             ]);
             response.message = "Profile picture updated successfully.";
