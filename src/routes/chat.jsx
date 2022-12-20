@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     Link,
     useLoaderData,
@@ -88,10 +88,18 @@ export default function Chat() {
     const [input, setInput] = useState("");
     const [editedMessageId, setEditedMessageId] = useState("");
     const [filePreviewURL, setFilePreviewURL] = useState("");
+    const olRef = useRef(null);
 
     const { chatData, curUserData } = useLoaderData();
     const fetcher = useFetcher();
     const deleteMessagePath = useFormAction("delete-message");
+
+    useEffect(() => {
+        olRef.current.lastElementChild?.scrollIntoView({
+            block: "start",
+            inline: "nearest",
+        });
+    }, [messages]);
 
     useEffect(() => {
         setMessages([]);
@@ -227,7 +235,7 @@ export default function Chat() {
         />
     ));
     return (
-        <div className="pb-24 pt-14 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0">
+        <div className="pt-14 pb-24 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0">
             <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:justify-end lg:shadow-none">
                 <Link to=".." className="group focus:outline-none lg:hidden">
                     <HiArrowLeft className="h-5 w-5 text-slate-600 group-focus-visible:text-sky-500" />
@@ -256,7 +264,7 @@ export default function Chat() {
             </header>
 
             <main className="min-h-full bg-white/50">
-                <ol className="flex flex-col space-y-6 py-5 px-3 lg:space-y-7">
+                <ol className="flex flex-col px-3 py-5" ref={olRef}>
                     {messageElements}
                 </ol>
             </main>

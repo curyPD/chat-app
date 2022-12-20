@@ -17,7 +17,7 @@ export default function MessageBubble(props) {
             <li
                 className={`${
                     props.isCurUser ? "self-end" : "self-start"
-                } max-w-xs lg:max-w-sm`}
+                } mb-6 max-w-xs lg:mb-7 lg:max-w-sm`}
             >
                 <div
                     className={`flex items-start gap-2 lg:gap-3 ${
@@ -51,13 +51,7 @@ export default function MessageBubble(props) {
                             </p>
                         )}
                         {props.fileURL && (
-                            <div
-                                onClick={
-                                    !props.text
-                                        ? () => setIsPopupOpen(true)
-                                        : undefined
-                                }
-                            >
+                            <div>
                                 <img
                                     src={props.fileURL}
                                     alt=""
