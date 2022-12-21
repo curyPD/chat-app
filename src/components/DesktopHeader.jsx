@@ -18,11 +18,11 @@ export default function DesktopHeader({ users, searchTerm }) {
     }
 
     return (
-        <header className="fixed top-0 left-0 z-20 h-16 w-full border-b border-slate-200 bg-white/50 backdrop-blur">
+        <header className="fixed top-0 left-0 z-20 h-16 w-full border-b border-slate-200 bg-white/50 backdrop-blur dark:border-slate-800 dark:bg-slate-900/50">
             <div className="mx-auto flex h-full max-w-screen-lg items-center justify-between px-2">
                 <div className="flex items-center gap-3">
                     <img src={logo} alt="Logo" className="h-7 w-7" />
-                    <p className="text-lg font-semibold tracking-tight text-slate-900">
+                    <p className="text-lg font-semibold text-slate-900 dark:text-slate-50">
                         Messengr
                     </p>
                 </div>

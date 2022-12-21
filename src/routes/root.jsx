@@ -117,18 +117,18 @@ export default function Root() {
             {!isMobile ? (
                 <>
                     <DesktopHeader users={users} searchTerm={searchTerm} />
-                    <div className="h-screen bg-custom-gradient">
+                    <div className="h-screen bg-custom-gradient dark:bg-custom-gradient-dark">
                         <div className="mx-auto grid h-full max-w-screen-lg grid-cols-[360px,1fr] gap-x-5 px-2 pt-20 pb-4">
-                            <div className="h-full overflow-y-auto rounded-2xl border border-slate-200 pb-6">
+                            <div className="h-full overflow-y-auto rounded-2xl border border-slate-200 bg-white pb-6 dark:border-slate-800 dark:bg-slate-900">
                                 <div className="sticky top-0 left-0 w-full px-4">
-                                    <div className="h-6 bg-white"></div>
-                                    <div className="relative bg-white">
+                                    <div className="h-6 bg-white dark:bg-slate-900"></div>
+                                    <div className="relative bg-white dark:bg-slate-900">
                                         <ChatFilterInput
                                             query={query}
                                             setQuery={setQuery}
                                         />
                                     </div>
-                                    <div className="h-8 bg-gradient-to-b from-white"></div>
+                                    <div className="h-8 bg-gradient-to-b from-white dark:from-slate-900"></div>
                                 </div>
                                 {chatElements.length ? (
                                     <ul>{chatElements}</ul>

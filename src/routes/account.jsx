@@ -19,6 +19,7 @@ import {
     getProviderIdFromResult,
     getProviderId,
 } from "../helpers";
+import ThemeSelectMenu from "../components/ThemeSelectMenu";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -351,6 +352,12 @@ export default function Account() {
                         )}
                     </section>
                 )}
+                <section className="mb-5">
+                    <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm">
+                        Switch theme
+                    </h2>
+                    <ThemeSelectMenu />
+                </section>
                 <fetcher.Form method="post" action="/signOut" className="mt-7">
                     <button className="rounded-md py-1 text-sm font-semibold text-red-600 transition-colors hover:text-red-500 focus:outline-none focus:ring-1 focus:ring-red-200">
                         Sign Out

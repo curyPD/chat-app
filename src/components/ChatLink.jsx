@@ -8,10 +8,10 @@ export default function ChatLink(props) {
     }).format(date);
 
     return (
-        <li className="group hover:bg-slate-50">
+        <li className="group hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800">
             <NavLink
                 to={`/chats/${props.id}`}
-                className="flex items-center px-5 py-3 focus:bg-slate-50 focus:outline-none sm:px-8 md:px-6 lg:px-4"
+                className="flex items-center px-5 py-3 focus:outline-none focus-visible:bg-slate-50 dark:focus-visible:bg-slate-800 sm:px-8 md:px-6 lg:px-4"
             >
                 <div className="shrink-0">
                     {props.partnerProfilePicture ? (
@@ -21,26 +21,26 @@ export default function ChatLink(props) {
                             alt={`${props.partnerName}'s avatar`}
                         />
                     ) : (
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
-                            <HiOutlineUser className="h-6 w-6 text-slate-500" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700">
+                            <HiOutlineUser className="h-6 w-6 text-slate-500 dark:text-slate-400" />
                         </div>
                     )}
                 </div>
                 <div className="ml-4 flex-1 overflow-hidden">
-                    <p className="text-sm font-medium text-slate-900">
+                    <p className="text-sm font-medium text-slate-900 dark:text-white">
                         {props.partnerName}
                     </p>
                     <div className="flex items-center">
                         {props.lastMessage ? (
-                            <p className="truncate text-sm font-normal text-slate-500">
+                            <p className="truncate text-sm font-normal text-slate-500 dark:text-slate-400">
                                 {props.lastMessage}
                             </p>
                         ) : (
-                            <p className="text-sm font-normal text-sky-400">
+                            <p className="text-sm font-normal text-sky-400 dark:text-sky-300">
                                 File
                             </p>
                         )}
-                        <span className="ml-auto shrink-0 pl-3 text-xs text-slate-300">
+                        <span className="ml-auto shrink-0 pl-3 text-xs text-slate-400 dark:text-slate-500">
                             {formattedDate}
                         </span>
                     </div>

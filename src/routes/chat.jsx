@@ -263,7 +263,7 @@ export default function Chat() {
                 </Link>
             </header>
 
-            <main className="min-h-full bg-white/50">
+            <main className="min-h-full bg-white/50 md:ml-14 lg:ml-0">
                 <ol className="flex flex-col px-3 py-5" ref={olRef}>
                     {messageElements}
                 </ol>
