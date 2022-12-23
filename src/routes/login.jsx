@@ -104,21 +104,21 @@ export default function Login() {
     const error = response?.error;
 
     return (
-        <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16 md:py-20">
-            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md md:max-w-lg md:px-12 lg:py-8">
+        <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16 dark:bg-custom-gradient-dark md:py-20">
+            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 md:max-w-lg md:px-12 lg:py-8">
                 <div className="mb-8 lg:mb-6">
                     <img
                         src={logo}
                         alt="Logo"
-                        className="mx-auto block h-10 w-10 lg:mx-0"
+                        className="mx-auto block h-10 w-10 dark:drop-shadow-lg lg:mx-0"
                     />
                 </div>
-                <h1 className="mb-6 text-center text-lg font-bold text-slate-800 lg:mb-9 lg:text-left lg:text-xl">
+                <h1 className="mb-6 text-center text-lg font-bold text-slate-800 dark:text-slate-50 lg:mb-9 lg:text-left lg:text-xl">
                     Login to your account
                 </h1>
                 <Form method="post">
                     <label
-                        className="mb-1 block text-xs font-medium text-slate-700 lg:text-sm"
+                        className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-400 lg:text-sm"
                         htmlFor="email"
                     >
                         Email
@@ -127,10 +127,10 @@ export default function Login() {
                         id="email"
                         type="email"
                         name="email"
-                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:ring-pink-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:invalid:border-pink-500 dark:focus:invalid:border-pink-500 lg:py-2 lg:px-3 lg:text-sm"
                     />
                     <label
-                        className="mb-1 block text-xs font-medium text-slate-700 lg:text-sm"
+                        className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-400 lg:text-sm"
                         htmlFor="password"
                     >
                         Password
@@ -139,7 +139,7 @@ export default function Login() {
                         id="password"
                         type="password"
                         name="password"
-                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                         autoComplete="current-password"
                     />
                     <div className="flex flex-col gap-4 lg:flex-row-reverse lg:items-center lg:justify-between lg:gap-0">
@@ -148,20 +148,22 @@ export default function Login() {
                         </button>
                         <Link
                             to="/forgot-password"
-                            className="rounded-sm text-xs text-sky-500 underline underline-offset-2 hover:no-underline focus:no-underline focus:outline-none lg:text-sm"
+                            className="rounded-sm text-xs text-sky-500 underline underline-offset-2 hover:no-underline focus:no-underline focus:outline-none dark:text-sky-400 lg:text-sm"
                         >
                             Forgot password?
                         </Link>
                     </div>
                     <div className="my-4 flex items-center gap-3 lg:my-5">
-                        <div className="h-[1px] flex-1 bg-slate-200"></div>
-                        <span className="text-sm text-slate-300">or</span>
-                        <div className="h-[1px] flex-1 bg-slate-200"></div>
+                        <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-600"></div>
+                        <span className="text-sm text-slate-300 dark:text-slate-500">
+                            or
+                        </span>
+                        <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-600"></div>
                     </div>
                     <button
                         name="authProvider"
                         value="google"
-                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 sm:pl-24 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:pl-24 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
                     >
                         <FcGoogle className="h-6 w-6 lg:h-7 lg:w-7" />
                         <span>Continue with Google</span>
@@ -169,9 +171,9 @@ export default function Login() {
                     <button
                         name="authProvider"
                         value="facebook"
-                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 sm:pl-24 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:pl-24 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
                     >
-                        <IoLogoFacebook className="h-6 w-6 text-blue-600 lg:h-7 lg:w-7" />
+                        <IoLogoFacebook className="h-6 w-6 text-blue-600 dark:text-blue-500 lg:h-7 lg:w-7" />
                         <span>Continue with Facebook</span>
                     </button>
                     {providerToken && (
@@ -200,7 +202,7 @@ export default function Login() {
                     Don't have an account yet?{" "}
                     <Link
                         to="/signup"
-                        className="rounded-sm text-slate-800 underline decoration-sky-400 underline-offset-2 hover:no-underline focus:no-underline focus:outline-none"
+                        className="rounded-sm text-slate-800 underline decoration-sky-400 underline-offset-2 hover:no-underline focus:no-underline focus:outline-none dark:text-slate-300"
                     >
                         Sign Up
                     </Link>

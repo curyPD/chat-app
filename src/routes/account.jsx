@@ -122,7 +122,7 @@ export default function Account() {
     }, [displaySignInPopup]);
 
     return (
-        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
+        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 dark:bg-custom-gradient-dark md:pb-0 lg:h-full lg:bg-none lg:pt-0 lg:dark:bg-none">
             {error && (
                 <div>
                     <p>{error}</p>
@@ -141,9 +141,9 @@ export default function Account() {
                     closePopup={() => setSignInPopupOpen(false)}
                 />
             )}
-            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
-                {auth.currentUser.photoURL ? (
-                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white bg-slate-100 lg:hidden">
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
+                {!auth.currentUser.photoURL ? (
+                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white bg-slate-100 dark:border-slate-900 dark:bg-slate-800 lg:hidden">
                         <img
                             src={auth.currentUser.photoURL}
                             alt={auth.currentUser.displayName}
@@ -151,21 +151,21 @@ export default function Account() {
                         />
                     </div>
                 ) : (
-                    <div className="absolute top-0 left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center rounded-full border-4 border-white bg-slate-100 sm:h-28 sm:w-28 lg:hidden">
-                        <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-16 lg:w-16" />
+                    <div className="absolute top-0 left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center rounded-full border-4 border-white bg-slate-100 dark:border-slate-900 dark:bg-slate-800 sm:h-28 sm:w-28 lg:hidden">
+                        <HiOutlineUser className="h-10 w-10 text-slate-400 dark:text-slate-500 sm:h-12 sm:w-12 lg:h-16 lg:w-16" />
                     </div>
                 )}
-                <h1 className="mt-20 mb-4 text-left text-lg font-bold text-slate-900 lg:hidden">
+                <h1 className="mt-20 mb-4 text-left text-lg font-bold text-slate-900 dark:text-white lg:hidden">
                     {auth.currentUser.displayName}
                 </h1>
-                <h1 className="mb-8 hidden text-2xl font-bold text-slate-900 lg:block">
+                <h1 className="mb-8 hidden text-2xl font-bold text-slate-900 dark:text-white lg:block">
                     Settings
                 </h1>
                 <section className="mb-5">
                     <fetcher.Form method="post">
                         <label
                             htmlFor="newEmail"
-                            className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                         >
                             Email
                         </label>
@@ -182,7 +182,7 @@ export default function Account() {
                                 name="newEmail"
                                 id="newEmail"
                                 disabled={!allowEditEmail}
-                                className="block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300  focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:bg-slate-50 disabled:text-slate-500 lg:py-2 lg:px-3 lg:text-sm"
+                                className="block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 invalid:text-pink-600 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 disabled:bg-slate-50 disabled:text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:invalid:border-pink-500 dark:invalid:text-pink-600 dark:disabled:bg-slate-800/80 dark:disabled:text-slate-500 lg:py-2 lg:px-3 lg:text-sm"
                             />
                             {!allowEditEmail ? (
                                 <button
@@ -190,12 +190,12 @@ export default function Account() {
                                     onClick={() => setAllowEditEmail(true)}
                                     className="group focus:outline-none"
                                 >
-                                    <HiOutlinePencil className="h-5 w-5 text-slate-500 transition-colors hover:text-sky-500 group-focus:text-sky-500" />
+                                    <HiOutlinePencil className="h-5 w-5 text-slate-500 transition-colors hover:text-sky-500 group-focus:text-sky-500 dark:text-slate-400 dark:hover:text-sky-400 dark:group-focus:text-sky-400" />
                                 </button>
                             ) : (
                                 <div className="flex items-center justify-end gap-2">
                                     <button
-                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:px-3 lg:py-1.5 lg:text-sm"
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-slate-100 lg:px-3 lg:py-1.5 lg:text-sm"
                                         type="button"
                                         onClick={() => setAllowEditEmail(false)}
                                     >
@@ -214,7 +214,7 @@ export default function Account() {
                     <fetcher.Form method="post" className="mb-4 last:mb-0">
                         <label
                             htmlFor="google"
-                            className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                         >
                             Google ID
                         </label>
@@ -226,16 +226,16 @@ export default function Account() {
                             }
                             value="google"
                             id="google"
-                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
                         >
                             {signInMethods?.includes("google.com") ? (
-                                <span className="text-sm font-semibold text-slate-900">
+                                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                                     Disconnect
                                 </span>
                             ) : (
                                 <>
                                     <FcGoogle className="h-6 w-6" />
-                                    <span className="mr-5 text-sm font-semibold text-slate-900">
+                                    <span className="mr-5 text-sm font-semibold text-slate-900 dark:text-slate-100">
                                         Connect
                                     </span>
                                 </>
@@ -245,7 +245,7 @@ export default function Account() {
                     <fetcher.Form method="post" className="mb-4 last:mb-0">
                         <label
                             htmlFor="facebook"
-                            className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                            className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                         >
                             Facebook ID
                         </label>
@@ -257,16 +257,16 @@ export default function Account() {
                             }
                             value="facebook"
                             id="facebook"
-                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                            className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 bg-white py-2 px-2 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
                         >
                             {signInMethods?.includes("facebook.com") ? (
-                                <span className="text-sm font-semibold text-slate-900">
+                                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                                     Disconnect
                                 </span>
                             ) : (
                                 <>
                                     <IoLogoFacebook className="h-6 w-6 text-blue-600" />
-                                    <span className="mr-5 text-sm font-semibold text-slate-900">
+                                    <span className="mr-5 text-sm font-semibold text-slate-900 dark:text-slate-100">
                                         Connect
                                     </span>
                                 </>
@@ -281,7 +281,7 @@ export default function Account() {
                             <fetcher.Form method="post">
                                 <label
                                     htmlFor="oldPassword"
-                                    className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                                 >
                                     Old Password
                                 </label>
@@ -291,11 +291,11 @@ export default function Account() {
                                     id="oldPassword"
                                     autoComplete="current-password"
                                     required
-                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                 />
                                 <label
                                     htmlFor="newPassword"
-                                    className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                                 >
                                     New Password
                                 </label>
@@ -305,11 +305,11 @@ export default function Account() {
                                     id="newPassword"
                                     autoComplete="new-password"
                                     required
-                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                 />
                                 <label
                                     htmlFor="confirmPassword"
-                                    className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                                    className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                                 >
                                     Confirm Password
                                 </label>
@@ -319,12 +319,12 @@ export default function Account() {
                                     id="confirmPassword"
                                     autoComplete="new-password"
                                     required
-                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                 />
 
                                 <div className="flex items-center justify-end gap-2">
                                     <button
-                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:px-3 lg:py-1.5 lg:text-sm"
+                                        className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-slate-100 lg:px-3 lg:py-1.5 lg:text-sm"
                                         type="button"
                                         onClick={() =>
                                             setAllowEditPassword(false)
@@ -339,12 +339,12 @@ export default function Account() {
                             </fetcher.Form>
                         ) : (
                             <div>
-                                <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm">
+                                <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm">
                                     Password
                                 </h2>
                                 <button
                                     onClick={() => setAllowEditPassword(true)}
-                                    className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300"
+                                    className="w-full rounded-md border border-slate-300 bg-white py-2 px-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
                                 >
                                     Update Password
                                 </button>
@@ -353,13 +353,13 @@ export default function Account() {
                     </section>
                 )}
                 <section className="mb-5">
-                    <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm">
+                    <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm">
                         Switch theme
                     </h2>
                     <ThemeSelectMenu />
                 </section>
                 <fetcher.Form method="post" action="/signOut" className="mt-7">
-                    <button className="rounded-md py-1 text-sm font-semibold text-red-600 transition-colors hover:text-red-500 focus:outline-none focus:ring-1 focus:ring-red-200">
+                    <button className="rounded-md py-1 text-sm font-semibold text-red-600 transition-colors hover:text-red-500 focus:outline-none focus:ring-1 focus:ring-red-200 dark:text-red-500 dark:hover:text-red-400">
                         Sign Out
                     </button>
                 </fetcher.Form>

@@ -143,11 +143,11 @@ export default function Root() {
                 </>
             ) : matchesHomePage ? (
                 <>
-                    <header className="fixed top-0 left-0 z-10 flex h-16 w-full items-center border-b border-slate-200 bg-white px-6 shadow-sm sm:px-8 md:ml-14 md:w-fixed-bar-tablet md:px-6">
+                    <header className="fixed top-0 left-0 z-10 flex h-16 w-full items-center border-b border-slate-200 bg-white px-6 shadow-sm dark:border-slate-800 dark:bg-[#0b101d] sm:px-8 md:ml-14 md:w-fixed-bar-tablet md:px-6">
                         <ChatFilterInput query={query} setQuery={setQuery} />
                     </header>
                     {chatElements.length ? (
-                        <main className="h-screen pb-12 pt-16 md:ml-14 md:pb-0">
+                        <main className="h-screen pb-12 pt-16 dark:bg-slate-900 md:ml-14 md:pb-0">
                             <ul className="h-full overflow-y-auto py-5">
                                 {chatElements}
                             </ul>

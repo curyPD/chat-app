@@ -126,9 +126,9 @@ export default function EditProfile() {
                     <p>{error}</p>
                 </div>
             )}
-            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
                 {profileInfo?.profile_picture ? (
-                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 overflow-hidden rounded-full border-4 border-white lg:translate-y-6 lg:border-transparent">
+                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 overflow-hidden rounded-full border-4 border-white dark:border-slate-900 lg:translate-y-6 lg:border-transparent">
                         <img
                             src={profileInfo?.profile_picture}
                             alt={profileInfo?.name}
@@ -142,8 +142,8 @@ export default function EditProfile() {
                         />
                     </div>
                 ) : (
-                    <div className="absolute top-0  left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 sm:h-28 sm:w-28 lg:translate-y-6 lg:border-transparent">
-                        <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
+                    <div className="absolute top-0  left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-slate-100 dark:border-slate-900 dark:bg-slate-800 sm:h-28 sm:w-28 lg:translate-y-6 lg:border-transparent">
+                        <HiOutlineUser className="h-10 w-10 text-slate-400 dark:text-slate-500 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
                         <ProfilePictureSelect
                             styles={styles}
                             handleFileUpload={(e) =>
@@ -156,14 +156,16 @@ export default function EditProfile() {
                 <Form method="post" className="mt-20 block sm:mt-24 lg:mt-36">
                     <label
                         htmlFor="nameInput"
-                        className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                     >
                         Name
                     </label>
                     <input
                         className={`mb-4 block w-full rounded-md border focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 ${
-                            nameIsEmpty ? "border-pink-500" : "border-slate-300"
-                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm lg:py-2 lg:px-3 lg:text-sm`}
+                            nameIsEmpty
+                                ? "border-pink-500 dark:border-pink-500"
+                                : "border-slate-300 dark:border-slate-700"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm`}
                         type="text"
                         defaultValue={profileInfo?.name}
                         name="name"
@@ -171,7 +173,7 @@ export default function EditProfile() {
                     />
                     <label
                         htmlFor="bio"
-                        className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                     >
                         Bio
                     </label>
@@ -180,18 +182,18 @@ export default function EditProfile() {
                         id="bio"
                         cols="30"
                         rows="10"
-                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                        className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                         defaultValue={profileInfo?.bio}
                     />
 
                     <label
                         htmlFor="twitterInput"
-                        className="mb-1 inline-block text-xs font-medium text-slate-700 lg:text-sm"
+                        className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
                     >
                         Twitter username
                     </label>
                     <input
-                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm"
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                         type="text"
                         defaultValue={profileInfo?.twitter}
                         name="twitter"

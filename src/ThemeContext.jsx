@@ -1,7 +1,13 @@
-import { useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 
-export default function useTheme() {
+const ThemeContext = createContext();
+
+export function useTheme() {
+    return useContext(ThemeContext);
+}
+
+export default function ThemeProvider({ children }) {
     const [theme, setTheme] = useLocalStorage(
         "theme",
         localStorage.getItem("theme") === "dark" ||
@@ -36,5 +42,7 @@ export default function useTheme() {
         },
     };
 
-    return value;
+    return (
+        <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    );
 }

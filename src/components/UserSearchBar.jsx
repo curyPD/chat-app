@@ -26,7 +26,7 @@ export default function UserSearchBar({ searchTerm, users, children }) {
 
     return (
         <>
-            <div className="fixed top-0 left-0 z-10 w-full border-b border-slate-200 bg-white px-6 shadow-sm sm:px-8 md:ml-14 md:w-fixed-bar-tablet md:px-6 lg:relative lg:top-auto lg:left-auto lg:z-auto lg:ml-0 lg:w-auto lg:basis-auto lg:border-none lg:bg-transparent lg:px-0 lg:shadow-none">
+            <div className="fixed top-0 left-0 z-10 w-full border-b border-slate-200 bg-white px-6 shadow-sm dark:border-slate-800 dark:bg-[#0b101d] sm:px-8 md:ml-14 md:w-fixed-bar-tablet md:px-6 lg:relative lg:top-auto lg:left-auto lg:z-auto lg:ml-0 lg:w-auto lg:basis-auto lg:border-none lg:bg-transparent lg:px-0 lg:shadow-none lg:dark:border-none lg:dark:bg-transparent">
                 <Form
                     action={location.pathname}
                     className="flex h-16 items-center lg:relative lg:block lg:h-auto lg:w-80"
@@ -39,11 +39,11 @@ export default function UserSearchBar({ searchTerm, users, children }) {
                         }}
                         ref={userSearchFieldRef}
                         defaultValue={searchTerm}
-                        className="w-full rounded-full border border-slate-100 bg-white py-1.5 px-4 pr-10 text-sm text-slate-700 shadow placeholder:text-slate-300 focus:border-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-transparent dark:bg-slate-700 dark:text-slate-300 dark:placeholder:text-slate-500 lg:pr-11"
+                        className="w-full rounded-full border border-slate-100 bg-white py-1.5 px-4 pr-10 text-sm text-slate-700 shadow placeholder:text-slate-300 focus:border-sky-300 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-transparent dark:bg-slate-800 dark:text-slate-300 dark:placeholder:text-slate-600 lg:pr-11 lg:dark:bg-slate-700 lg:dark:placeholder:text-slate-500"
                         placeholder="Search for people by name"
                     />
                     <div className="absolute top-1/2 right-0 -translate-y-1/2 -translate-x-9 sm:-translate-x-12 md:-translate-x-10 lg:-translate-x-4">
-                        <HiMagnifyingGlass className="h-5 w-5 text-slate-300 dark:text-slate-400" />
+                        <HiMagnifyingGlass className="h-5 w-5 text-slate-300 dark:text-slate-500 lg:dark:text-slate-400" />
                     </div>
                 </Form>
             </div>

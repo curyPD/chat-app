@@ -28,6 +28,7 @@ import Search from "./routes/search";
 import { action as signOutAction } from "./routes/signOut";
 import ErrorPage from "./errorPage";
 import Index from "./routes/index";
+import ThemeProvider from "./ThemeContext";
 
 import "./index.css";
 
@@ -90,6 +91,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <ThemeProvider>
+            <RouterProvider router={router} />
+        </ThemeProvider>
     </React.StrictMode>
 );

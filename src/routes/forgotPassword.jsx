@@ -35,21 +35,21 @@ export default function ForgotPassword() {
     const incorrectFields = response?.incorrectFields;
 
     return (
-        <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16 md:py-20">
-            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md md:max-w-lg md:px-12 lg:py-8">
+        <main className="relative h-screen overflow-y-auto bg-custom-gradient py-16 dark:bg-custom-gradient-dark md:py-20">
+            <section className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white/50 px-8 py-6 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 md:max-w-lg md:px-12 lg:py-8">
                 <div className="mb-8 lg:mb-6">
                     <img
                         src={logo}
                         alt="Logo"
-                        className="mx-auto block h-10 w-10 lg:mx-0"
+                        className="mx-auto block h-10 w-10 dark:drop-shadow-lg lg:mx-0"
                     />
                 </div>
-                <h1 className="mb-6 text-center text-lg font-bold text-slate-800 lg:mb-9 lg:text-left lg:text-xl">
+                <h1 className="mb-6 text-center text-lg font-bold text-slate-800 dark:text-slate-50 lg:mb-9 lg:text-left lg:text-xl">
                     Reset password
                 </h1>
                 <Form method="post">
                     <label
-                        className="mb-1 block text-xs font-medium text-slate-700 lg:text-sm"
+                        className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-400 lg:text-sm"
                         htmlFor="email"
                     >
                         Email
@@ -58,11 +58,11 @@ export default function ForgotPassword() {
                         id="email"
                         type="email"
                         name="email"
-                        className={`mb-4 block w-full rounded-md border ${
+                        className={`mb-4 block w-full rounded-md border dark:bg-slate-800 dark:text-slate-300 ${
                             incorrectFields
-                                ? "border-pink-500"
-                                : " border-slate-300"
-                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm`}
+                                ? "border-pink-500 dark:border-pink-500"
+                                : " border-slate-300 dark:border-slate-700"
+                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:ring-pink-500 dark:focus:invalid:border-pink-500 dark:focus:invalid:ring-pink-500 lg:py-2 lg:px-3 lg:text-sm`}
                     />
 
                     <div className="flex flex-col gap-4 lg:flex-row-reverse lg:items-center lg:justify-between lg:gap-0">
@@ -71,7 +71,7 @@ export default function ForgotPassword() {
                         </button>
                         <Link
                             to="/login"
-                            className="rounded-sm text-xs text-sky-500 underline underline-offset-2 hover:no-underline focus:no-underline focus:outline-none lg:text-sm"
+                            className="rounded-sm text-xs text-sky-500 underline underline-offset-2 hover:no-underline focus:no-underline focus:outline-none dark:text-sky-400 lg:text-sm"
                         >
                             Log In
                         </Link>

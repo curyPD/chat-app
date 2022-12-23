@@ -90,9 +90,9 @@ export default function Profile() {
                     <p>{error}</p>
                 </div>
             )}
-            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
+            <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
                 {profileInfo.profile_picture ? (
-                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white lg:translate-y-6 lg:border-transparent">
+                    <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white dark:border-slate-900 dark:bg-slate-800 lg:translate-y-6 lg:border-transparent">
                         <img
                             src={profileInfo.profile_picture}
                             alt={profileInfo.name}
@@ -100,8 +100,8 @@ export default function Profile() {
                         />
                     </div>
                 ) : (
-                    <div className="absolute top-0 left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center rounded-full border-4 border-white bg-slate-100 sm:h-28 sm:w-28 lg:translate-y-6 lg:border-transparent">
-                        <HiOutlineUser className="h-10 w-10 text-slate-400 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
+                    <div className="absolute top-0 left-0 flex h-24 w-24 -translate-y-1/2 translate-x-6 items-center justify-center rounded-full border-4 border-white bg-slate-100 dark:border-slate-900 dark:bg-slate-800 sm:h-28 sm:w-28 lg:translate-y-6 lg:border-transparent">
+                        <HiOutlineUser className="h-10 w-10 text-slate-400 dark:text-slate-500 sm:h-12 sm:w-12 lg:h-12 lg:w-12" />
                     </div>
                 )}
                 <div className="mt-4 flex justify-end">
@@ -128,20 +128,20 @@ export default function Profile() {
                         </button>
                     )}
                 </div>
-                <h1 className="mt-8 mb-4 text-left text-lg font-bold text-slate-900 sm:mt-10 lg:mt-24 lg:text-xl">
+                <h1 className="mt-8 mb-4 text-left text-lg font-bold text-slate-900 dark:text-white sm:mt-10 lg:mt-24 lg:text-xl">
                     {profileInfo.name}
                 </h1>
                 {profileInfo.bio && (
-                    <p className="mb-4 text-xs text-slate-900 lg:text-sm">
+                    <p className="mb-4 text-xs text-slate-900 dark:text-slate-50 lg:text-sm">
                         {profileInfo.bio}
                     </p>
                 )}
                 <div className="flex flex-wrap items-center space-x-5">
                     {profileInfo.twitter && (
                         <div className="flex items-center gap-2">
-                            <IoLogoTwitter className="h-4 w-4 text-slate-500" />
+                            <IoLogoTwitter className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                             <a
-                                className="text-xs text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:text-sky-500 lg:text-sm"
+                                className="text-xs text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:text-sky-500 dark:text-slate-400 dark:hover:text-slate-500 lg:text-sm"
                                 href={`https://twitter.com/${profileInfo.twitter}`}
                             >
                                 @{profileInfo.twitter}
@@ -151,9 +151,9 @@ export default function Profile() {
 
                     {isCurUser && profileInfo.email && (
                         <div className="flex items-center gap-2">
-                            <HiOutlineEnvelope className="h-4 w-4 text-slate-500" />
+                            <HiOutlineEnvelope className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                             <a
-                                className="text-xs text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:text-sky-500 lg:text-sm"
+                                className="text-xs text-slate-500 transition-colors hover:text-slate-700 focus:outline-none focus-visible:text-sky-500 dark:text-slate-400 dark:hover:text-slate-500 lg:text-sm"
                                 href={`mailto:${profileInfo.email}`}
                             >
                                 {profileInfo.email}

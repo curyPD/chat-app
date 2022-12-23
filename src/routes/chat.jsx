@@ -235,10 +235,10 @@ export default function Chat() {
         />
     ));
     return (
-        <div className="pt-14 pb-24 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0">
-            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:justify-end lg:shadow-none">
+        <div className="pt-14 pb-24 dark:bg-slate-900 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0 lg:dark:border-slate-800 lg:dark:bg-transparent">
+            <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow dark:border-slate-800 dark:bg-slate-900 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:justify-end lg:shadow-none">
                 <Link to=".." className="group focus:outline-none lg:hidden">
-                    <HiArrowLeft className="h-5 w-5 text-slate-600 group-focus-visible:text-sky-500" />
+                    <HiArrowLeft className="h-5 w-5 text-slate-600 group-focus-visible:text-sky-500 dark:text-slate-400 dark:group-focus-visible:text-sky-400" />
                 </Link>
                 <Link
                     to={`/users/${chatData?.partner_uid}`}
@@ -252,28 +252,28 @@ export default function Chat() {
                                 alt={`${chatData?.partner_name}'s avatar`}
                             />
                         ) : (
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100">
-                                <HiOutlineUser className="h-6 w-6 text-slate-500" />
+                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-700">
+                                <HiOutlineUser className="h-6 w-6 text-slate-500 dark:text-slate-400" />
                             </div>
                         )}
                     </div>
-                    <p className="mr-3 text-sm font-semibold text-slate-900">
+                    <p className="mr-3 text-sm font-semibold text-slate-900 dark:text-white">
                         {chatData?.partner_name}
                     </p>
                 </Link>
             </header>
 
-            <main className="min-h-full bg-white/50 md:ml-14 lg:ml-0">
+            <main className="min-h-full bg-white/50 dark:bg-slate-900 md:ml-14 lg:ml-0 lg:dark:bg-slate-900/50">
                 <ol className="flex flex-col px-3 py-5" ref={olRef}>
                     {messageElements}
                 </ol>
             </main>
 
             {filePreviewURL && (
-                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4 md:mb-11 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:bottom-11 lg:top-10 lg:mb-0 lg:ml-0 lg:w-full">
+                <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4 dark:border-slate-700 dark:bg-slate-800 md:mb-11 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:bottom-11 lg:top-10 lg:mb-0 lg:ml-0 lg:w-full">
                     <div className="relative inline-block">
                         <button
-                            className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600 transition-colors hover:bg-slate-800"
+                            className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600 transition-colors hover:bg-slate-800 dark:bg-slate-500 dark:hover:bg-slate-600"
                             onClick={cancelFileSelect}
                         >
                             <HiXMark className="h-3 w-3 text-white" />
@@ -304,7 +304,7 @@ export default function Chat() {
                         type="text"
                         name="message"
                         id="messageInput"
-                        className="block w-full bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none md:pl-12 md:pr-14 lg:border-t lg:border-slate-200"
+                        className="block w-full border-t border-slate-200 bg-white py-3 pl-11 pr-12 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:placeholder:text-slate-500 md:pl-12 md:pr-14"
                         value={input}
                         onChange={handleMessageInputChange}
                         placeholder="Send a message..."
@@ -345,7 +345,7 @@ export default function Chat() {
                         <button
                             type="button"
                             onClick={cancelMessageEdit}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 md:-translate-x-12"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 dark:bg-transparent dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white md:-translate-x-12"
                         >
                             Cancel
                         </button>

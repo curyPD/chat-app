@@ -17,7 +17,7 @@ export default function MessageBubble(props) {
             <li
                 className={`${
                     props.isCurUser ? "self-end" : "self-start"
-                } mb-6 max-w-xs lg:mb-7 lg:max-w-sm`}
+                } mb-7 max-w-xs lg:mb-8 lg:max-w-sm`}
             >
                 <div
                     className={`flex items-start gap-2 lg:gap-3 ${
@@ -43,8 +43,8 @@ export default function MessageBubble(props) {
                             <p
                                 className={`${
                                     props.isCurUser
-                                        ? "self-end bg-sky-500 text-white"
-                                        : "self-start bg-slate-200 text-slate-900"
+                                        ? "self-end bg-sky-500 text-white dark:bg-slate-800"
+                                        : "self-start bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-white"
                                 } rounded-2xl py-2 px-3 text-xs font-medium lg:rounded-3xl lg:px-4 lg:text-sm`}
                             >
                                 {props.text}
@@ -64,7 +64,7 @@ export default function MessageBubble(props) {
                         <span
                             className={`${
                                 props.isCurUser ? "text-left" : "text-right"
-                            } absolute top-full mt-1.5 block w-full text-[10px] text-slate-400`}
+                            } absolute top-full mt-1.5 block w-full text-[10px] text-slate-400 dark:text-slate-500`}
                         >
                             {formattedDate}
                         </span>
@@ -79,7 +79,6 @@ export default function MessageBubble(props) {
                         props.handleEditMessage();
                     }}
                     openDeletePopup={() => {
-                        console.log("Opening delete popup");
                         setIsPopupOpen(false);
                         setIsDeletePopupOpen(true);
                     }}

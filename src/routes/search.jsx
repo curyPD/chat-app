@@ -15,11 +15,15 @@ export default function Search() {
     }, [isMobile]);
 
     return (
-        <main className="h-screen">
+        <main className="h-screen dark:bg-slate-900">
             <UserSearchBar searchTerm={searchTerm} users={users}>
                 <div className="flex h-full flex-col items-center justify-center gap-4">
-                    <img src={logo} alt="Logo" className="h-8 w-8 shrink-0" />
-                    <span className="text-sm text-slate-500">
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        className="h-8 w-8 shrink-0 dark:drop-shadow-lg"
+                    />
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
                         Time to make friends!
                     </span>
                 </div>
