@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { useFetcher, useLoaderData } from "react-router-dom";
+import {
+    useFetcher,
+    useLoaderData,
+    useActionData,
+    Form,
+} from "react-router-dom";
 import { auth } from "../firebase";
 import {
     fetchSignInMethodsForEmail,
@@ -105,7 +110,7 @@ export default function Account() {
     const { signInMethods } = useLoaderData();
     const fetcher = useFetcher();
 
-    const response = fetcher.data;
+    const response = useActionData();
     const message = response?.message;
     const error = response?.error;
     const displaySignInPopup = response?.displaySignInPopup;
@@ -131,6 +136,11 @@ export default function Account() {
             {message && (
                 <div>
                     <p>{message}</p>
+                </div>
+            )}
+            {fetcher.data?.error && (
+                <div>
+                    <p>{fetcher.data.error}</p>
                 </div>
             )}
 
@@ -162,7 +172,7 @@ export default function Account() {
                     Settings
                 </h1>
                 <section className="mb-5">
-                    <fetcher.Form method="post">
+                    <Form method="post">
                         <label
                             htmlFor="newEmail"
                             className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
@@ -207,11 +217,11 @@ export default function Account() {
                                 </div>
                             )}
                         </div>
-                    </fetcher.Form>
+                    </Form>
                 </section>
 
                 <section className="mb-5">
-                    <fetcher.Form method="post" className="mb-4 last:mb-0">
+                    <Form method="post" className="mb-4 last:mb-0">
                         <label
                             htmlFor="google"
                             className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
@@ -241,8 +251,8 @@ export default function Account() {
                                 </>
                             )}
                         </button>
-                    </fetcher.Form>
-                    <fetcher.Form method="post" className="mb-4 last:mb-0">
+                    </Form>
+                    <Form method="post" className="mb-4 last:mb-0">
                         <label
                             htmlFor="facebook"
                             className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
@@ -272,13 +282,13 @@ export default function Account() {
                                 </>
                             )}
                         </button>
-                    </fetcher.Form>
+                    </Form>
                 </section>
 
                 {signInMethods?.includes("password") && (
                     <section className="mb-5">
                         {allowEditPassword ? (
-                            <fetcher.Form method="post">
+                            <Form method="post">
                                 <label
                                     htmlFor="oldPassword"
                                     className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm"
@@ -336,7 +346,7 @@ export default function Account() {
                                         Confirm
                                     </button>
                                 </div>
-                            </fetcher.Form>
+                            </Form>
                         ) : (
                             <div>
                                 <h2 className="mb-1 inline-block text-xs font-medium text-slate-700 dark:text-slate-500 lg:text-sm">

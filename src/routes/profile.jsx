@@ -44,6 +44,7 @@ export async function action({ request }) {
     } catch (err) {
         console.error(err);
         response.error = "Something went wrong. Please try again.";
+        return response;
     }
 }
 
