@@ -153,7 +153,7 @@ export default function Account() {
                 />
             )}
             <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
-                {!auth.currentUser.photoURL ? (
+                {auth.currentUser.photoURL ? (
                     <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 rounded-full border-4 border-white bg-slate-100 dark:border-slate-900 dark:bg-slate-800 lg:hidden">
                         <img
                             src={auth.currentUser.photoURL}
