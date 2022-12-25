@@ -7,7 +7,7 @@ export default function ProfilePictureSelect({ styles, handleFileUpload }) {
                 htmlFor="fileInput"
                 className="flex h-full w-full cursor-pointer items-center justify-center"
             >
-                <HiOutlineCamera className="h-10 w-10 text-white/80 sm:h-12 sm:w-12 lg:h-10 lg:w-10" />
+                <HiOutlineCamera className="h-9 w-9 text-white/80 sm:h-10 sm:w-10" />
             </label>
             <input
                 style={styles}

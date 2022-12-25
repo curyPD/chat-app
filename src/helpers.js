@@ -88,10 +88,17 @@ export const addNewMessage = async function (
         const timestamp = date.getTime();
         let file_url = "";
         if (file) {
+            const metadata = {
+                customMetadata: {
+                    from: sender,
+                    to: recipient,
+                },
+            };
             const snapshot = await uploadString(
                 storageRef(storage, `chats/${chatId}/${newMessageRef.key}`),
                 file,
-                "data_url"
+                "data_url",
+                metadata
             );
             file_url = await getDownloadURL(snapshot.ref);
         }
@@ -148,11 +155,18 @@ export const editMessage = async function (
                     storage,
                     `chats/${chatId}/${messageId}`
                 );
+                const metadata = {
+                    customMetadata: {
+                        from: sender,
+                        to: recipient,
+                    },
+                };
                 await deleteObject(storageReference);
                 const snapshot = await uploadString(
                     storageReference,
                     fileURL,
-                    "data_url"
+                    "data_url",
+                    metadata
                 );
                 const file_url = await getDownloadURL(snapshot.ref);
                 updates[`messages/${chatId}/${messageId}/file_url`] = file_url;
@@ -167,10 +181,17 @@ export const editMessage = async function (
                     storage,
                     `chats/${chatId}/${messageId}`
                 );
+                const metadata = {
+                    customMetadata: {
+                        from: sender,
+                        to: recipient,
+                    },
+                };
                 const snapshot = await uploadString(
                     storageReference,
                     fileURL,
-                    "data_url"
+                    "data_url",
+                    metadata
                 );
                 const file_url = await getDownloadURL(snapshot.ref);
                 updates[`messages/${chatId}/${messageId}/file_url`] = file_url;

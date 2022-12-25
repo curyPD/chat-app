@@ -113,7 +113,7 @@ export default function EditProfile() {
     };
 
     return (
-        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 md:pb-0 lg:h-full lg:bg-none lg:pt-0">
+        <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 dark:bg-custom-gradient-dark md:pb-0 lg:h-full lg:bg-none lg:pt-0 lg:dark:bg-none">
             {message && (
                 <div>
                     <p>{message}</p>
