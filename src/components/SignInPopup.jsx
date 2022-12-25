@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import Overlay from "./Overlay";
 import { HiXMark } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import PasswordInput from "./PasswordInput";
 
 export default function SignInPopup({ fetcher, signInMethods, closePopup }) {
     const response = fetcher.data;
@@ -53,9 +54,8 @@ export default function SignInPopup({ fetcher, signInMethods, closePopup }) {
                                 >
                                     Password
                                 </label>
-                                <input
+                                <PasswordInput
                                     id="password"
-                                    type="password"
                                     name="password"
                                     className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                     autoComplete="current-password"

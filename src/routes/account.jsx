@@ -25,6 +25,7 @@ import {
     getProviderId,
 } from "../helpers";
 import ThemeSelectMenu from "../components/ThemeSelectMenu";
+import PasswordInput from "../components/PasswordInput";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -295,13 +296,12 @@ export default function Account() {
                                 >
                                     Old Password
                                 </label>
-                                <input
-                                    type="password"
+                                <PasswordInput
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                     name="oldPassword"
                                     id="oldPassword"
                                     autoComplete="current-password"
-                                    required
-                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                                    required={true}
                                 />
                                 <label
                                     htmlFor="newPassword"
@@ -309,13 +309,12 @@ export default function Account() {
                                 >
                                     New Password
                                 </label>
-                                <input
-                                    type="password"
+                                <PasswordInput
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                     name="newPassword"
                                     id="newPassword"
                                     autoComplete="new-password"
-                                    required
-                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                                    required={true}
                                 />
                                 <label
                                     htmlFor="confirmPassword"
@@ -323,15 +322,13 @@ export default function Account() {
                                 >
                                     Confirm Password
                                 </label>
-                                <input
-                                    type="password"
+                                <PasswordInput
+                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                                     name="confirmPassword"
                                     id="confirmPassword"
                                     autoComplete="new-password"
-                                    required
-                                    className="mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                                    required={true}
                                 />
-
                                 <div className="flex items-center justify-end gap-2">
                                     <button
                                         className="rounded-md py-1 px-2 text-xs font-medium text-slate-900 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-slate-100 lg:px-3 lg:py-1.5 lg:text-sm"

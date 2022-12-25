@@ -16,6 +16,7 @@ import {
     getAuthCredential,
 } from "../helpers";
 import logo from "../assets/logo.png";
+import PasswordInput from "../components/PasswordInput";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -135,12 +136,11 @@ export default function Login() {
                     >
                         Password
                     </label>
-                    <input
+                    <PasswordInput
                         id="password"
-                        type="password"
                         name="password"
-                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                         autoComplete="current-password"
+                        className="mb-5 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
                     />
                     <div className="flex flex-col gap-4 lg:flex-row-reverse lg:items-center lg:justify-between lg:gap-0">
                         <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:w-auto lg:px-5 lg:text-base">

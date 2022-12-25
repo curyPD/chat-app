@@ -10,6 +10,7 @@ import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
 import { getAuthProviderObject } from "../helpers";
 import logo from "../assets/logo.png";
+import PasswordInput from "../components/PasswordInput";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -131,7 +132,7 @@ export default function Signup() {
                         type="email"
                         name="email"
                         className={`mb-4 block w-full rounded-md border dark:bg-slate-800 dark:text-slate-300 ${
-                            incorrectFields?.includes("name")
+                            incorrectFields?.includes("email")
                                 ? "border-pink-500 dark:border-pink-500"
                                 : " border-slate-300 dark:border-slate-700"
                         } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm invalid:border-pink-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 focus:invalid:ring-pink-500 dark:invalid:border-pink-500 dark:focus:invalid:border-pink-500 lg:py-2 lg:px-3 lg:text-sm`}
@@ -142,16 +143,15 @@ export default function Signup() {
                     >
                         Password
                     </label>
-                    <input
+                    <PasswordInput
                         id="password"
-                        type="password"
                         name="password"
-                        className={`mb-4 block w-full rounded-md border dark:bg-slate-800 dark:text-slate-300 ${
-                            incorrectFields?.includes("name")
-                                ? "border-pink-500 dark:border-pink-500"
-                                : " border-slate-300 dark:border-slate-700"
-                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm`}
                         autoComplete="new-password"
+                        className={
+                            incorrectFields?.includes("password")
+                                ? "mb-4 block w-full rounded-md border border-pink-500 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-pink-500 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                                : "mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                        }
                     />
                     <label
                         htmlFor="confirmPassword"
@@ -159,16 +159,15 @@ export default function Signup() {
                     >
                         Confirm password
                     </label>
-                    <input
+                    <PasswordInput
                         id="confirmPassword"
-                        type="password"
                         name="confirmPassword"
-                        className={`mb-5 block w-full rounded-md border dark:bg-slate-800 dark:text-slate-300 lg:mb-6 ${
-                            incorrectFields?.includes("name")
-                                ? "border-pink-500 dark:border-pink-500"
-                                : " border-slate-300 dark:border-slate-700"
-                        } bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 lg:py-2 lg:px-3 lg:text-sm`}
                         autoComplete="new-password"
+                        className={
+                            incorrectFields?.includes("confirmPassword")
+                                ? "mb-4 block w-full rounded-md border border-pink-500 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-pink-500 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                                : "mb-4 block w-full rounded-md border border-slate-300 bg-white py-1.5 px-2 text-xs text-slate-700 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 lg:py-2 lg:px-3 lg:text-sm"
+                        }
                     />
                     <div className="flex lg:justify-end">
                         <button className="w-full rounded-md bg-sky-500 py-2 px-4 text-xs font-semibold text-white transition-colors hover:bg-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 lg:w-auto lg:px-5 lg:text-base">

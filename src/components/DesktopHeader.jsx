@@ -4,6 +4,7 @@ import UserSearchBar from "./UserSearchBar";
 import DesktopNav from "./DesktopNav";
 import logo from "../assets/logo.png";
 import { Link, useFetcher } from "react-router-dom";
+import { HiOutlineUser } from "react-icons/hi2";
 
 export default function DesktopHeader({ users, searchTerm }) {
     const [isDesktopNavOpen, setIsDesktopNavOpen] = useState(false);
@@ -51,11 +52,17 @@ export default function DesktopHeader({ users, searchTerm }) {
                             to={`users/${auth.currentUser.uid}`}
                             className="group focus:outline-none"
                         >
-                            <img
-                                src={auth.currentUser.photoURL}
-                                alt="Current user's avatar"
-                                className="h-11 w-11 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
-                            />
+                            {auth.currentUser.photoURL ? (
+                                <img
+                                    src={auth.currentUser.photoURL}
+                                    alt="Current user's avatar"
+                                    className="h-11 w-11 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
+                                />
+                            ) : (
+                                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                                    <HiOutlineUser className="h-7 w-7 text-slate-400 dark:text-slate-500" />
+                                </div>
+                            )}
                         </Link>
 
                         {isDesktopNavOpen && <DesktopNav fetcher={fetcher} />}
