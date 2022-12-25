@@ -30,7 +30,7 @@ export async function loader({ request }) {
     const searchTerm = url.searchParams.get("q");
     if (searchTerm === "" || !searchTerm) return { users: null, searchTerm };
     const usersQuery = query(
-        ref(database, `data/users`),
+        ref(database, `users`),
         orderByChild("name"),
         equalTo(searchTerm.trim())
     );
@@ -76,13 +76,13 @@ export default function Root() {
     useEffect(() => {
         if (!curUser) return;
         const childAddedUnsubscribe = onChildAdded(
-            ref(database, `data/chats/${curUser.uid}`),
+            ref(database, `chats/${curUser.uid}`),
             (snapshot) => {
                 setChats((prevChats) => [...prevChats, snapshot.val()]);
             }
         );
         const childChangedUnsubscribe = onChildChanged(
-            ref(database, `data/chats/${curUser.uid}`),
+            ref(database, `chats/${curUser.uid}`),
             (snapshot) => {
                 setChats((prevChats) =>
                     prevChats.map((chat) =>

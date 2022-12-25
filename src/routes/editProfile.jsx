@@ -22,18 +22,17 @@ export async function action({ request }) {
             const avatarSm = formData.get("avatarSm");
             const avatarLg = formData.get("avatarLg");
             const userSnapshot = await get(
-                ref(database, `data/users/${auth.currentUser.uid}`)
+                ref(database, `users/${auth.currentUser.uid}`)
             );
             const user = userSnapshot.val();
             const updates = {};
-            updates[`data/users/${auth.currentUser.uid}/profile_picture`] =
-                avatarLg;
-            updates[`data/users/${auth.currentUser.uid}/profile_picture_sm`] =
+            updates[`users/${auth.currentUser.uid}/profile_picture`] = avatarLg;
+            updates[`users/${auth.currentUser.uid}/profile_picture_sm`] =
                 avatarSm;
             user.chats &&
                 Object.values(user.chats).forEach((obj) => {
                     updates[
-                        `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_profile_picture`
+                        `chats/${obj.partner_uid}/${obj.chat_id}/partner_profile_picture`
                     ] = avatarSm;
                 });
             await Promise.all([
@@ -52,19 +51,18 @@ export async function action({ request }) {
                 return response;
             }
             const userSnapshot = await get(
-                ref(database, `data/users/${auth.currentUser.uid}`)
+                ref(database, `users/${auth.currentUser.uid}`)
             );
             const user = userSnapshot.val();
             const updates = {};
-            updates[`data/users/${auth.currentUser.uid}/name`] =
-                profileInfo.name;
-            updates[`data/users/${auth.currentUser.uid}/twitter`] =
+            updates[`users/${auth.currentUser.uid}/name`] = profileInfo.name;
+            updates[`users/${auth.currentUser.uid}/twitter`] =
                 profileInfo.twitter;
-            updates[`data/users/${auth.currentUser.uid}/bio`] = profileInfo.bio;
+            updates[`users/${auth.currentUser.uid}/bio`] = profileInfo.bio;
             user.chats &&
                 Object.values(user.chats).forEach((obj) => {
                     updates[
-                        `data/chats/${obj.partner_uid}/${obj.chat_id}/partner_name`
+                        `chats/${obj.partner_uid}/${obj.chat_id}/partner_name`
                     ] = profileInfo.name;
                 });
             await Promise.all([
@@ -86,7 +84,7 @@ export async function loader() {
     const { currentUser } = auth;
     if (!currentUser) return {};
     const { uid } = currentUser;
-    const snapshot = await get(ref(database, `data/users/${uid}`));
+    const snapshot = await get(ref(database, `users/${uid}`));
     if (!snapshot.exists())
         throw new Response("No user information found", { status: 404 });
     return { profileInfo: snapshot.val() };

@@ -72,11 +72,11 @@ export async function loader({ params }) {
     if (!currentUser) return {};
     const { uid } = currentUser;
     const chatShapshot = await get(
-        ref(database, `data/chats/${uid}/${params.chatId}`)
+        ref(database, `chats/${uid}/${params.chatId}`)
     );
     if (!chatShapshot.exists())
         throw new Response("No chat found", { status: 404 });
-    const curUserSnapshot = await get(ref(database, `data/users/${uid}`));
+    const curUserSnapshot = await get(ref(database, `users/${uid}`));
     if (!curUserSnapshot.exists())
         throw new Response("No user information found", { status: 404 });
     const chatVal = chatShapshot.val();
@@ -113,7 +113,7 @@ export default function Chat() {
         setEditedMessageId("");
         setFilePreviewURL("");
         const childAddedUnsubscribe = onChildAdded(
-            ref(database, `data/messages/${chatData?.chat_id}`),
+            ref(database, `messages/${chatData?.chat_id}`),
             (snapshot) => {
                 setMessages((prevMessages) => [
                     ...prevMessages,
@@ -122,7 +122,7 @@ export default function Chat() {
             }
         );
         const childChangedUnsubscribe = onChildChanged(
-            ref(database, `data/messages/${chatData?.chat_id}`),
+            ref(database, `messages/${chatData?.chat_id}`),
             (snapshot) => {
                 setMessages((prevMessages) =>
                     prevMessages.map((m) =>
@@ -132,7 +132,7 @@ export default function Chat() {
             }
         );
         const childRemovedUnsubscribe = onChildRemoved(
-            ref(database, `data/messages/${chatData?.chat_id}`),
+            ref(database, `messages/${chatData?.chat_id}`),
             (snapshot) => {
                 setMessages((prevMessages) =>
                     prevMessages.filter((m) => m.m_id !== snapshot.val().m_id)

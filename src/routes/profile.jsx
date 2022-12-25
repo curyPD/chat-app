@@ -49,7 +49,7 @@ export async function action({ request }) {
 }
 
 export async function loader({ params }) {
-    const snapshot = await get(ref(database, `data/users/${params.userId}`));
+    const snapshot = await get(ref(database, `users/${params.userId}`));
     if (!snapshot.exists()) {
         throw new Response("No user found", { status: 404 });
     }
@@ -57,9 +57,7 @@ export async function loader({ params }) {
     if (!currentUser) return {};
     let curUserSnapshot;
     if (snapshot.val().uid !== currentUser.uid) {
-        curUserSnapshot = await get(
-            ref(database, `data/users/${currentUser.uid}`)
-        );
+        curUserSnapshot = await get(ref(database, `users/${currentUser.uid}`));
     }
     return {
         profileInfo: snapshot.val(),

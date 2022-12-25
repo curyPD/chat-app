@@ -58,19 +58,17 @@ export async function handleAvatarUpload(e, submit, setError) {
 }
 
 export const addNewChat = function (updates, curUser, otherUser) {
-    const newChatKey = push(ref(database, `data/chats/${curUser.uid}`)).key;
+    const newChatKey = push(ref(database, `chats/${curUser.uid}`)).key;
     [curUser, otherUser].forEach((user, i, arr) => {
-        updates[`data/chats/${user.uid}/${newChatKey}/chat_id`] = newChatKey;
-        updates[`data/chats/${user.uid}/${newChatKey}/partner_uid`] =
+        updates[`chats/${user.uid}/${newChatKey}/chat_id`] = newChatKey;
+        updates[`chats/${user.uid}/${newChatKey}/partner_uid`] =
             arr[i === 0 ? 1 : 0].uid;
-        updates[`data/chats/${user.uid}/${newChatKey}/partner_name`] =
+        updates[`chats/${user.uid}/${newChatKey}/partner_name`] =
             arr[i === 0 ? 1 : 0].name;
-        updates[
-            `data/chats/${user.uid}/${newChatKey}/partner_profile_picture`
-        ] = arr[i === 0 ? 1 : 0].profilePicture;
-        updates[`data/users/${user.uid}/chats/${newChatKey}/chat_id`] =
-            newChatKey;
-        updates[`data/users/${user.uid}/chats/${newChatKey}/partner_uid`] =
+        updates[`chats/${user.uid}/${newChatKey}/partner_profile_picture`] =
+            arr[i === 0 ? 1 : 0].profilePicture;
+        updates[`users/${user.uid}/chats/${newChatKey}/chat_id`] = newChatKey;
+        updates[`users/${user.uid}/chats/${newChatKey}/partner_uid`] =
             arr[i === 0 ? 1 : 0].uid;
     });
     return newChatKey;
@@ -85,7 +83,7 @@ export const addNewMessage = async function (
     updates
 ) {
     try {
-        const newMessageRef = push(ref(database, `data/messages/${chatId}`));
+        const newMessageRef = push(ref(database, `messages/${chatId}`));
         const date = new Date();
         const timestamp = date.getTime();
         let file_url = "";
@@ -97,7 +95,7 @@ export const addNewMessage = async function (
             );
             file_url = await getDownloadURL(snapshot.ref);
         }
-        updates[`data/messages/${chatId}/${newMessageRef.key}`] = {
+        updates[`messages/${chatId}/${newMessageRef.key}`] = {
             m_id: newMessageRef.key,
             text: message,
             timestamp,
@@ -105,9 +103,9 @@ export const addNewMessage = async function (
             file_url,
         };
         [sender, recipient].forEach((uid) => {
-            updates[`data/chats/${uid}/${chatId}/last_message_sender`] = sender;
-            updates[`data/chats/${uid}/${chatId}/last_message_text`] = message;
-            updates[`data/chats/${uid}/${chatId}/timestamp`] = timestamp;
+            updates[`chats/${uid}/${chatId}/last_message_sender`] = sender;
+            updates[`chats/${uid}/${chatId}/last_message_text`] = message;
+            updates[`chats/${uid}/${chatId}/timestamp`] = timestamp;
         });
     } catch (err) {
         throw err;
@@ -126,11 +124,10 @@ export const editMessage = async function (
     updates
 ) {
     try {
-        updates[`data/messages/${chatId}/${messageId}/text`] = message;
+        updates[`messages/${chatId}/${messageId}/text`] = message;
         if (isLastMessage === "true") {
             [sender, recipient].forEach((uid) => {
-                updates[`data/chats/${uid}/${chatId}/last_message_text`] =
-                    message;
+                updates[`chats/${uid}/${chatId}/last_message_text`] = message;
             });
         }
 
@@ -143,7 +140,7 @@ export const editMessage = async function (
                 await deleteObject(
                     storageRef(storage, `chats/${chatId}/${messageId}`)
                 );
-                updates[`data/messages/${chatId}/${messageId}/file_url`] = "";
+                updates[`messages/${chatId}/${messageId}/file_url`] = "";
                 return;
             } else if (fileURL && prevAttachedFileURL !== fileURL) {
                 // 3. Edit message with file and changed the file
@@ -158,8 +155,7 @@ export const editMessage = async function (
                     "data_url"
                 );
                 const file_url = await getDownloadURL(snapshot.ref);
-                updates[`data/messages/${chatId}/${messageId}/file_url`] =
-                    file_url;
+                updates[`messages/${chatId}/${messageId}/file_url`] = file_url;
             }
         } else {
             if (!fileURL) {
@@ -177,8 +173,7 @@ export const editMessage = async function (
                     "data_url"
                 );
                 const file_url = await getDownloadURL(snapshot.ref);
-                updates[`data/messages/${chatId}/${messageId}/file_url`] =
-                    file_url;
+                updates[`messages/${chatId}/${messageId}/file_url`] = file_url;
             }
         }
     } catch (err) {
