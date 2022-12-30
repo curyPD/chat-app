@@ -4,7 +4,7 @@ import {
     updateProfile,
     signInWithPopup,
 } from "firebase/auth";
-import { ref, set, update } from "firebase/database";
+import { ref, update } from "firebase/database";
 import { Form, Link, redirect, useActionData } from "react-router-dom";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
@@ -28,6 +28,7 @@ export async function action({ request }) {
             updates[`users/${user.uid}/name`] = user.displayName;
             updates[`users/${user.uid}/email`] = user.email;
             updates[`users/${user.uid}/profile_picture`] = user.photoURL;
+            updates[`users/${user.uid}/profile_picture_sm`] = user.photoURL;
             await update(ref(database), updates);
         } else {
             console.log("Password sign up");
@@ -57,14 +58,15 @@ export async function action({ request }) {
             );
             const { user } = userCredential;
             await updateProfile(user, { displayName: userName });
-            await set(ref(database, `users/${user.uid}`), {
-                uid: user.uid,
-                name: user.displayName,
-                email: user.email,
-                profile_picture: "",
-                bio: "",
-                twitter: "",
-            });
+            const updates = {};
+            updates[`users/${user.uid}/uid`] = user.uid;
+            updates[`users/${user.uid}/name`] = user.displayName;
+            updates[`users/${user.uid}/email`] = user.email;
+            updates[`users/${user.uid}/profile_picture`] = "";
+            updates[`users/${user.uid}/profile_picture_sm`] = "";
+            updates[`users/${user.uid}/bio`] = "";
+            updates[`users/${user.uid}/twitter`] = "";
+            await update(ref(database), updates);
         }
         return redirect(`/edit`);
     } catch (err) {
@@ -184,7 +186,7 @@ export default function Signup() {
                     <button
                         name="authProvider"
                         value="google"
-                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 pl-8 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:pl-24 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 pl-10 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:pl-24 md:pl-32 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
                     >
                         <FcGoogle className="h-6 w-6 lg:h-7 lg:w-7" />
                         <span>Continue with Google</span>
@@ -192,7 +194,7 @@ export default function Signup() {
                     <button
                         name="authProvider"
                         value="facebook"
-                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 pl-8 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:pl-24 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
+                        className="mb-4 flex w-full items-center gap-4 rounded-md border border-slate-300 py-2 px-5 pl-10 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-1 focus:ring-sky-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 sm:pl-24 md:pl-32 lg:mb-5 lg:gap-5 lg:pl-20 lg:text-sm"
                     >
                         <IoLogoFacebook className="h-6 w-6 text-blue-600 dark:text-blue-500 lg:h-7 lg:w-7" />
                         <span>Continue with Facebook</span>

@@ -20,7 +20,10 @@ export default function SignInPopup({ fetcher, signInMethods, closePopup }) {
                 </div>
             )}
             <Overlay onClick={closePopup}>
-                <div className="fixed top-1/2 left-1/2 z-50 w-5/6 max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-xl border border-slate-200 bg-white px-4 pb-3 pt-7 shadow-md dark:border-slate-700 dark:bg-slate-800 lg:max-w-md lg:px-7 lg:pt-8">
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="fixed top-1/2 left-1/2 z-50 w-5/6 max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-xl border border-slate-200 bg-white px-4 pb-3 pt-7 shadow-md dark:border-slate-700 dark:bg-slate-800 lg:max-w-md lg:px-7 lg:pt-8"
+                >
                     <button
                         className="group absolute top-0 right-0 -translate-x-2 translate-y-2"
                         onClick={closePopup}

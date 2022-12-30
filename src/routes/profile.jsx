@@ -37,6 +37,7 @@ export async function action({ request }) {
             message,
             auth.currentUser.uid,
             partnerUid,
+            null,
             updates
         );
         await update(ref(database), updates);

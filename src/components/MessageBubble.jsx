@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import MessagePopup from "./MessagePopup";
 import MessageDeletePopup from "./MessageDeletePopup";
+import { HiOutlineUser } from "react-icons/hi2";
 
 export default function MessageBubble(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -28,15 +29,23 @@ export default function MessageBubble(props) {
                         to={`/users/${props.senderUid}`}
                         className="group shrink-0 focus:outline-none"
                     >
-                        <img
-                            src={props.senderAvatar}
-                            alt={props.senderName}
-                            className="h-10 w-10 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
-                        />
+                        {props.senderAvatar ? (
+                            <img
+                                src={props.senderAvatar}
+                                alt={props.senderName}
+                                className="h-10 w-10 rounded-full object-cover group-focus:ring group-focus:ring-sky-300"
+                            />
+                        ) : (
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 group-focus:ring-sky-300 dark:bg-slate-700">
+                                <HiOutlineUser className="h-5 w-5 text-slate-500 dark:text-slate-400" />
+                            </div>
+                        )}
                     </Link>
 
                     <div
-                        onClick={() => setIsPopupOpen(true)}
+                        onClick={() =>
+                            props.isCurUser ? setIsPopupOpen(true) : undefined
+                        }
                         className="relative flex flex-col"
                     >
                         {props.text && (

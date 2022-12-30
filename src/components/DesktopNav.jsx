@@ -27,12 +27,12 @@ export default function DesktopNav({ fetcher }) {
                     </NavLink>
                     <Link
                         to="/edit"
-                        className="group absolute top-1/2 right-0 ml-auto flex -translate-y-1/2 -translate-x-2 gap-1 rounded-full py-1.5 px-3 transition-colors hover:bg-slate-200 focus:outline-none focus-visible:bg-slate-200 dark:hover:bg-slate-700 dark:focus-visible:bg-slate-700"
+                        className="group absolute top-1/2 right-0 ml-auto flex -translate-y-1/2 -translate-x-2 gap-1 rounded-full py-1.5 px-3 transition-colors hover:bg-slate-200 focus:outline-none focus-visible:bg-slate-200 dark:hover:bg-slate-900 dark:focus-visible:bg-slate-900"
                     >
                         <span className="text-xs text-slate-500 transition-colors group-hover:text-slate-600 group-focus-visible:text-slate-600 dark:text-slate-400 dark:group-hover:text-slate-200 dark:group-focus-visible:text-slate-200">
                             Edit
                         </span>
-                        <HiChevronRight className="h-4 w-4 text-slate-500 transition-transform group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 dark:text-slate-400 dark:group-hover:text-slate-200 dark:group-focus-visible:text-slate-200" />
+                        <HiChevronRight className="h-4 w-4 text-slate-500 transition group-hover:translate-x-0.5 group-focus-visible:translate-x-0.5 dark:text-slate-400 dark:group-hover:text-slate-200 dark:group-focus-visible:text-slate-200" />
                     </Link>
                 </div>
                 <NavLink

@@ -4,7 +4,10 @@ import { HiXMark } from "react-icons/hi2";
 export default function MessageDeletePopup(props) {
     return (
         <Overlay onClick={props.closePopup}>
-            <div className="fixed top-1/2 left-1/2 z-50 w-52 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-4 pt-4 pb-2 shadow-md dark:bg-slate-800 md:pt-5 md:pb-3 lg:w-60 lg:pt-6">
+            <div
+                onClick={(e) => e.stopPropagation()}
+                className="fixed top-1/2 left-1/2 z-50 w-52 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-4 pt-4 pb-2 shadow-md dark:bg-slate-800 md:pt-5 md:pb-3 lg:w-60 lg:pt-6"
+            >
                 <button
                     onClick={props.closePopup}
                     className="group absolute top-0 right-0 translate-y-2 -translate-x-2"
