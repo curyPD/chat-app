@@ -11,6 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { getAuthProviderObject } from "../helpers";
 import logo from "../assets/logo.png";
 import PasswordInput from "../components/PasswordInput";
+import Message from "../components/Message";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -209,11 +210,7 @@ export default function Signup() {
                         Log In
                     </Link>
                 </p>
-                {error && (
-                    <div>
-                        <p>{error}</p>
-                    </div>
-                )}
+                {error && <Message text={error} error={true} />}
             </section>
         </main>
     );

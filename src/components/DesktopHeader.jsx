@@ -5,6 +5,8 @@ import DesktopNav from "./DesktopNav";
 import logo from "../assets/logo.png";
 import { Link, useFetcher } from "react-router-dom";
 import { HiOutlineUser } from "react-icons/hi2";
+import { AnimatePresence } from "framer-motion";
+import Message from "./Message";
 
 export default function DesktopHeader({ users, searchTerm }) {
     const [isDesktopNavOpen, setIsDesktopNavOpen] = useState(false);
@@ -21,11 +23,7 @@ export default function DesktopHeader({ users, searchTerm }) {
 
     return (
         <>
-            {error && (
-                <div>
-                    <p>{error}</p>
-                </div>
-            )}
+            {error && <Message error={true} text={error} />}
             <header className="fixed top-0 left-0 z-20 h-16 w-full border-b border-slate-200 bg-white/50 backdrop-blur dark:border-slate-800 dark:bg-transparent">
                 <div className="mx-auto flex h-full max-w-screen-lg items-center justify-between px-2">
                     <div className="flex items-center gap-3">
@@ -64,8 +62,11 @@ export default function DesktopHeader({ users, searchTerm }) {
                                 </div>
                             )}
                         </Link>
-
-                        {isDesktopNavOpen && <DesktopNav fetcher={fetcher} />}
+                        <AnimatePresence>
+                            {isDesktopNavOpen && (
+                                <DesktopNav fetcher={fetcher} />
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </header>

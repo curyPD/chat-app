@@ -26,6 +26,7 @@ import {
 } from "../helpers";
 import ThemeSelectMenu from "../components/ThemeSelectMenu";
 import PasswordInput from "../components/PasswordInput";
+import Message from "../components/Message";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -129,20 +130,10 @@ export default function Account() {
 
     return (
         <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 dark:bg-custom-gradient-dark md:pb-0 lg:h-full lg:bg-none lg:pt-0 lg:dark:bg-none">
-            {error && (
-                <div>
-                    <p>{error}</p>
-                </div>
-            )}
-            {message && (
-                <div>
-                    <p>{message}</p>
-                </div>
-            )}
+            {error && <Message text={error} error={true} />}
+            {message && <Message text={message} error={false} />}
             {fetcher.data?.error && (
-                <div>
-                    <p>{fetcher.data.error}</p>
-                </div>
+                <Message text={fetcher.data?.error} error={true} />
             )}
 
             {signInPopupOpen && (

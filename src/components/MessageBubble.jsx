@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import MessagePopup from "./MessagePopup";
 import MessageDeletePopup from "./MessageDeletePopup";
 import { HiOutlineUser } from "react-icons/hi2";
+import { AnimatePresence } from "framer-motion";
 
 export default function MessageBubble(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -52,7 +53,7 @@ export default function MessageBubble(props) {
                             <p
                                 className={`${
                                     props.isCurUser
-                                        ? "self-end bg-sky-500 text-white dark:bg-slate-800"
+                                        ? "self-end bg-sky-500 text-white"
                                         : "self-start bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-white"
                                 } rounded-2xl py-2 px-3 text-xs font-medium lg:rounded-3xl lg:px-4 lg:text-sm`}
                             >
@@ -80,28 +81,32 @@ export default function MessageBubble(props) {
                     </div>
                 </div>
             </li>
-            {isPopupOpen && (
-                <MessagePopup
-                    closePopup={() => setIsPopupOpen(false)}
-                    handleEditMessage={() => {
-                        setIsPopupOpen(false);
-                        props.handleEditMessage();
-                    }}
-                    openDeletePopup={() => {
-                        setIsPopupOpen(false);
-                        setIsDeletePopupOpen(true);
-                    }}
-                />
-            )}
-            {isDeletePopupOpen && (
-                <MessageDeletePopup
-                    closePopup={() => setIsDeletePopupOpen(false)}
-                    handleDeleteMessage={() => {
-                        props.handleDeleteMessage();
-                        setIsDeletePopupOpen(false);
-                    }}
-                />
-            )}
+            <AnimatePresence>
+                {isPopupOpen && (
+                    <MessagePopup
+                        closePopup={() => setIsPopupOpen(false)}
+                        handleEditMessage={() => {
+                            setIsPopupOpen(false);
+                            props.handleEditMessage();
+                        }}
+                        openDeletePopup={() => {
+                            setIsPopupOpen(false);
+                            setIsDeletePopupOpen(true);
+                        }}
+                    />
+                )}
+            </AnimatePresence>
+            <AnimatePresence>
+                {isDeletePopupOpen && (
+                    <MessageDeletePopup
+                        closePopup={() => setIsDeletePopupOpen(false)}
+                        handleDeleteMessage={() => {
+                            props.handleDeleteMessage();
+                            setIsDeletePopupOpen(false);
+                        }}
+                    />
+                )}
+            </AnimatePresence>
         </>
     );
 }

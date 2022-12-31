@@ -12,6 +12,7 @@ import { updateProfile } from "firebase/auth";
 import { HiOutlineUser } from "react-icons/hi2";
 import ProfilePictureSelect from "../components/ProfilePictureSelect";
 import { handleAvatarUpload } from "../helpers";
+import Message from "../components/Message";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -114,16 +115,8 @@ export default function EditProfile() {
 
     return (
         <div className="h-screen overflow-y-auto bg-custom-gradient pb-12 pt-24 dark:bg-custom-gradient-dark md:pb-0 lg:h-full lg:bg-none lg:pt-0 lg:dark:bg-none">
-            {message && (
-                <div>
-                    <p>{message}</p>
-                </div>
-            )}
-            {error && (
-                <div>
-                    <p>{error}</p>
-                </div>
-            )}
+            {message && <Message text={message} error={false} />}
+            {error && <Message text={error} error={true} />}
             <main className="relative mx-auto min-h-full max-w-lg rounded-t-3xl border border-slate-200 bg-white/50 px-6 pb-8 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/50 lg:mx-0 lg:h-full lg:min-h-0 lg:max-w-none lg:overflow-y-auto lg:rounded-2xl lg:px-8 lg:pt-6">
                 {profileInfo?.profile_picture ? (
                     <div className="absolute top-0 left-0 z-10 -translate-y-1/2 translate-x-6 overflow-hidden rounded-full border-4 border-white dark:border-slate-900 lg:translate-y-6 lg:border-transparent">

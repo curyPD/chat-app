@@ -6,9 +6,38 @@ import {
     HiOutlineCog6Tooth,
     HiArrowRightOnRectangle,
 } from "react-icons/hi2";
+import { motion } from "framer-motion";
+
 export default function DesktopNav({ fetcher }) {
+    const variants = {
+        hidden: { scale: 0.5, opacity: 0, y: -20 },
+        visible: {
+            scale: 1,
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                damping: 20,
+                stiffness: 300,
+                duration: 0.2,
+            },
+        },
+        exit: {
+            opacity: 0,
+            transition: {
+                duration: 0.1,
+            },
+        },
+    };
+
     return (
-        <div className="absolute top-full right-0 z-20 translate-x-1 -translate-y-1 pt-3">
+        <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={variants}
+            className="absolute top-full right-0 z-20 origin-top-right translate-x-1 -translate-y-1 pt-3"
+        >
             <div className="w-72 rounded-lg border border-slate-200 bg-white py-2 shadow-lg dark:border-slate-700 dark:bg-slate-800">
                 <div className="relative">
                     <NavLink
@@ -54,6 +83,6 @@ export default function DesktopNav({ fetcher }) {
                     </button>
                 </fetcher.Form>
             </div>
-        </div>
+        </motion.div>
     );
 }

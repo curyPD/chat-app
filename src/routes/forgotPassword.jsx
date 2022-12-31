@@ -2,6 +2,7 @@ import { auth } from "../firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { Form, Link, useActionData } from "react-router-dom";
 import logo from "../assets/logo.png";
+import Message from "../components/Message";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -79,16 +80,8 @@ export default function ForgotPassword() {
                 </Form>
             </section>
 
-            {error && (
-                <div className="absolute">
-                    <p>{error}</p>
-                </div>
-            )}
-            {message && (
-                <div className="absolute">
-                    <p>{message}</p>
-                </div>
-            )}
+            {error && <Message text={error} error={true} />}
+            {message && <Message text={message} error={false} />}
         </main>
     );
 }

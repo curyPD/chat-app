@@ -2,15 +2,32 @@ import { useState } from "react";
 import Overlay from "./Overlay";
 import { Form } from "react-router-dom";
 import { HiXMark } from "react-icons/hi2";
+import { motion } from "framer-motion";
 
 export default function FirstMessageDialogWindow(props) {
     const [input, setInput] = useState("");
 
+    const variants = {
+        hidden: { opacity: 0, y: 80 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                damping: 23,
+                stiffness: 300,
+                duration: 0.2,
+            },
+        },
+        exit: { opacity: 0, y: 80 },
+    };
+
     return (
         <Overlay onClick={props.closeDialog}>
-            <div
+            <motion.div
+                variants={variants}
                 onClick={(e) => e.stopPropagation()}
-                className="fixed top-1/2 left-1/2 z-50 w-10/12 max-w-xs -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white px-4 pt-4 pb-2 shadow-md dark:bg-slate-800 md:max-w-sm md:px-5 md:pt-5 md:pb-3 lg:max-w-md lg:px-6 lg:pt-6"
+                className="relative z-50 w-10/12 max-w-xs rounded-lg bg-white px-4 pt-4 pb-2 shadow-md dark:bg-slate-800 md:max-w-sm md:px-5 md:pt-5 md:pb-3 lg:max-w-md lg:px-6 lg:pt-6"
             >
                 <button
                     onClick={props.closeDialog}
@@ -85,7 +102,7 @@ export default function FirstMessageDialogWindow(props) {
                         value={props.curUserProfileInfo.profile_picture_sm}
                     />
                 </Form>
-            </div>
+            </motion.div>
         </Overlay>
     );
 }

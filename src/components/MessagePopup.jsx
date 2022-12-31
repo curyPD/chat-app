@@ -1,12 +1,32 @@
 import Overlay from "./Overlay";
 import { HiXMark, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi2";
+import { motion } from "framer-motion";
 
 export default function MessagePopup(props) {
+    const variants = {
+        hidden: { opacity: 0, y: 80 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                damping: 23,
+                stiffness: 300,
+                duration: 0.2,
+            },
+        },
+        exit: { opacity: 0, y: 80 },
+    };
+
     return (
         <Overlay onClick={props.closePopup}>
-            <div
+            <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={variants}
                 onClick={(e) => e.stopPropagation()}
-                className="fixed top-1/2 left-1/2 z-50 w-52 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white pt-4 pb-2 shadow-md dark:bg-slate-800 md:pb-3 md:pt-5 lg:w-60 lg:pt-6"
+                className="relative z-50 w-52 rounded-lg bg-white pt-4 pb-2 shadow-md dark:bg-slate-800 md:pb-3 md:pt-5 lg:w-60 lg:pt-6"
             >
                 <button
                     onClick={props.closePopup}
@@ -32,7 +52,7 @@ export default function MessagePopup(props) {
                         Delete message
                     </span>
                 </button>
-            </div>
+            </motion.div>
         </Overlay>
     );
 }

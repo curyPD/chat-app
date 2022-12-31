@@ -5,6 +5,8 @@ import Overlay from "./Overlay";
 import { HiXMark } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PasswordInput from "./PasswordInput";
+import { motion } from "framer-motion";
+import Message from "./Message";
 
 export default function SignInPopup({ fetcher, signInMethods, closePopup }) {
     const response = fetcher.data;
@@ -12,15 +14,30 @@ export default function SignInPopup({ fetcher, signInMethods, closePopup }) {
     const message = response?.message;
     if (fetcher.state === "idle" && status === "success") closePopup();
 
+    const variants = {
+        hidden: { opacity: 0, y: 80 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                damping: 23,
+                stiffness: 300,
+                duration: 0.2,
+            },
+        },
+        exit: { opacity: 0, y: 80 },
+    };
+
     return (
         <>
-            {message && (
-                <div>
-                    <p>{message}</p>
-                </div>
-            )}
+            {message && <Message text={message} error={false} />}
             <Overlay onClick={closePopup}>
-                <div
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={variants}
                     onClick={(e) => e.stopPropagation()}
                     className="fixed top-1/2 left-1/2 z-50 w-5/6 max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-xl border border-slate-200 bg-white px-4 pb-3 pt-7 shadow-md dark:border-slate-700 dark:bg-slate-800 lg:max-w-md lg:px-7 lg:pt-8"
                 >
@@ -104,7 +121,7 @@ export default function SignInPopup({ fetcher, signInMethods, closePopup }) {
                             </button>
                         )}
                     </fetcher.Form>
-                </div>
+                </motion.div>
             </Overlay>
         </>
     );

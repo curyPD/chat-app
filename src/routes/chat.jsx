@@ -25,6 +25,7 @@ import {
     HiXMark,
 } from "react-icons/hi2";
 import { resizeFile } from "../helpers";
+import Message from "../components/Message";
 
 export async function action({ request, params }) {
     const formData = await request.formData();
@@ -242,15 +243,9 @@ export default function Chat() {
     ));
     return (
         <>
-            {error && (
-                <div>
-                    <p>{error}</p>
-                </div>
-            )}
+            {error && <Message text={error} error={true} />}
             {fetcher.data?.error && (
-                <div>
-                    <p>{fetcher.data?.error}</p>
-                </div>
+                <Message text={fetcher.data?.error} error={true} />
             )}
             <div className="pt-14 pb-24 dark:bg-slate-900 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0 lg:dark:border-slate-800 lg:dark:bg-transparent">
                 <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow dark:border-slate-800 dark:bg-slate-900 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:justify-end lg:shadow-none">

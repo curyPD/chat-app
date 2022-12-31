@@ -17,6 +17,7 @@ import {
 } from "../helpers";
 import logo from "../assets/logo.png";
 import PasswordInput from "../components/PasswordInput";
+import Message from "../components/Message";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -226,11 +227,7 @@ export default function Login() {
                         "You'll be able to change it later on your account page."}
                 </div>
             )}
-            {error && (
-                <div className="absolute">
-                    <p>{error}</p>
-                </div>
-            )}
+            {error && <Message text={error} error={true} />}
         </main>
     );
 }
