@@ -1,4 +1,4 @@
-import { auth } from "../firebase";
+import { auth, database } from "../firebase";
 import {
     signInWithEmailAndPassword,
     signInWithPopup,
@@ -6,6 +6,7 @@ import {
     linkWithCredential,
     EmailAuthProvider,
 } from "firebase/auth";
+import { ref, update, get } from "firebase/database";
 import { Form, Link, redirect, useActionData } from "react-router-dom";
 import { IoLogoFacebook } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
@@ -31,6 +32,16 @@ export async function action({ request }) {
             const providerObject = getAuthProviderObject(authProvider);
             const userCredential = await signInWithPopup(auth, providerObject);
             user = userCredential.user;
+            const userSnapshot = await get(ref(database, `users/${user.uid}`));
+            if (!userSnapshot.exists()) {
+                const updates = {};
+                updates[`users/${user.uid}/uid`] = user.uid;
+                updates[`users/${user.uid}/name`] = user.displayName;
+                updates[`users/${user.uid}/email`] = user.email;
+                updates[`users/${user.uid}/profile_picture`] = user.photoURL;
+                updates[`users/${user.uid}/profile_picture_sm`] = user.photoURL;
+                await update(ref(database), updates);
+            }
         } else {
             console.log("Password sign in");
             const email = formData.get("email");
