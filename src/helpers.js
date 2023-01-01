@@ -7,7 +7,7 @@ import {
     deleteObject,
 } from "firebase/storage";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
-import Resizer from "react-image-file-resizer";
+import Resizer from "./Resizer";
 
 export const resizeFile = function (file, maxW, maxH, q, minW, minH) {
     return new Promise((resolve) => {
