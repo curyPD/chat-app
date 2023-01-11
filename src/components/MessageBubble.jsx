@@ -19,7 +19,7 @@ export default function MessageBubble(props) {
             <li
                 className={`${
                     props.isCurUser ? "self-end" : "self-start"
-                } mb-7 max-w-xs lg:mb-8 lg:max-w-sm`}
+                } mb-7 w-5/6 max-w-xs lg:mb-8 lg:max-w-sm`}
             >
                 <div
                     className={`flex items-start gap-2 lg:gap-3 ${

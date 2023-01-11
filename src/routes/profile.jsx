@@ -134,7 +134,7 @@ export default function Profile() {
                         {profileInfo.bio}
                     </p>
                 )}
-                <div className="flex flex-wrap items-center space-x-5">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                     {profileInfo.twitter && (
                         <div className="flex items-center gap-2">
                             <IoLogoTwitter className="h-4 w-4 text-slate-500 dark:text-slate-400" />
