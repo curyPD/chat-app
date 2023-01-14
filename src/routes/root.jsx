@@ -106,6 +106,7 @@ export default function Root() {
             partnerName={chat.partner_name}
             partnerProfilePicture={chat.partner_profile_picture}
             lastMessage={chat.last_message_text}
+            lastMessageSender={chat.last_message_sender}
             timestamp={chat.timestamp}
         />
     ));

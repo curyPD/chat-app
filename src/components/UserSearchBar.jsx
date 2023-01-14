@@ -20,7 +20,7 @@ export default function UserSearchBar({ searchTerm, users, children }) {
             key={i}
             id={user.uid}
             name={user.name}
-            photoURL={user.photo_url}
+            photoURL={user.profile_picture_sm}
         />
     ));
 

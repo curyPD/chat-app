@@ -179,11 +179,15 @@ export default function Chat() {
         formData.append("isLastMessage", `${isLastMessage}`);
         if (isLastMessage) {
             const penultimateMessage = messages.at(-2);
-            const { sender, text, timestamp } = penultimateMessage;
-            formData.append("newLastMessageText", text);
-            formData.append("newLastMessageSender", sender);
-            formData.append("timestamp", timestamp);
             formData.append("partnerUid", chatData?.partner_uid);
+            if (penultimateMessage) {
+                const { sender, text, timestamp } = penultimateMessage;
+                formData.append("newLastMessageText", text);
+                formData.append("newLastMessageSender", sender);
+                formData.append("timestamp", timestamp);
+            } else {
+                formData.append("isOnlyMessage", "true");
+            }
         }
         fetcher.submit(formData, {
             method: "post",
