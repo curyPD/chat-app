@@ -251,7 +251,7 @@ export default function Chat() {
             {fetcher.data?.error && (
                 <Message text={fetcher.data?.error} error={true} />
             )}
-            <div className="pt-14 pb-24 dark:bg-slate-900 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0 lg:dark:border-slate-800 lg:dark:bg-transparent">
+            <div className="pt-14 pb-24 scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 dark:bg-slate-900 dark:scrollbar-track-gray-800 dark:scrollbar-thumb-gray-600 md:pb-12 lg:relative lg:h-full lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-slate-200 lg:pb-0 lg:pt-0 lg:dark:border-slate-800 lg:dark:bg-transparent">
                 <header className="fixed top-0 left-0 z-10 flex h-14 w-full items-center justify-between border-b border-slate-200 bg-white px-3 shadow dark:border-slate-800 dark:bg-slate-900 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:justify-end lg:shadow-none">
                     <Link
                         to=".."
@@ -367,7 +367,7 @@ export default function Chat() {
                             <button
                                 type="button"
                                 onClick={cancelMessageEdit}
-                                className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring focus-visible:ring-sky-300 dark:bg-transparent dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white md:-translate-x-12"
+                                className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-11 rounded bg-white p-1 text-xs font-semibold text-sky-500 transition-colors focus:outline-none focus-visible:ring focus-visible:ring-sky-300 hover:bg-sky-100 dark:bg-transparent dark:text-sky-400 dark:hover:bg-sky-500 dark:hover:text-white md:-translate-x-12"
                             >
                                 Cancel
                             </button>

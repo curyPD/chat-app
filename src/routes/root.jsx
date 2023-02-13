@@ -120,7 +120,7 @@ export default function Root() {
                     <DesktopHeader users={users} searchTerm={searchTerm} />
                     <div className="h-screen bg-custom-gradient dark:bg-custom-gradient-dark">
                         <div className="mx-auto grid h-full max-w-screen-lg grid-cols-[360px,1fr] gap-x-5 px-2 pt-20 pb-4">
-                            <div className="h-full overflow-y-auto rounded-2xl border border-slate-200 bg-white pb-6 dark:border-slate-800 dark:bg-slate-900">
+                            <div className="h-full overflow-y-auto rounded-2xl border border-slate-200 bg-white pb-6 scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 dark:border-slate-800 dark:bg-slate-900 dark:scrollbar-track-gray-800 dark:scrollbar-thumb-gray-600">
                                 <div className="sticky top-0 left-0 w-full px-4">
                                     <div className="h-6 bg-white dark:bg-slate-900"></div>
                                     <div className="relative bg-white dark:bg-slate-900">

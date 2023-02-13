@@ -13,7 +13,7 @@ module.exports = {
                 "custom-gradient":
                     "linear-gradient(234deg,rgba(255,255,255,0.7),rgba(237,233,254,0.7) 7%,rgba(255,255,255,0.7) 17%,rgba(224,242,254,0.7) 21%,rgba(237,233,254,0.7) 26%,rgba(255,255,255,0.7) 30%,rgba(252,231,243,0.7) 36%,rgba(243,232,255,0.7) 42%,transparent 50%)",
                 "custom-gradient-dark":
-                    "linear-gradient(224deg,#0f172a,rgba(109, 40, 217, 0.1) 12%,rgba(13, 148, 136, 0.1) 27%,#0f172a 43%), linear-gradient(#0f172a,#0f172a)",
+                    "linear-gradient(224deg,#0f172a,rgba(109, 40, 217, 0.15) 12%,rgba(13, 148, 136, 0.15) 27%,#0f172a 43%), linear-gradient(#0f172a,#0f172a)",
             },
             spacing: {
                 "fixed-bar-tablet": "calc(100% - 56px)",
@@ -21,5 +21,5 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [require("tailwind-scrollbar")],
 };
