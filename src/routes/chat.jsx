@@ -16,13 +16,13 @@ import {
     update,
 } from "firebase/database";
 import MessageBubble from "../components/MessageBubble";
+import ImagePreviewBox from "../components/ImagePreviewBox";
 import { addNewMessage, editMessage } from "../helpers";
 import {
     HiOutlineUser,
     HiArrowLeft,
     HiOutlineCamera,
     HiOutlinePaperAirplane,
-    HiXMark,
 } from "react-icons/hi2";
 import { resizeFile } from "../helpers";
 import Message from "../components/Message";
@@ -36,6 +36,7 @@ export async function action({ request, params }) {
         const partnerUid = formData.get("partnerUid");
         const isLastMessage = formData.get("isLastMessage");
         const fileBaseURL = formData.get("fileBaseURL");
+        const imageAspectRatio = formData.get("imageAspectRatio");
         const prevAttachedFile = formData.get("prevAttachedFile");
         const updates = {};
         if (!messageId)
@@ -45,6 +46,7 @@ export async function action({ request, params }) {
                 auth.currentUser.uid,
                 partnerUid,
                 fileBaseURL,
+                imageAspectRatio,
                 updates
             );
         else
@@ -56,6 +58,7 @@ export async function action({ request, params }) {
                 auth.currentUser.uid,
                 partnerUid,
                 fileBaseURL,
+                imageAspectRatio,
                 prevAttachedFile,
                 updates
             );
@@ -67,7 +70,6 @@ export async function action({ request, params }) {
         return response;
     }
 }
-
 export async function loader({ params }) {
     const { currentUser } = auth;
     if (!currentUser) return {};
@@ -93,6 +95,7 @@ export default function Chat() {
     const [input, setInput] = useState("");
     const [editedMessageId, setEditedMessageId] = useState("");
     const [filePreviewURL, setFilePreviewURL] = useState("");
+    const [imageAspectRatio, setImageAspectRatio] = useState(0);
     const olRef = useRef(null);
 
     const response = useActionData();
@@ -113,6 +116,7 @@ export default function Chat() {
         setInput("");
         setEditedMessageId("");
         setFilePreviewURL("");
+        setImageAspectRatio("");
         const childAddedUnsubscribe = onChildAdded(
             ref(database, `messages/${chatData?.chat_id}`),
             (snapshot) => {
@@ -198,12 +202,18 @@ export default function Chat() {
     async function attachFile(e) {
         const [file] = e.target.files;
         e.target.value = "";
-        const imageURL = await resizeFile(file, 768, 1920, 80);
+        const imageURL = await resizeFile(
+            file,
+            +import.meta.env.VITE_IMAGE_MAX_WIDTH,
+            +import.meta.env.VITE_IMAGE_MAX_HEIGHT,
+            80
+        );
         setFilePreviewURL(imageURL);
     }
 
     function cancelFileSelect() {
         setFilePreviewURL("");
+        setImageAspectRatio(0);
     }
 
     function handleFormSubmit(e) {
@@ -211,6 +221,7 @@ export default function Chat() {
         setInput("");
         setEditedMessageId("");
         setFilePreviewURL("");
+        setImageAspectRatio(0);
     }
 
     function cancelMessageEdit() {
@@ -226,6 +237,7 @@ export default function Chat() {
             key={message.m_id}
             text={message.text}
             fileURL={message.file_url}
+            imageDimensions={message.imageDimensions}
             timestamp={message.timestamp}
             senderAvatar={
                 message.sender === auth.currentUser.uid
@@ -289,21 +301,11 @@ export default function Chat() {
                 </main>
 
                 {filePreviewURL && (
-                    <div className="fixed bottom-0 left-0 z-10 mb-[92px] w-full border-t border-slate-200 bg-slate-100 py-2 px-4 dark:border-slate-700 dark:bg-slate-800 md:mb-11 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:bottom-11 lg:top-10 lg:mb-0 lg:ml-0 lg:w-full">
-                        <div className="relative inline-block">
-                            <button
-                                className="absolute top-0 right-0 flex h-4 w-4 -translate-y-1.5 translate-x-1.5 items-center justify-center rounded-full bg-slate-600 transition-colors hover:bg-slate-800 dark:bg-slate-500 dark:hover:bg-slate-600"
-                                onClick={cancelFileSelect}
-                            >
-                                <HiXMark className="h-3 w-3 text-white" />
-                            </button>
-                            <img
-                                src={filePreviewURL}
-                                alt="Selected image"
-                                className="w-16"
-                            />
-                        </div>
-                    </div>
+                    <ImagePreviewBox
+                        cancelFileSelect={cancelFileSelect}
+                        filePreviewURL={filePreviewURL}
+                        setImageAspectRatio={setImageAspectRatio}
+                    />
                 )}
                 <div className="fixed bottom-0 left-0 z-10 mb-12 w-full md:mb-0 md:ml-14 md:w-fixed-bar-tablet lg:sticky lg:ml-0 lg:w-full lg:border-t-transparent">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-3">
@@ -335,6 +337,11 @@ export default function Chat() {
                             type="hidden"
                             name="fileBaseURL"
                             value={filePreviewURL}
+                        />
+                        <input
+                            type="hidden"
+                            name="imageAspectRatio"
+                            value={imageAspectRatio}
                         />
                         <input
                             type="hidden"

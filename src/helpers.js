@@ -80,6 +80,7 @@ export const addNewMessage = async function (
     sender,
     recipient,
     file,
+    imageAspectRatio,
     updates
 ) {
     try {
@@ -87,6 +88,7 @@ export const addNewMessage = async function (
         const date = new Date();
         const timestamp = date.getTime();
         let file_url = "";
+        const imageDimensions = {};
         if (file) {
             const metadata = {
                 customMetadata: {
@@ -101,6 +103,9 @@ export const addNewMessage = async function (
                 metadata
             );
             file_url = await getDownloadURL(snapshot.ref);
+            imageDimensions.width = +import.meta.env.VITE_IMAGE_MAX_WIDTH;
+            imageDimensions.height =
+                +import.meta.env.VITE_IMAGE_MAX_WIDTH / imageAspectRatio;
         }
         updates[`messages/${chatId}/${newMessageRef.key}`] = {
             m_id: newMessageRef.key,
@@ -108,6 +113,7 @@ export const addNewMessage = async function (
             timestamp,
             sender,
             file_url,
+            imageDimensions,
         };
         [sender, recipient].forEach((uid) => {
             updates[`chats/${uid}/${chatId}/last_message_sender`] = sender;
@@ -127,6 +133,7 @@ export const editMessage = async function (
     sender,
     recipient,
     fileURL,
+    imageAspectRatio,
     prevAttachedFileURL,
     updates
 ) {
@@ -148,6 +155,7 @@ export const editMessage = async function (
                     storageRef(storage, `chats/${chatId}/${messageId}`)
                 );
                 updates[`messages/${chatId}/${messageId}/file_url`] = "";
+                updates[`messages/${chatId}/${messageId}/imageDimensions`] = {};
                 return;
             } else if (fileURL && prevAttachedFileURL !== fileURL) {
                 // 3. Edit message with file and changed the file
@@ -169,7 +177,15 @@ export const editMessage = async function (
                     metadata
                 );
                 const file_url = await getDownloadURL(snapshot.ref);
+                const imageDimensions = {
+                    width: +import.meta.env.VITE_IMAGE_MAX_WIDTH,
+                    height:
+                        +import.meta.env.VITE_IMAGE_MAX_WIDTH /
+                        imageAspectRatio,
+                };
                 updates[`messages/${chatId}/${messageId}/file_url`] = file_url;
+                updates[`messages/${chatId}/${messageId}/imageDimensions`] =
+                    imageDimensions;
             }
         } else {
             if (!fileURL) {
@@ -194,7 +210,15 @@ export const editMessage = async function (
                     metadata
                 );
                 const file_url = await getDownloadURL(snapshot.ref);
+                const imageDimensions = {
+                    width: +import.meta.env.VITE_IMAGE_MAX_WIDTH,
+                    height:
+                        +import.meta.env.VITE_IMAGE_MAX_WIDTH /
+                        imageAspectRatio,
+                };
                 updates[`messages/${chatId}/${messageId}/file_url`] = file_url;
+                updates[`messages/${chatId}/${messageId}/imageDimensions`] =
+                    imageDimensions;
             }
         }
     } catch (err) {

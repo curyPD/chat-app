@@ -4,6 +4,7 @@ import MessagePopup from "./MessagePopup";
 import MessageDeletePopup from "./MessageDeletePopup";
 import { HiOutlineUser } from "react-icons/hi2";
 import { AnimatePresence } from "framer-motion";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function MessageBubble(props) {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -62,12 +63,14 @@ export default function MessageBubble(props) {
                         )}
                         {props.fileURL && (
                             <div>
-                                <img
+                                <LazyLoadImage
                                     src={props.fileURL}
                                     alt=""
                                     className={`${
                                         props.text && "mt-4 block"
                                     } rounded-xl`}
+                                    width={props.imageDimensions?.width}
+                                    height={props.imageDimensions?.height}
                                 />
                             </div>
                         )}
